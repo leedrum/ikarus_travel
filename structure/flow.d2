@@ -1,0 +1,43 @@
+# command d2 --watch flow.d2
+
+
+seller -> tour: 1. Select tour
+tour -> customer: 2. Reserve tour
+customer -> reservation: 3. Fill information reservation
+reservation -> seller: 4. Confirm reservation
+direction: down
+
+seller -> googlesheet/report: 5. Save reservation
+googlesheet/report -> mananger: 6. Check reservation
+googlesheet/report-> accounter: 7. Calculate money
+
+seller: {
+  shape: person
+}
+
+customer: {
+  shape: person
+}
+
+tour: {
+  shape: page
+  style.multiple: true
+}
+
+reservation: {
+  shape: page
+  style.multiple: true
+}
+
+mananger: {
+  shape: person
+}
+
+googlesheet/report: {
+  shape: page
+  style.multiple: true
+}
+
+accounter: {
+  shape: person
+}
