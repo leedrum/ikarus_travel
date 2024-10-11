@@ -1,0 +1,58 @@
+Users: {
+  shape: sql_table
+  id: int { constraint: primary_key };
+  name: string;
+  email: string;
+  password_digest: string;
+  status: int;
+  role_id: int { constraint: foreign_key };
+}
+
+Roles: {
+  shape: sql_table
+  id: int { constraint: primary_key };
+  name: string;
+}
+
+Users.role_id <-> Roles.id : 1..1
+
+Tours: {
+  shape: sql_table
+  id: int { constraint: primary_key };
+  name: string;
+  description: string;
+  status: int;
+}
+
+Reservations: {
+  shape: sql_table
+  id: int { constraint: primary_key };
+  tour_id: int { constraint: foreign_key };
+  code: string;
+  name: string;
+  price: int;
+  date: datetime;
+  status: int;
+  hotels: string;
+  revenue: int { default: 0 };
+  time_start: datetime;
+  time_end: datetime;
+}
+
+Tours.id <-> Reservations.tour_id : 1..n
+
+ReservationItems: {
+  shape: sql_table
+  id: int { constraint: primary_key };
+  reservation_id: int { constraint: foreign_key };
+  seller_id: int { constraint: foreign_key };
+  name: string;
+  price: int;
+  adult_qty: int;
+  children_qt: int;
+  paid: int;
+  status: int;
+}
+
+Reservations.id <-> ReservationItems.reservation_id : 1..n
+Users.id <-> ReservationItems.seller_id : 1..n
