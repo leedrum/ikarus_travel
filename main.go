@@ -1,9 +1,8 @@
 package main
 
-import "fmt"
+import "github.com/leedrum/ikarus_travel/routes"
 
 func main() {
-	// Call the function from the package
-	// "fmt" that prints the string
-	fmt.Println("Hello, World!")
+	router := routes.InitRoutes()
+	router.Run(":8080")
 }
