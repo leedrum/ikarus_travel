@@ -8,5 +8,5 @@ import (
 
 func InitSsrRoutes(router *gin.Engine) {
 	fmt.Println("SSR routes initialized")
-	router.GET("/home", HomeHandler())
+	router.GET("/", IndexHandler())
 }

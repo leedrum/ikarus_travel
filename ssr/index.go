@@ -14,10 +14,10 @@ const appTimeout = time.Second * 10
 
 func render(ctx *gin.Context, status int, template templ.Component) error {
 	ctx.Status(status)
-	return template.Render(ctx.Request.Context(), ctx.Writer)
+	return template.Render(ctx, ctx.Writer)
 }
 
-func HomeHandler() gin.HandlerFunc {
+func IndexHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		_, cancel := context.WithTimeout(context.Background(), appTimeout)
 		defer cancel()
