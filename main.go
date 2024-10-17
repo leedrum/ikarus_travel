@@ -4,8 +4,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
