@@ -1,25 +1,30 @@
 package main
 
 import (
-	"log"
+	"os"
 
-	"github.com/invopop/ctxi18n"
-	"github.com/leedrum/ikarus_travel/locales"
-	"github.com/leedrum/ikarus_travel/routes"
+	"github.com/gin-gonic/gin"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/leedrum/ikarus_travel/internal"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
-	initI18n()
-	initRouter()
-}
-
-func initI18n() {
-	if err := ctxi18n.Load(locales.Content); err != nil {
-		log.Fatalf("error loading locales: %v", err)
+	config, err := internal.LoadConfig(".")
+	if err != nil {
+		log.Fatal().Err(err).Msg("Cannot load config")
 	}
-}
 
-func initRouter() {
-	router := routes.InitRoutes()
-	router.Run(":8080")
+	if config.Environment == "development" {
+		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	server := internal.Server{
+		Config: config,
+	}
+	server.Run()
 }
