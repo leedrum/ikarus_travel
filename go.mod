@@ -1,6 +1,6 @@
 module github.com/leedrum/ikarus_travel
 
-go 1.23.0
+go 1.21
 
 require (
 	github.com/a-h/templ v0.2.778
