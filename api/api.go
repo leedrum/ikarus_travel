@@ -6,6 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitAPIRoutes(_ *gin.Engine) {
+func InitAPIRoutes(router *gin.Engine) {
 	fmt.Println("API routes initialized")
 }
