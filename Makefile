@@ -1,5 +1,3 @@
-DB_URL=postgresql://root:123456@localhost:5432/simple_bank?sslmode=disable
-
 tidy:
 	go mod tidy
 
@@ -18,19 +16,4 @@ createdb:
 dropdb:
 	docker exec -it postgres dropdb ikarus_travel
 
-migrateup:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up
-
-migrateup1:
-	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
-
-migratedown:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down
-
-migratedown1:
-	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
-
-new_migration:
-	migrate create -ext sql -dir db/migration -seq $(name)
-
-.PHONY: tidy server templ db createdb dropdb migrateup migratedown new_migration migrateup1 migratedown1
+.PHONY: tidy server templ db createdb dropdb
