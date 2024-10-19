@@ -1,2 +1,5 @@
 en:
   create: "Create"
+  go_to_detail: "Go to detail"
+  error: "Error"
+  password_cannot_be_empty: "Password cannot be empty"

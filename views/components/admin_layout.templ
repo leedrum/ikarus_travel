@@ -1,0 +1,21 @@
+package components
+
+templ AdminLayout(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		@Header()
+		<body>
+			<main class="min-h-screen w-full">
+				<nav class="flex w-full border border-b-zinc-200 px-4 py-4">
+					<h3 class="text-base lg:text-lg font-medium text-center">
+						{ title }
+					</h3>
+				</nav>
+				<div class="mt-6 w-full flex justify-center items-center flex-col">
+					{ children... }
+				</div>
+			</main>
+		</body>
+		@Footer()
+	</html>
+}
