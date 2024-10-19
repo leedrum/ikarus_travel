@@ -1,6 +1,6 @@
 en:
   create: "Create"
-  go_to_detail: "Go to detail"
+  detail: "Detail"
   error: "Error"
   password_cannot_be_empty: "Password cannot be empty"
   delete: "Delete"
@@ -9,3 +9,10 @@ en:
   cancel: "Cancel"
   confirm: "Confirm"
   are_you_sure: "Are you sure?"
+  full_name: "Full name"
+  email: "Email"
+  password: "Password"
+  username: "Username"
+  role: "Role"
+  actions: "Actions"
+  users: "Users"
