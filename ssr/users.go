@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/locales"
@@ -61,5 +62,19 @@ func ListUsersHandler(server internal.Server) gin.HandlerFunc {
 		server.DB.Find(&users)
 
 		internal.Render(ctx, http.StatusOK, views.ListUsers(users))
+	}
+}
+
+func DeleteUserHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
+		defer cancel()
+
+		id := ctx.Param("id")
+		var user model.User
+		server.DB.First(&user, id)
+		server.DB.Delete(&user)
+
+		internal.Render(ctx, http.StatusOK, templ.Raw("User deleted"))
 	}
 }

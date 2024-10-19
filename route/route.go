@@ -20,6 +20,7 @@ func InitRoutes(server *internal.Server) {
 		admin.GET("/users/new", ssr.NewUserHandler(*server))
 		admin.POST("/users", ssr.CreateUserHandler(*server))
 		admin.GET("/users", ssr.ListUsersHandler(*server))
+		admin.DELETE("/users/:id", ssr.DeleteUserHandler(*server))
 	}
 	server.Router = router
 }
