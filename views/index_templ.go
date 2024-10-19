@@ -42,7 +42,7 @@ func Index() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body><main class=\"min-h-screen w-full\"><nav class=\"flex w-full border border-b-zinc-200 px-4 py-4\"><h3 class=\"text-base lg:text-lg font-medium text-center\">GO Fullstack app</h3></nav><div class=\"mt-6 w-full flex justify-center items-center flex-col\"><form hx-post=\"/\" hx-trigger=\"submit\" hx-swap=\"none\" onsubmit=\"reloadPage()\" class=\"w-96\"><textarea name=\"description\" cols=\"30\" rows=\"2\" class=\"w-full border rounded-lg mb-2 p-4\" placeholder=\"Input todo details\" required></textarea> <button class=\"py-1 px-4 w-full h-10 rounded-lg text-white bg-zinc-800\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body><main class=\"min-h-screen w-full\"><nav class=\"flex w-full border border-b-zinc-200 px-4 py-4\"><h3 class=\"text-base lg:text-lg font-medium text-center\">Ikarus Travel</h3></nav><div class=\"mt-6 w-full flex justify-center items-center flex-col\"><form hx-post=\"/\" hx-trigger=\"submit\" hx-swap=\"none\" onsubmit=\"reloadPage()\" class=\"w-96\"><textarea name=\"description\" cols=\"30\" rows=\"2\" class=\"w-full border rounded-lg mb-2 p-4\" placeholder=\"Input todo details\" required></textarea> <button class=\"py-1 px-4 w-full h-10 rounded-lg text-white bg-zinc-800\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
