@@ -10,10 +10,10 @@ import (
 templ ListUsers(users []model.User) {
   @components.AdminLayout("List Users"){
     <div class="w-full">
-      <div class="mx-auto max-w-xl my-2" id="error-area"></div>
-      <div class="mx-auto max-w-xl my-2" id="success-area"></div>
-      <div class="mx-auto max-w-xl">
-        <table class="min-w-full">
+      <div class="mx-auto w-full">
+        <div class="w-full my-2" id="error-area"></div>
+        <div class="w-full my-2" id="success-area"></div>
+        <table class="w-full">
           <thead>
             <tr>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -50,9 +50,9 @@ templ ListUsers(users []model.User) {
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                   <a href={ templ.SafeURL("/admin/users/" + strconv.Itoa(user.ID)) } class="text-indigo-600 hover:text-indigo-900">
-                    { locales.Translate(ctx, "go_to_detail") }
+                    { locales.Translate(ctx, "edit") }
                   </a>
-                  <form hx-delete={ "/admin/users/" + strconv.Itoa(user.ID) } hx-confirm={ locales.Translate(ctx, "are_you_sure") } hx-target="#success-area" hx-swap="innerHTML" hx-ext="response-targets" hx-on="htmx:afterDeleteUser">
+                  <form hx-delete={ "/admin/users/" + strconv.Itoa(user.ID) } hx-confirm={ locales.Translate(ctx, "are_you_sure") } hx-target="closest tr" hx-swap="outerHTML swap:1s">
                     <button type="submit" class="text-red-600 hover:text-red-900">
                       { locales.Translate(ctx, "delete") }
                     </button>
