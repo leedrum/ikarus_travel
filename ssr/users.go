@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/locales"
@@ -75,6 +74,6 @@ func DeleteUserHandler(server internal.Server) gin.HandlerFunc {
 		server.DB.First(&user, id)
 		server.DB.Delete(&user)
 
-		internal.Render(ctx, http.StatusOK, templ.Raw("User deleted"))
+		ctx.Data(http.StatusOK, "text/html", []byte(""))
 	}
 }
