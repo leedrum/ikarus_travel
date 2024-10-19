@@ -51,3 +51,15 @@ func CreateUserHandler(server internal.Server) gin.HandlerFunc {
 		internal.Render(ctx, http.StatusBadRequest, views.CreateSuccessUser(user))
 	}
 }
+
+func ListUsersHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
+		defer cancel()
+
+		var users []model.User
+		server.DB.Find(&users)
+
+		internal.Render(ctx, http.StatusOK, views.ListUsers(users))
+	}
+}

@@ -13,3 +13,7 @@ func NewUser(user model.User) templ.Component {
 func CreateSuccessUser(user model.User) templ.Component {
 	return admin_pages.CreateSuccessUser(user)
 }
+
+func ListUsers(users []model.User) templ.Component {
+	return admin_pages.ListUsers(users)
+}
