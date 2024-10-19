@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
+	"github.com/leedrum/ikarus_travel/route"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -21,8 +22,12 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	server := internal.Server{
+	server := &internal.Server{
 		Config: config,
 	}
-	server.Run()
+
+	internal.InitI18n()
+	server.DB = internal.InitDB(server.Config)
+	route.InitRoutes(server)
+	server.Router.Run(server.Config.HTTPServerAddress)
 }
