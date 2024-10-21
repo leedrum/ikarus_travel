@@ -46,7 +46,7 @@ func NewTour() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full\"><div class=\"mx-auto max-w-xl my-2\" id=\"error-area\"></div><div class=\"mx-auto max-w-xl my-2\" id=\"success-area\"></div><form class=\"mx-auto max-w-xl\" hx-post=\"/admin/tours\" hx-ext=\"response-targets\" hx-target-error=\"#error-area\" hx-swap=\"innerHTML scroll:top\" hx-on=\"htmx:responseError; htmx:redirectCreateUser }\"><div class=\"grid grid-cols-1 gap-x-8 gap-y-6\"><div class=\"sm:col-span-2\"><label for=\"name\" class=\"block text-sm font-semibold leading-6 text-gray-900\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full\"><div class=\"mx-auto max-w-xl my-2\" id=\"error-area\"></div><div class=\"mx-auto max-w-xl my-2\" id=\"success-area\"></div><form class=\"mx-auto max-w-xl\" hx-post=\"/admin/tours\" hx-ext=\"response-targets\" hx-target-error=\"#error-area\" hx-swap=\"innerHTML scroll:top\" hx-on=\"htmx:responseError;\"><div class=\"grid grid-cols-1 gap-x-8 gap-y-6\"><div class=\"sm:col-span-2\"><label for=\"name\" class=\"block text-sm font-semibold leading-6 text-gray-900\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
