@@ -29,3 +29,15 @@ func ListTours(tours []model.Tour) templ.Component {
 func EditTour(tour model.Tour) templ.Component {
 	return admin_pages.EditTour(tour)
 }
+
+func NewHotel() templ.Component {
+	return admin_pages.NewHotel()
+}
+
+func ListHotels(hotels []model.Hotel) templ.Component {
+	return admin_pages.ListHotels(hotels)
+}
+
+func EditHotel(hotel model.Hotel) templ.Component {
+	return admin_pages.EditHotel(hotel)
+}

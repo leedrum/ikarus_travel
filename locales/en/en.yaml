@@ -24,3 +24,4 @@ en:
   go_to_list: "Go to list"
   go_to_detail: "Go to detail"
   name: "Name"
+  address: "Address"

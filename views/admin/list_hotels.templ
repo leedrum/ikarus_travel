@@ -1,0 +1,17 @@
+package admin
+
+import (
+  "github.com/leedrum/ikarus_travel/model"
+  "github.com/leedrum/ikarus_travel/views/components"
+)
+
+templ ListHotels(hotels []model.Hotel) {
+  @components.AdminLayout("List of Hotels") {
+    <h1>List of Hotels</h1>
+    <ul>
+      for _, hotel := range hotels {
+        <li>{ hotel.Name }</li>
+      }
+    </ul>
+  }
+}
