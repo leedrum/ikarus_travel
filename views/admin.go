@@ -17,3 +17,15 @@ func CreateSuccessUser(user model.User) templ.Component {
 func ListUsers(users []model.User) templ.Component {
 	return admin_pages.ListUsers(users)
 }
+
+func NewTour() templ.Component {
+	return admin_pages.NewTour()
+}
+
+func ListTours(tours []model.Tour) templ.Component {
+	return admin_pages.ListTours(tours)
+}
+
+func EditTour(tour model.Tour) templ.Component {
+	return admin_pages.EditTour(tour)
+}

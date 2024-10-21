@@ -17,5 +17,4 @@ type User struct {
 	Role               string    `json:"role" form:"role"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
-	DeletedAt          time.Time
 }

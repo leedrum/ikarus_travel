@@ -1,0 +1,59 @@
+package admin
+
+import (
+  "github.com/leedrum/ikarus_travel/locales"
+	"github.com/leedrum/ikarus_travel/views/components"
+	"github.com/leedrum/ikarus_travel/model"
+  "strconv"
+)
+
+templ ListTours(tours []model.Tour) {
+  @components.AdminLayout("List Tours"){
+    <div class="w-full">
+      <div class="mx-auto w-full">
+        <div class="w-full my-2" id="error-area"></div>
+        <div class="w-full my-2" id="success-area"></div>
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                { locales.Translate(ctx, "name") }
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                { locales.Translate(ctx, "description") }
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                { locales.Translate(ctx, "status") }
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            for _, tour := range tours {
+              <tr class="border-b border-gray-200">
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
+                  { tour.Name }
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                  { tour.Description }
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                  { tour.GetStatusStr() }
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                  <a href={ templ.SafeURL("/admin/tours/" + strconv.Itoa(tour.ID) + "/edit") } class="text-indigo-600 hover:text-indigo-900">
+                    { locales.Translate(ctx, "edit") }
+                  </a>
+                  <form hx-delete={ "/admin/tours/" + strconv.Itoa(tour.ID) } hx-confirm={ locales.Translate(ctx, "are_you_sure") } hx-target="closest tr" hx-swap="outerHTML swap:1s">
+                    <button type="submit" class="text-red-600 hover:text-red-900">
+                      { locales.Translate(ctx, "delete") }
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+}
