@@ -28,6 +28,12 @@ func InitRoutes(server *internal.Server) {
 		admin.GET("/tours/:id/edit", ssr.EditTourHandler(*server))
 		admin.PUT("/tours/:id", ssr.UpdateTourHandler(*server))
 		admin.DELETE("/tours/:id", ssr.DeleteTourHandler(*server))
+
+		admin.GET("/hotels/new", ssr.NewHotelHandler(*server))
+		admin.POST("/hotels", ssr.CreateHotelHandler(*server))
+		admin.GET("/hotels", ssr.ListHotelsHandler(*server))
+		admin.GET("/hotels/:id/edit", ssr.EditHotelHandler(*server))
+		admin.DELETE("/hotels/:id", ssr.DeleteHotelHandler(*server))
 	}
 	server.Router = router
 }

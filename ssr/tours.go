@@ -41,7 +41,7 @@ func CreateTourHandler(server internal.Server) gin.HandlerFunc {
 			return
 		}
 
-		internal.Render(ctx, http.StatusBadRequest,
+		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/tours/"+strconv.Itoa(tour.ID)+"/edit",
 				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_detail"),
