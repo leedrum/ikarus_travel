@@ -34,6 +34,13 @@ func InitRoutes(server *internal.Server) {
 		admin.GET("/hotels", ssr.ListHotelsHandler(*server))
 		admin.GET("/hotels/:id/edit", ssr.EditHotelHandler(*server))
 		admin.DELETE("/hotels/:id", ssr.DeleteHotelHandler(*server))
+
+		admin.GET("/reservations/new", ssr.NewReservationHandler(*server))
+		admin.POST("/reservations", ssr.CreateReservationHandler(*server))
+		admin.GET("/reservations", ssr.ListReservationsHandler(*server))
+		admin.GET("/reservations/:id/edit", ssr.EditReservationHandler(*server))
+		admin.PUT("/reservations/:id", ssr.UpdateReservationHandler(*server))
+		admin.DELETE("/reservations/:id", ssr.DeleteReservationHandler(*server))
 	}
 	server.Router = router
 }
