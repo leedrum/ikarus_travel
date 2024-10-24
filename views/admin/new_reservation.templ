@@ -1,0 +1,216 @@
+package admin
+
+import (
+  "strconv"
+  "github.com/leedrum/ikarus_travel/views/components"
+  "github.com/leedrum/ikarus_travel/locales"
+  "github.com/leedrum/ikarus_travel/model"
+	"github.com/leedrum/ikarus_travel/internal"
+)
+
+templ NewReservation(hotels []model.Hotel, tours []model.Tour) {
+  @components.AdminLayout("Create New Reservation") {
+    <div class="w-full">
+      <div class="mx-auto max-w-xl my-2" id="error-area"></div>
+      <div class="mx-auto max-w-xl my-2" id="success-area"></div>
+      <form class="mx-auto max-w-xl" hx-post="/admin/reservations" hx-ext="response-targets" hx-target-error="#error-area" hx-swap="innerHTML scroll:top" hx-on="htmx:responseError;">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-6">
+          <div class="sm:col-span-2">
+            <label for="customer_name" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "customer_name") }</label>
+            <div class="mt-2.5">
+              <input type="text" name="customer_name" id="customer_name" autocomplete="customer_name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="phone" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "phone") }</label>
+            <div class="mt-2.5">
+              <div class="relative">
+                <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 19 18">
+                    <path d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z"/>
+                  </svg>
+                </div>
+                <input type="text" name="phone" id="phone" autocomplete="off" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" pattern="[0-9\+\-]{*}" placeholder="+8412345678910" />
+              </div>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="hotel_id" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "hotel") }</label>
+            <div class="mt-2.5">
+              <select id="hotel_id" name="hotel_id" class="select-2 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                for _, hotel := range hotels {
+                  <option value={strconv.Itoa(hotel.ID)}>{hotel.Name}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="room_note" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "room_note") }</label>
+            <div class="mt-2.5">
+              <textarea name="room_note" id="room_note" autocomplete="room_note" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="tour_id" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "tour") }</label>
+            <div class="mt-2.5">
+              <select id="tour_id" name="tour_id" class="select-2 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                for _, tour := range tours {
+                  <option value={strconv.Itoa(tour.ID)}>{tour.Name}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="adults" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "adults") }</label>
+            <div class="mt-2.5">
+              <input type="number" id="adults" name="adults" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="adults_price" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "adults_price") }</label>
+            <div class="mt-2.5">
+              <input type="number" id="adults_price" name="adults_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="children" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "children") }</label>
+            <div class="mt-2.5">
+              <input type="number" id="children" name="children" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="children_price" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "children_price") }</label>
+            <div class="mt-2.5">
+              <input type="number" id="children_price" name="children_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="departure_date" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "departure_date") }</label>
+            <div class="mt-2.5">
+              <div class="relative max-w-sm">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                  </svg>
+                </div>
+                <input datepicker id="departure_date" name="departure_date" type="text" autocomplete="off"
+                  datepicker-format="dd/mm/yyyy" datepicker-autohide="true" placeholder="dd/mm/yyyy"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              </div>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="pickup_time" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "pickup_time") }</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <input type="time" id="pickup_time" name="pickup_time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="00:00" max="23:00" value="00:00" />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="start_time" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "start_time") }</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <input type="time" id="start_time" name="start_time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="00:00" max="23:00" value="00:00" />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="end_time" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "end_time") }</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <input type="time" id="end_time" name="end_time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="00:00" max="23:00" value="00:00" />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="status" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "status") }</label>
+            <div class="mt-2.5">
+              <select id="status" name="status" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option value={strconv.Itoa(model.ReservationStatusInActive)}>{ locales.Translate(ctx, "in_active") }</option>
+                <option value={strconv.Itoa(model.ReservationStatusActive)}>{ locales.Translate(ctx, "active") }</option>
+                <option value={strconv.Itoa(model.ReservationStatusCanceled)}>{ locales.Translate(ctx, "canceled") }</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="status" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "payment_status") }</label>
+            <div class="mt-2.5">
+              <select id="payment_status" name="payment_status" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option value={strconv.Itoa(model.PaymentStatusUnpaid)}>{ locales.Translate(ctx, "unpaid") }</option>
+                <option value={strconv.Itoa(model.PaymentStatusPaid)}>{ locales.Translate(ctx, "paid") }</option>
+                <option value={strconv.Itoa(model.PaymentStatusLater)}>{ locales.Translate(ctx, "paid_later") }</option>
+                <option value={strconv.Itoa(model.PaymentStatusDeposit)}>{ locales.Translate(ctx, "deposit") }</option>
+                <option value={strconv.Itoa(model.PaymentStatusToGuide)}>{ locales.Translate(ctx, "pay_to_guide") }</option>
+                <option value={strconv.Itoa(model.PaymentOther)}>{ locales.Translate(ctx, "other") }</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="total_paid" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "total_paid") }</label>
+            <div class="mt-2.5">
+              <input type="number" id="total_paid" name="total_paid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" />
+            </div>
+          </div>
+
+
+          <div class="sm:col-span-2">
+            <label for="payment_note" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "payment_note") }</label>
+            <div class="mt-2.5">
+              <textarea name="payment_note" id="payment_note" autocomplete="payment_note" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="currency_paid" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "currency_paid") }</label>
+            <div class="mt-2.5">
+              <select id="currency_paid" name="currency_paid" class="select-2 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                for _, code := range internal.CurrenciesCodes {
+                  <option value={ code }>{ code }</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="note" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "note") }</label>
+            <div class="mt-2.5">
+              <textarea name="note" id="note" autocomplete="note" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="mt-10">
+          <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            { locales.Translate(ctx, "create") }
+          </button>
+        </div>
+      </form>
+    </div>
+    @components.CustomSelect2()
+  }
+}

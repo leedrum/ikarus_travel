@@ -5,6 +5,7 @@ go 1.23.0
 require (
 	github.com/a-h/templ v0.2.778
 	github.com/gin-gonic/gin v1.10.0
+	github.com/google/uuid v1.4.0
 	github.com/invopop/ctxi18n v0.8.1
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/viper v1.19.0

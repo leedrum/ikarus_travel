@@ -41,3 +41,15 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 func EditHotel(hotel model.Hotel) templ.Component {
 	return admin_pages.EditHotel(hotel)
 }
+
+func NewReservation(hotels []model.Hotel, tours []model.Tour) templ.Component {
+	return admin_pages.NewReservation(hotels, tours)
+}
+
+func ListReservations(reservations []model.Reservation) templ.Component {
+	return admin_pages.ListReservations(reservations)
+}
+
+func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours []model.Tour) templ.Component {
+	return admin_pages.EditReservation(reservation, hotels, tours)
+}
