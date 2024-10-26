@@ -1,10 +1,8 @@
 package ssr
 
 import (
-	"context"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
@@ -15,17 +13,12 @@ import (
 
 func NewUserHandler(_ internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
 		internal.Render(ctx, http.StatusOK, views.NewUser(model.User{}))
 	}
 }
 
 func CreateUserHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		user := model.User{}
 		err := ctx.ShouldBind(&user)
 		if err != nil {
@@ -36,11 +29,23 @@ func CreateUserHandler(server internal.Server) gin.HandlerFunc {
 
 		password := ctx.PostForm("password")
 		if password == "" {
-			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "password_cannot_be_empty")))
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.password_cannot_be_empty")),
+			)
 			return
 		}
 
-		// TODO: Hash password
+		user.HashPassword, err = internal.HashPassword(password)
+		if err != nil {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.password_hash_error")),
+			)
+			return
+		}
 
 		result := server.DB.Create(&user)
 		if result.Error != nil {
@@ -48,15 +53,19 @@ func CreateUserHandler(server internal.Server) gin.HandlerFunc {
 			return
 		}
 
-		internal.Render(ctx, http.StatusBadRequest, views.CreateSuccessUser(user))
+		internal.Render(
+			ctx,
+			http.StatusOK,
+			views.SuccessWithLink(
+				"/admin/users",
+				"User created",
+			),
+		)
 	}
 }
 
 func ListUsersHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		var users []model.User
 		server.DB.Find(&users)
 
@@ -66,9 +75,6 @@ func ListUsersHandler(server internal.Server) gin.HandlerFunc {
 
 func DeleteUserHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var user model.User
 		server.DB.First(&user, id)

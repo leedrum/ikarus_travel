@@ -1,10 +1,8 @@
 package ssr
 
 import (
-	"context"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
@@ -16,17 +14,12 @@ import (
 
 func NewTourHandler(_ internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
 		internal.Render(ctx, http.StatusOK, views.NewTour())
 	}
 }
 
 func CreateTourHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		tour := model.Tour{}
 		err := ctx.ShouldBind(&tour)
 		if err != nil {
@@ -52,9 +45,6 @@ func CreateTourHandler(server internal.Server) gin.HandlerFunc {
 
 func ListToursHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		var tours []model.Tour
 		server.DB.Find(&tours)
 
@@ -64,9 +54,6 @@ func ListToursHandler(server internal.Server) gin.HandlerFunc {
 
 func DeleteTourHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var tour model.Tour
 		server.DB.First(&tour, id)
@@ -78,9 +65,6 @@ func DeleteTourHandler(server internal.Server) gin.HandlerFunc {
 
 func EditTourHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var tour model.Tour
 		server.DB.First(&tour, id)
@@ -91,9 +75,6 @@ func EditTourHandler(server internal.Server) gin.HandlerFunc {
 
 func UpdateTourHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var tour model.Tour
 		server.DB.First(&tour, id)
