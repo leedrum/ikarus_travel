@@ -18,8 +18,8 @@ templ NewUser(user model.User) {
     <div class="w-full">
       <div class="mx-auto max-w-xl my-2" id="error-area"></div>
       <div class="mx-auto max-w-xl my-2" id="success-area"></div>
-      <form class="mx-auto max-w-xl" hx-post="/admin/users" hx-ext="response-targets" hx-target-error="#error-area" hx-swap="innerHTML scroll:top" hx-on="htmx:responseError; htmx:redirectCreateUser }">
-        <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+      <form class="mx-auto max-w-xl" hx-post="/admin/users" hx-ext="response-targets" hx-target-error="#error-area" hx-swap="innerHTML scroll:top" hx-on="htmx:responseError;">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-1">
           <div class="sm:col-span-2">
             <label for="full_name" class="block text-sm font-semibold leading-6 text-gray-900">Full Name</label>
             <div class="mt-2.5">
