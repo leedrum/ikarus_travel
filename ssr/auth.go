@@ -22,6 +22,7 @@ func LogoutHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Clear()
 	session.Save()
+	c.Writer.Header().Set("HX-Redirect", "/login")
 	c.Redirect(http.StatusTemporaryRedirect, "/login")
 }
 

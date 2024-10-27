@@ -53,3 +53,11 @@ func ListReservations(reservations []model.Reservation) templ.Component {
 func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours []model.Tour) templ.Component {
 	return admin_pages.EditReservation(reservation, hotels, tours)
 }
+
+func AdminDashboard() templ.Component {
+	return admin_pages.AdminDashboard()
+}
+
+func LoginForm() templ.Component {
+	return admin_pages.LoginForm()
+}
