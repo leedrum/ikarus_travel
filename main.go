@@ -28,6 +28,7 @@ func main() {
 
 	internal.InitI18n()
 	server.DB = internal.InitDB(server.Config)
+	server.InitSessionStore()
 	route.InitRoutes(server)
 	server.Router.Run(server.Config.HTTPServerAddress)
 }

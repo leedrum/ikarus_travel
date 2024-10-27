@@ -1,10 +1,8 @@
 package ssr
 
 import (
-	"context"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
@@ -16,17 +14,12 @@ import (
 
 func NewHotelHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
 		internal.Render(ctx, http.StatusOK, views.NewHotel())
 	}
 }
 
 func CreateHotelHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		var hotel model.Hotel
 		err := ctx.ShouldBind(&hotel)
 		if err != nil {
@@ -46,9 +39,6 @@ func CreateHotelHandler(server internal.Server) gin.HandlerFunc {
 
 func ListHotelsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		var hotels []model.Hotel
 		server.DB.Find(&hotels)
 
@@ -58,9 +48,6 @@ func ListHotelsHandler(server internal.Server) gin.HandlerFunc {
 
 func DeleteHotelHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var hotel model.Hotel
 		server.DB.First(&hotel, id)
@@ -72,9 +59,6 @@ func DeleteHotelHandler(server internal.Server) gin.HandlerFunc {
 
 func EditHotelHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var hotel model.Hotel
 		server.DB.First(&hotel, id)

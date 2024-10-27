@@ -1,46 +1,74 @@
 package route
 
 import (
-	"time"
-
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/middlewares"
 	"github.com/leedrum/ikarus_travel/ssr"
 )
 
-const AppTimeout = time.Second * 10
-
 func InitRoutes(server *internal.Server) {
 	router := gin.Default()
+	router.Use(middlewares.CORSMiddleware())
+	router.Use(middlewares.TimeoutMiddleware())
 	router.Use(middlewares.I18nMiddleware())
+	router.Use(sessions.Sessions("auth-token", *server.SessionStore))
+
+	// Auth
+	router.GET("/login", ssr.LoginFormHandler(*server))
+	router.POST("/login", ssr.LoginHandler(*server))
+	router.GET("/logout", ssr.LogoutHandler)
+	router.Use(middlewares.AuthRequired(*server))
 	router.GET("/", ssr.IndexHandler())
+
+	reservationRoutes := router.Group("/reservations")
+	{
+		reservationRoutes.GET("/", ssr.ListReservationsHandler(*server))
+		reservationRoutes.GET("/new", ssr.NewReservationHandler(*server))
+		reservationRoutes.POST("/", ssr.CreateReservationHandler(*server))
+	}
+
 	admin := router.Group("/admin")
 	{
-		admin.GET("/users/new", ssr.NewUserHandler(*server))
-		admin.POST("/users", ssr.CreateUserHandler(*server))
-		admin.GET("/users", ssr.ListUsersHandler(*server))
-		admin.DELETE("/users/:id", ssr.DeleteUserHandler(*server))
+		admin.Use(middlewares.AdminRequired())
+		admin.GET("/", ssr.AdminIndexHandler())
+		adminUserRoutes := admin.Group("/users")
+		{
+			adminUserRoutes.GET("/", ssr.ListUsersHandler(*server))
+			adminUserRoutes.GET("/new", ssr.NewUserHandler(*server))
+			adminUserRoutes.POST("/", ssr.CreateUserHandler(*server))
+			adminUserRoutes.DELETE("/:id", ssr.DeleteUserHandler(*server))
+		}
 
-		admin.GET("/tours/new", ssr.NewTourHandler(*server))
-		admin.POST("/tours", ssr.CreateTourHandler(*server))
-		admin.GET("/tours", ssr.ListToursHandler(*server))
-		admin.GET("/tours/:id/edit", ssr.EditTourHandler(*server))
-		admin.PUT("/tours/:id", ssr.UpdateTourHandler(*server))
-		admin.DELETE("/tours/:id", ssr.DeleteTourHandler(*server))
+		tourRoutes := admin.Group("/tours")
+		{
+			tourRoutes.GET("/", ssr.ListToursHandler(*server))
+			tourRoutes.GET("/new", ssr.NewTourHandler(*server))
+			tourRoutes.POST("/", ssr.CreateTourHandler(*server))
+			tourRoutes.GET("/:id/edit", ssr.EditTourHandler(*server))
+			tourRoutes.PUT("/:id", ssr.UpdateTourHandler(*server))
+			tourRoutes.DELETE("/:id", ssr.DeleteTourHandler(*server))
+		}
 
-		admin.GET("/hotels/new", ssr.NewHotelHandler(*server))
-		admin.POST("/hotels", ssr.CreateHotelHandler(*server))
-		admin.GET("/hotels", ssr.ListHotelsHandler(*server))
-		admin.GET("/hotels/:id/edit", ssr.EditHotelHandler(*server))
-		admin.DELETE("/hotels/:id", ssr.DeleteHotelHandler(*server))
+		hotelRoutes := admin.Group("/hotels")
+		{
+			hotelRoutes.GET("/", ssr.ListHotelsHandler(*server))
+			hotelRoutes.GET("/new", ssr.NewHotelHandler(*server))
+			hotelRoutes.POST("/", ssr.CreateHotelHandler(*server))
+			hotelRoutes.GET("/:id/edit", ssr.EditHotelHandler(*server))
+			hotelRoutes.DELETE("/:id", ssr.DeleteHotelHandler(*server))
+		}
 
-		admin.GET("/reservations/new", ssr.NewReservationHandler(*server))
-		admin.POST("/reservations", ssr.CreateReservationHandler(*server))
-		admin.GET("/reservations", ssr.ListReservationsHandler(*server))
-		admin.GET("/reservations/:id/edit", ssr.EditReservationHandler(*server))
-		admin.PUT("/reservations/:id", ssr.UpdateReservationHandler(*server))
-		admin.DELETE("/reservations/:id", ssr.DeleteReservationHandler(*server))
+		reservationAdminRoutes := admin.Group("/reservations")
+		{
+			reservationAdminRoutes.GET("/", ssr.ListReservationsHandler(*server))
+			reservationAdminRoutes.GET("/new", ssr.NewReservationHandler(*server))
+			reservationAdminRoutes.POST("/", ssr.CreateReservationHandler(*server))
+			reservationAdminRoutes.GET("/:id/edit", ssr.EditReservationHandler(*server))
+			reservationAdminRoutes.PUT("/:id", ssr.UpdateReservationHandler(*server))
+			reservationAdminRoutes.DELETE("/:id", ssr.DeleteReservationHandler(*server))
+		}
 	}
 	server.Router = router
 }

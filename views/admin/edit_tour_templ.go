@@ -61,7 +61,7 @@ func EditTour(tour model.Tour) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-ext=\"response-targets\" hx-target-error=\"#error-area\" hx-swap=\"innerHTML scroll:top\" hx-on=\"htmx:responseError; htmx:redirectCreateUser }\"><div class=\"grid grid-cols-1 gap-x-8 gap-y-6\"><div class=\"sm:col-span-2\"><label for=\"name\" class=\"block text-sm font-semibold leading-6 text-gray-900\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-ext=\"response-targets\" hx-target-error=\"#error-area\" hx-swap=\"innerHTML scroll:top\" hx-on=\"htmx:responseError;\"><div class=\"grid grid-cols-1 gap-x-8 gap-y-6\"><div class=\"sm:col-span-2\"><label for=\"name\" class=\"block text-sm font-semibold leading-6 text-gray-900\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -54,3 +54,11 @@ en:
   reservation: "Reservation"
   logout: "Logout"
   login: "Login"
+  forgot_password: "Forgot password - Contact Admin"
+  errors:
+    request_timeout: "Request timeout"
+    password_hash_error: "Password hash error"
+    password_cannot_be_empty: "Password cannot be empty"
+  list_reservation: "List reservation"
+  create_reservation: "Create reservation"
+  my_reservation: "My reservation"

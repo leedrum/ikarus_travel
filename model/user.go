@@ -6,6 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
+const (
+	RoleAdmin = "admin"
+	RoleUser  = "user"
+)
+
 type User struct {
 	gorm.Model
 	ID                 int       `gorm:"primaryKey" json:"id"`
@@ -17,4 +22,12 @@ type User struct {
 	Role               string    `json:"role" form:"role"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
+}
+
+func (u *User) IsAdmin() bool {
+	return u.Role == RoleAdmin
+}
+
+func (u *User) IsUser() bool {
+	return u.Role == RoleUser
 }

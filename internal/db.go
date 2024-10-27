@@ -10,7 +10,8 @@ import (
 
 func InitDB(config Config) *gorm.DB {
 	db, err := gorm.Open(postgres.Open(config.DBSource), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger:      logger.Default.LogMode(logger.Info),
+		PrepareStmt: true,
 	})
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot connect to database")

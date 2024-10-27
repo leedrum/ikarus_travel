@@ -1,10 +1,8 @@
 package ssr
 
 import (
-	"context"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
@@ -16,9 +14,6 @@ import (
 
 func NewReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		hotels := []model.Hotel{}
 		tours := []model.Tour{}
 		server.DB.Table("hotels").Select("id, name").Find(&hotels)
@@ -29,9 +24,6 @@ func NewReservationHandler(server internal.Server) gin.HandlerFunc {
 
 func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		var reservation model.Reservation
 		if err := ctx.ShouldBind(&reservation); err != nil {
 			log.Error().Err(err).Msg("Error binding data")
@@ -55,9 +47,6 @@ func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 
 func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		var reservations []model.Reservation
 		server.DB.Find(&reservations)
 		internal.Render(ctx, http.StatusOK, views.ListReservations(reservations))
@@ -66,9 +55,6 @@ func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 
 func EditReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id, err := strconv.Atoi(ctx.Param("id"))
 		hotels := []model.Hotel{}
 		tours := []model.Tour{}
@@ -88,9 +74,6 @@ func EditReservationHandler(server internal.Server) gin.HandlerFunc {
 
 func DeleteReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id := ctx.Param("id")
 		var reservation model.Reservation
 		server.DB.First(&reservation, id)
@@ -102,9 +85,6 @@ func DeleteReservationHandler(server internal.Server) gin.HandlerFunc {
 
 func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		_, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-
 		id, err := strconv.Atoi(ctx.Param("id"))
 		hotels := []model.Hotel{}
 		tours := []model.Tour{}

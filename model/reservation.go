@@ -25,12 +25,12 @@ type Reservation struct {
 	gorm.Model
 	ID            int    `gorm:"primaryKey" json:"id"`
 	Code          string `json:"code" form:"code" gorm:"unique;index"`
-	TourID        int    `json:"tour_id" form:"tour_id"` // TourID is the foreign key
-	Tour          Tour   `json:"tour" form:"tour"`
+	TourID        int    `json:"tour_id" form:"tour_id" gorm:""` // TourID is the foreign key
+	Tour          Tour   `json:"tour" form:"tour" gorm:"references:ID"`
 	CustomerName  string `json:"customer_name" form:"customer_name"`
 	Phone         string `json:"phone" form:"phone"`
 	HotelID       int    `json:"hotel_id" form:"hotel_id"` // HotelID is the foreign key
-	Hotel         Hotel  `json:"hotel" form:"hotel"`
+	Hotel         Hotel  `json:"hotel" form:"hotel" gorm:"references:ID"`
 	RoomNote      string `json:"room_note" form:"room_note"`
 	Adults        int    `json:"adults" form:"adults"`
 	AdultsPrice   int    `json:"adults_price" form:"adults_price"`
@@ -46,6 +46,8 @@ type Reservation struct {
 	CurrencyPaid  string `json:"currency_paid" form:"currency_paid"`
 	PaymentNote   string `json:"payment_note" form:"payment_note"`
 	Note          string `json:"note" form:"note"`
+	UserID        int    `json:"user_id" form:"user_id"` // UserID is the foreign key
+	User          User   `gorm:"references:ID" json:"user" form:"user"`
 }
 
 func (u *Reservation) BeforeCreate(tx *gorm.DB) (err error) {
@@ -53,6 +55,10 @@ func (u *Reservation) BeforeCreate(tx *gorm.DB) (err error) {
 	u.Code = "RES-" + uid.String()
 	fmt.Println("BeforeCreate", u.Code)
 	return nil
+}
+
+func (r *Reservation) GetStatus() string {
+	return r.GetStatusStr(0)
 }
 
 func (r *Reservation) GetStatusStr(n int) string {
