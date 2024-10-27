@@ -17,6 +17,7 @@ func (server *Server) InitSessionStore() {
 		HttpOnly: true,
 		Secure:   secureSession, // Set to true if your website is served over HTTPS
 		SameSite: http.SameSiteLaxMode,
+		MaxAge:   int(server.Config.SessionsExpiration),
 	})
 
 	server.SessionStore = &store
