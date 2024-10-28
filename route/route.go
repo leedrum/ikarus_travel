@@ -27,6 +27,7 @@ func InitRoutes(server *internal.Server) {
 		reservationRoutes.GET("/", ssr.ListReservationsHandler(*server))
 		reservationRoutes.GET("/new", ssr.NewReservationHandler(*server))
 		reservationRoutes.POST("/", ssr.CreateReservationHandler(*server))
+		reservationRoutes.GET("/mine", ssr.MineReservationsHandler(*server))
 	}
 
 	admin := router.Group("/admin")

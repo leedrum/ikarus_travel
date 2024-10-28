@@ -61,3 +61,7 @@ func AdminDashboard() templ.Component {
 func LoginForm() templ.Component {
 	return admin_pages.LoginForm()
 }
+
+func ListGroupReservations() templ.Component {
+	return admin_pages.ListGroupReservations()
+}

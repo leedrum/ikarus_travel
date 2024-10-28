@@ -10,6 +10,7 @@ import (
 	"github.com/leedrum/ikarus_travel/model"
 	"github.com/leedrum/ikarus_travel/views"
 	"github.com/rs/zerolog/log"
+	"gorm.io/gorm"
 )
 
 func NewReservationHandler(server internal.Server) gin.HandlerFunc {
@@ -51,6 +52,31 @@ func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 
 		reservations = mappingData(reservations, users, hotels, tours)
 		internal.Render(ctx, http.StatusOK, views.ListReservations(reservations))
+	}
+}
+
+type MineReservationsResponse struct {
+	Reservations  []model.Reservation
+	TotalAdults   int
+	TotalChildren int
+	Tour          model.Tour
+	Hotel         model.Hotel
+	DepartureDate string
+}
+
+func MineReservationsHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var reservations []model.Reservation
+		user := ctx.MustGet("user").(model.User)
+		tx := server.DB.Where("user_id = ?", user.ID)
+		tx = searchConditions(ctx, tx)
+		tx.Find(&reservations)
+		hotels := getHotels(server)
+		tours := getTours(server)
+		users := getUers(server)
+
+		reservations = mappingData(reservations, users, hotels, tours)
+		internal.Render(ctx, http.StatusOK, views.ListGroupReservations())
 	}
 }
 
@@ -165,4 +191,14 @@ func mappingTour(reservation model.Reservation, tours []model.Tour) model.Reserv
 		}
 	}
 	return reservation
+}
+
+func searchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
+	if ctx.Query("start_date") != "" {
+		tx = tx.Where("start_date >= ?", ctx.Query("start_date"))
+	}
+	if ctx.Query("departure_date") != "" {
+		tx = tx.Where("departure_date <= ?", ctx.Query("departure_date"))
+	}
+	return tx
 }
