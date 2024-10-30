@@ -27,7 +27,6 @@ func InitRoutes(server *internal.Server) {
 		reservationRoutes.GET("/", ssr.ListReservationsHandler(*server))
 		reservationRoutes.GET("/new", ssr.NewReservationHandler(*server))
 		reservationRoutes.POST("/", ssr.CreateReservationHandler(*server))
-		reservationRoutes.GET("/mine", ssr.MineReservationsHandler(*server))
 	}
 
 	admin := router.Group("/admin")
@@ -69,6 +68,7 @@ func InitRoutes(server *internal.Server) {
 			reservationAdminRoutes.GET("/:id/edit", ssr.EditReservationHandler(*server))
 			reservationAdminRoutes.PUT("/:id", ssr.UpdateReservationHandler(*server))
 			reservationAdminRoutes.DELETE("/:id", ssr.DeleteReservationHandler(*server))
+			reservationAdminRoutes.GET("/mine", ssr.MineReservationsHandler(*server))
 		}
 	}
 	server.Router = router

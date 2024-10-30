@@ -49,7 +49,7 @@ func ListGroupReservations() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full\"><div class=\"mx-auto w-full\"><div class=\"w-full my-2\" id=\"error-area\"></div><div class=\"w-full my-2\" id=\"success-area\"></div><div class=\"form-wrap\"><form class=\"mx-auto max-w-xl mb-4\" hx-get=\"/reservations/mine\" hx-ext=\"response-targets\" hx-target-error=\"#error-area\" hx-swap=\"innerHTML scroll:top\" hx-on=\"htmx:responseError;\"><div class=\"sm:col-span-2\"><label for=\"departure_date\" class=\"block text-sm font-semibold leading-6 text-gray-900\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full\"><div class=\"mx-auto w-full\"><div class=\"w-full my-2\" id=\"error-area\"></div><div class=\"w-full my-2\" id=\"success-area\"></div><div class=\"form-wrap\"><form class=\"max-w-xl mb-4\" hx-get=\"/reservations/mine\" hx-ext=\"response-targets\" hx-target-error=\"#error-area\" hx-swap=\"innerHTML scroll:top\" hx-on=\"htmx:responseError;\"><div class=\"sm:col-span-2\"><label for=\"departure_date\" class=\"block text-sm font-semibold leading-6 text-gray-900\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
