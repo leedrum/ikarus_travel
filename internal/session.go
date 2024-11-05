@@ -8,7 +8,7 @@ import (
 )
 
 func (server *Server) InitSessionStore() {
-	store := cookie.NewStore([]byte("secret"))
+	store := cookie.NewStore([]byte(server.Config.SessionName))
 	secureSession := false
 	if server.Config.Environment == "production" {
 		secureSession = true

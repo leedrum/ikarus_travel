@@ -16,6 +16,7 @@ type Config struct {
 	AccessTokenDuration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	RefreshTokenDuration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
 	SessionsExpiration   int64         `mapstructure:"SESSIONS_EXPIRATION"`
+	SessionName          string        `mapstructure:"SESSION_NAME"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
