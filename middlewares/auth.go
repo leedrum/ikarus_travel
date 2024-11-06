@@ -15,8 +15,8 @@ import (
 func AuthRequired(server internal.Server) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		userID := session.Get("userID").(int)
-		if userID == 0 {
+		userID := session.Get("userID")
+		if userID == nil {
 			log.Info().Msg("userID is nil")
 			c.Redirect(http.StatusTemporaryRedirect, "/login")
 			c.Abort()
@@ -34,13 +34,13 @@ func AuthRequired(server internal.Server) gin.HandlerFunc {
 			}
 		}
 
-		expired_time := session.Get("userID_expired_time").(int64)
-		if expired_time == 0 {
+		expired_time := session.Get("userID_expired_time")
+		if expired_time == nil {
 			log.Info().Msg("expired_time is nil")
 			c.Redirect(http.StatusTemporaryRedirect, "/login")
 			c.Abort()
 			return
-		} else if expired_time < (time.Now().Unix() - 84600) {
+		} else if expired_time.(int64) < (time.Now().Unix() - 84600) {
 			session.Clear()
 			session.Save()
 			log.Info().Msg("eexpired_time is less than 84600")
