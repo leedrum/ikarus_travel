@@ -3,9 +3,16 @@ package components
 import (
     "time"
 	"strconv"
+    "github.com/leedrum/ikarus_travel/views/icons"
 )
 
 templ Footer() {
+    <div id="spinner" class="htmx-indicator" class="flex items-center justify-center border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 w-full h-full fixed -translate-y-1/2 -translate-x-1/2 top-2/4 left-1/2">
+        <div role="status">
+            @icons.Loading()
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <footer class="p-1 bottom-0 bg-gray-100 w-full border-t">
         <div class="rounded-lg p-4 text-xs italic text-gray-700 text-center">
             &copy; Ikarus Travel { strconv.Itoa(time.Now().Year()) }
