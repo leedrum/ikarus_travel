@@ -5,7 +5,6 @@ import (
   "github.com/leedrum/ikarus_travel/views/components"
   "github.com/leedrum/ikarus_travel/locales"
   "github.com/leedrum/ikarus_travel/model"
-	"github.com/leedrum/ikarus_travel/internal"
 )
 
 templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours []model.Tour) {
@@ -13,7 +12,14 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
     <div class="w-full">
       <div class="mx-auto max-w-xl my-2" id="error-area"></div>
       <div class="mx-auto max-w-xl my-2" id="success-area"></div>
-      <form class="mx-auto max-w-xl" hx-put={ "/admin/reservations/" + strconv.Itoa(reservation.ID) } hx-ext="response-targets" hx-target-error="#error-area" hx-swap="innerHTML scroll:top" hx-on="htmx:responseError;">
+      <form class="mx-auto max-w-xl"
+        hx-put={ "/admin/reservations/" + strconv.Itoa(reservation.ID) }
+        hx-ext="response-targets"
+        hx-target-error="#error-area"
+        hx-swap="innerHTML scroll:top"
+        hx-on="htmx:responseError;"
+        hx-indicator="#spinner"
+        >
         <div class="grid grid-cols-1 gap-x-8 gap-y-6">
           <div class="sm:col-span-2">
             <label for="customer_name" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "customer_name") }</label>
@@ -33,9 +39,9 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
                     <path d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z"/>
                   </svg>
                 </div>
-                <input type="text" name="phone" id="phone" autocomplete="off"
+                <input type="tel" name="phone" id="phone" autocomplete="off"
                   value={reservation.Phone}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" pattern="[0-9\+\-]{*}" placeholder="+8412345678910" />
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="+8412345678910" />
               </div>
             </div>
           </div>
@@ -45,11 +51,12 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
             <div class="mt-2.5">
               <select id="hotel_id" name="hotel_id" class="select-2 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 for _, hotel := range hotels {
-                  if strconv.Itoa(hotel.ID) == strconv.Itoa(reservation.HotelID) {
-                    <option value={strconv.Itoa(hotel.ID)} selected>{hotel.Name}</option>
-                  } else {
-                    <option value={strconv.Itoa(hotel.ID)} >{hotel.Name}</option>
-                  }
+                  <option value={strconv.Itoa(hotel.ID)}
+                    if strconv.Itoa(hotel.ID) == strconv.Itoa(reservation.HotelID) {
+                      selected
+                    }>
+                    {hotel.Name}
+                  </option>
                 }
               </select>
             </div>
@@ -68,7 +75,12 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
             <div class="mt-2.5">
               <select id="tour_id" name="tour_id" class="select-2 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 for _, tour := range tours {
-                  <option value={strconv.Itoa(tour.ID)} selected={internal.CompareSelectOptionValue(strconv.Itoa(reservation.TourID), strconv.Itoa(tour.ID))}>{ tour.Name }</option>
+                  <option value={strconv.Itoa(tour.ID)}
+                    if (strconv.Itoa(reservation.TourItem.TourID) == strconv.Itoa(tour.ID)) {
+                      selected
+                    }>
+                    { tour.Name }
+                  </option>
                 }
               </select>
             </div>
@@ -166,9 +178,21 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
             <label for="status" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "status") }</label>
             <div class="mt-2.5">
               <select id="status" name="status" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <option value={strconv.Itoa(model.ReservationStatusInActive)} selected={internal.CompareSelectOptionValue(reservation.GetStatusStr(0), strconv.Itoa(model.ReservationStatusInActive))}>{ locales.Translate(ctx, "in_active") }</option>
-                <option value={strconv.Itoa(model.ReservationStatusActive)} selected={internal.CompareSelectOptionValue(reservation.GetStatusStr(0), strconv.Itoa(model.ReservationStatusActive))}>{ locales.Translate(ctx, "active") }</option>
-                <option value={strconv.Itoa(model.ReservationStatusCanceled)} selected={internal.CompareSelectOptionValue(reservation.GetStatusStr(0), strconv.Itoa(model.ReservationStatusCanceled))}>{ locales.Translate(ctx, "canceled") }</option>
+                <option value={strconv.Itoa(model.ReservationStatusInActive)}
+                  if (reservation.Status == model.ReservationStatusInActive) {
+                    selected
+                  }
+                  >{ locales.Translate(ctx, "in_active") }</option>
+                <option value={strconv.Itoa(model.ReservationStatusActive)}
+                  if (reservation.Status == model.ReservationStatusActive) {
+                    selected
+                  }
+                  >{ locales.Translate(ctx, "active") }</option>
+                <option value={strconv.Itoa(model.ReservationStatusCanceled)}
+                  if (reservation.Status == model.ReservationStatusCanceled) {
+                    selected
+                  }
+                  >{ locales.Translate(ctx, "canceled") }</option>
               </select>
             </div>
           </div>
@@ -178,64 +202,79 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
             <div class="mt-2.5">
               <select id="payment_status" name="payment_status" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option value={strconv.Itoa(model.PaymentStatusUnpaid)}
-                  selected={internal.CompareSelectOptionValue(reservation.GetPaymentStatusStr(0), strconv.Itoa(model.PaymentStatusUnpaid))}>
+                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusUnpaid)) {
+                    selected
+                  }>
                   { locales.Translate(ctx, "unpaid") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusPaid)}
-                  selected={internal.CompareSelectOptionValue(reservation.GetPaymentStatusStr(0), strconv.Itoa(model.PaymentStatusPaid))}>
+                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusPaid)) {
+                    selected
+                  }>
                   { locales.Translate(ctx, "paid") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusLater)}
-                  selected={internal.CompareSelectOptionValue(reservation.GetPaymentStatusStr(0), strconv.Itoa(model.PaymentStatusLater))}>
+                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusLater)) {
+                    selected
+                  }>
                   { locales.Translate(ctx, "paid_later") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusDeposit)}
-                  selected={internal.CompareSelectOptionValue(reservation.GetPaymentStatusStr(0), strconv.Itoa(model.PaymentStatusDeposit))}>
+                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusDeposit)) {
+                    selected
+                  }>
                   { locales.Translate(ctx, "deposit") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusToGuide)}
-                  selected={internal.CompareSelectOptionValue(reservation.GetPaymentStatusStr(0), strconv.Itoa(model.PaymentStatusToGuide))}>
+                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusToGuide)) {
+                    selected
+                  }>
                   { locales.Translate(ctx, "pay_to_guide") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentOther)}
-                  selected={internal.CompareSelectOptionValue(reservation.GetPaymentStatusStr(0), strconv.Itoa(model.PaymentOther))}>
+                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentOther)) {
+                    selected
+                  }>
                   { locales.Translate(ctx, "other") }
                 </option>
               </select>
             </div>
           </div>
 
-          <div class="sm:col-span-2">
-            <label for="total_paid" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "total_paid") }</label>
-            <div class="mt-2.5">
-              <input type="number" id="total_paid" name="total_paid" value={ strconv.Itoa(reservation.TotalPaid) }
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" />
-            </div>
-          </div>
+          // <div class="sm:col-span-2">
+          //   <label for="total_paid" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "total_paid") }</label>
+          //   <div class="mt-2.5">
+          //     <input type="number" id="total_paid" name="total_paid" value={ strconv.Itoa(reservation.TotalPaid) }
+          //       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" />
+          //   </div>
+          // </div>
 
 
-          <div class="sm:col-span-2">
-            <label for="payment_note" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "payment_note") }</label>
-            <div class="mt-2.5">
-              <textarea name="payment_note" id="payment_note" autocomplete="payment_note"
-                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                { reservation.PaymentNote }
-              </textarea>
-            </div>
-          </div>
+          // <div class="sm:col-span-2">
+          //   <label for="payment_note" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "payment_note") }</label>
+          //   <div class="mt-2.5">
+          //     <textarea name="payment_note" id="payment_note" autocomplete="payment_note"
+          //       class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          //       { reservation.PaymentNote }
+          //     </textarea>
+          //   </div>
+          // </div>
 
-          <div class="sm:col-span-2">
-            <label for="currency_paid" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "currency_paid") }</label>
-            <div class="mt-2.5">
-              <select id="currency_paid" name="currency_paid" class="select-2 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                for _, code := range internal.CurrenciesCodes {
-                  <option value={ code } selected={internal.CompareSelectOptionValue(reservation.CurrencyPaid, code)}>
-                    { code }
-                  </option>
-                }
-              </select>
-            </div>
-          </div>
+          // <div class="sm:col-span-2">
+          //   <label for="currency_paid" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "currency_paid") }</label>
+          //   <div class="mt-2.5">
+          //     <select id="currency_paid" name="currency_paid" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          //       for _, code := range internal.CurrenciesCodes {
+          //         <option value={ code }
+          //           if (reservation.CurrencyPaid == code) {
+          //             selected
+          //           }>
+          //           { code }
+          //         </option>
+          //       }
+          //     </select>
+          //   </div>
+          // </div>
 
           <div class="sm:col-span-2">
             <label for="note" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "note") }</label>

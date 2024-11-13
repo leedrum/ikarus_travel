@@ -1,15 +1,17 @@
 package admin
 
 import (
-  // "strconv"
+  "strconv"
 
-  // "github.com/leedrum/ikarus_travel/model"
   "github.com/leedrum/ikarus_travel/views/components"
+  "github.com/leedrum/ikarus_travel/views/icons"
   "github.com/leedrum/ikarus_travel/locales"
+  "github.com/leedrum/ikarus_travel/model"
+	"github.com/leedrum/ikarus_travel/service_object"
 )
 
-templ ListGroupReservations() {
-  @components.AdminLayout("List Hotels"){
+templ ListGroupReservations(dropDownReservations []service_object.DropDownReservations) {
+  @components.AdminLayout("List Group Reservations"){
     <div class="w-full">
       <div class="mx-auto w-full">
         <div class="w-full my-2" id="error-area"></div>
@@ -32,56 +34,155 @@ templ ListGroupReservations() {
                 </div>
               </div>
             </div>
-
           </form>
         </div>
         <div id="accordion-collapse" data-accordion="collapse">
+          for index, dropDownReservation := range dropDownReservations {
+            <h2 id={ "accordion-collapse-heading-" + strconv.Itoa(index) }>
+              <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target={ "#accordion-collapse-body-" + strconv.Itoa(index) } aria-expanded="true" aria-controls={ "accordion-collapse-body-" + strconv.Itoa(index) }>
+                <div class="flex">
+                  <div class="flex items center mr-2">
+                    <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                    </svg>
+                    <span class="text-gray-900 dark:text-gray-100 mr-1">{ dropDownReservation.DepartureDate }</span>
+                  </div>
 
-          <h2 id="accordion-collapse-heading-1">
-            <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
-              <div class="flex">
-                <div class="flex items-center mr-2">
-                  <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                  </svg>
-                  <span class="text-gray-900 dark:text-gray-100 mr-1">13-12-1997</span>
+                  <div class="flex items-center mr-3">
+                    @icons.Adult()
+                    <span class="text-gray-900 dark:text-gray-100 ml-1">{ strconv.Itoa(dropDownReservation.TotalAdults) }</span>
+                  </div>
+
+                  <div class="flex items-center mr-3">
+                    @icons.Children()
+                    <span class="text-gray-900 dark:text-gray-100 ml-1">{ strconv.Itoa(dropDownReservation.TotalChildren) }</span>
+                  </div>
+
+                  <div class="flex items-center mr-3">
+                    <span>{ dropDownReservation.Tour.Name }</span>
+                  </div>
+
                 </div>
-
-                <div class="flex items-center mr-3">
-                  <svg class="w-5 h-5" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4ZM6 13C3.79086 13 2 14.7909 2 17V18C2 19.1046 2.89543 20 4 20H12C13.1046 20 14 19.1046 14 18V17C14 14.7909 12.2091 13 10 13H6Z" fill="#383838"/>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.2508 10.9055C13.7282 10.0447 14 9.05408 14 8C14 6.94592 13.7282 5.95532 13.2508 5.09447C13.9676 4.41606 14.9352 4 16 4C18.2091 4 20 5.79086 20 8C20 10.2091 18.2091 12 16 12C14.9352 12 13.9676 11.5839 13.2508 10.9055ZM15.4649 20C15.8052 19.4117 16 18.7286 16 18V17C16 15.4633 15.4223 14.0615 14.4722 13H18C20.2091 13 22 14.7909 22 17V18C22 19.1046 21.1046 20 20 20H15.4649Z" fill="#383838"/>
-                  </svg>
-                  <span class="text-gray-900 dark:text-gray-100 ml-1">2</span>
+                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div id={"accordion-collapse-body-" + strconv.Itoa(index) } class="hidden" aria-labelledby={"accordion-collapse-heading-" + strconv.Itoa(index)}>
+              <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                      <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <input type="text" id={"table-search-" + strconv.Itoa(index)}
+                      class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Search for items">
+                  </div>
                 </div>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                  <table class="w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-auto" style="min-width: 1600px;">
+                    <thead class="z-10 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 rounded-s-lg">
+                      <th scope="col" class="px-2 py-3"></th>
+                      <th scope="col" class="px-2 py-3">@icons.Hotel()</th>
+                      <th scope="col" class="px-2 py-3">@icons.Room()</th>
+                      <th scope="col" class="px-2 py-3">@icons.Human()</th>
+                      <th scope="col" class="px-2 py-3">@icons.Adult()</th>
+                      <th scope="col" class="px-2 py-3">@icons.Children()</th>
+                      <th scope="col" class="px-2 py-3">@icons.TelePhone()</th>
+                      <th scope="col" class="px-2 py-3">
+                        <div class="flex justify-center">@icons.Clock()</div>
+                      </th>
+                      <th scope="col" class="px-2 py-3">@icons.Money()</th>
+                      <th scope="col" class="px-2 py-3">
+                        <div class="flex">@icons.Money()+</div>
+                      </th>
+                      // <th scope="col" class="px-2 py-3">
+                      //   <div class="flex">@icons.Money()-</div> // balance
+                      // </th>
+                      <th scope="col" class="px-2 py-3">
+                        <div class="flex">@icons.Money()&#8734;</div>
+                      </th>
+                      <th scope="col" class="px-2 py-3">@icons.User()</th>
+                      <th scope="col" class="px-2 py-3">@icons.Code()</th>
+                      <th scope="col" class="px-2 py-3">@icons.Calendar()</th>
+                      <th scope="col" class="px-2 py-3">
+                        <div class="flex justify-center">@icons.Action()</div>
+                      </th>
+                    </thead>
+                    <tbody>
+                    for index, reservation := range dropDownReservation.Reservations {
+                      <tr class="bg-white dark:bg-gray-800">
+                        <td class="px-2 py-4">{ strconv.Itoa(index+1) }</td>
+                        <td class="px-2 py-4">{ reservation.Hotel.Name }</td>
+                        <td class="px-2 py-4">{ reservation.RoomNote }</td>
+                        <td class="px-2 py-4">{ reservation.CustomerName }</td>
+                        <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults) }</td>
+                        <td class="px-2 py-4">{ strconv.Itoa(reservation.Children) }</td>
+                        <td class="px-2 py-4">{ reservation.Phone }</td>
+                        <td class="px-2 py-4">
+                          <div class="text-center">
+                            <div>{ reservation.PickupTime }</div>
+                            <div>
+                              <span>{ reservation.StartTime }</span> ~ <span>{ reservation.EndTime }</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults*reservation.AdultsPrice + reservation.Children*reservation.ChildrenPrice) } USD</td>
+                        <td class="px-2 py-4">{ strconv.Itoa(reservation.GetPaidUSD()) } USD</td>
+                        // <td class="px-2 py-4">{ strconv.Itoa(reservation.GetBlance()) }</td> // balance
+                        <td class="px-2 py-4">{ strconv.Itoa(reservation.GetPaidVND()) } VND</td>
+                        <td class="px-2 py-4">{ reservation.User.FullName }</td>
+                        <td class="px-2 py-4">{ strconv.Itoa(reservation.ID) }</td>
+                        <td class="px-2 py-4">{ reservation.CreatedAt.Local().Format("02-01-2006") }</td>
 
-                <div class="flex items-center mr-3">
-                  <svg class="w-4 h-4" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4ZM6 13C3.79086 13 2 14.7909 2 17V18C2 19.1046 2.89543 20 4 20H12C13.1046 20 14 19.1046 14 18V17C14 14.7909 12.2091 13 10 13H6Z" fill="#383838"/>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.2508 10.9055C13.7282 10.0447 14 9.05408 14 8C14 6.94592 13.7282 5.95532 13.2508 5.09447C13.9676 4.41606 14.9352 4 16 4C18.2091 4 20 5.79086 20 8C20 10.2091 18.2091 12 16 12C14.9352 12 13.9676 11.5839 13.2508 10.9055ZM15.4649 20C15.8052 19.4117 16 18.7286 16 18V17C16 15.4633 15.4223 14.0615 14.4722 13H18C20.2091 13 22 14.7909 22 17V18C22 19.1046 21.1046 20 20 20H15.4649Z" fill="#383838"/>
-                  </svg>
-                  <span class="text-gray-900 dark:text-gray-100 ml-1">2</span>
+                        <td class="px-2 py-4">
+                          <div class="flex justify-center">
+                            if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("userID").(int) {
+                              @icons.EditWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/edit")
+                              @icons.DeleteWithForm("/admin/reservations/" + strconv.Itoa(reservation.ID))
+                              @icons.Copy(strconv.Itoa(reservation.ID), reservation.Code)
+                            }
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                      <tr class="font-semibold text-gray-900 dark:text-white">
+                        <th scope="row" colspan="4" class="px-2 py-3 text-base">Total</th>
+                        <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalAdults) }</td>
+                        <td class="px-2 py-3" colspan="4">{ strconv.Itoa(dropDownReservation.TotalChildren) }</td>
+                        <td class="px-2 py-3"></td>
+                      </tr>
+                    </tfoot>
+                  </table>
                 </div>
-
-                <div class="flex items-center mr-3">
-                  <span>Tour abcxyz</span> - <span>Hotel abcxyz</span>
-                </div>
-
               </div>
-              <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-              </svg>
-            </button>
-          </h2>
-          <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
-            <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-              <p class="mb-2 text-gray-500 dark:text-gray-400">Chỗ này cần hiển thị những thông tin gì ?</p>
             </div>
-          </div>
-
+          }
         </div>
 
       </div>
     </div>
+    <style>
+      table thead {
+        top: 0;
+        position: sticky;
+      }
+      table thead td:nth-child(4) {
+        position: sticky;
+        left: 0;
+      }
+      table tbody tr,
+      table thead tr {
+        position: relative;
+      }
+      table tbody td:nth-child(4) {
+        position: sticky;
+        background-color: white;
+        left: 0;
+      }
+    </style>
   }
 }

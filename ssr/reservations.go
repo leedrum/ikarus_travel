@@ -1,6 +1,7 @@
 package ssr
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -8,9 +9,9 @@ import (
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/locales"
 	"github.com/leedrum/ikarus_travel/model"
+	"github.com/leedrum/ikarus_travel/service_object"
 	"github.com/leedrum/ikarus_travel/views"
 	"github.com/rs/zerolog/log"
-	"gorm.io/gorm"
 )
 
 func NewReservationHandler(server internal.Server) gin.HandlerFunc {
@@ -23,20 +24,53 @@ func NewReservationHandler(server internal.Server) gin.HandlerFunc {
 
 func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// time.Sleep(9 * time.Second)
+		tourItem := model.TourItem{}
+		// check if exist tour item
+		server.DB.Where(
+			"tour_id = ?", ctx.PostForm("tour_id"),
+		).Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
+
+		if tourItem.ID == 0 {
+
+			if err := ctx.ShouldBind(&tourItem); err != nil {
+				log.Error().Err(err).Msg("Error binding data")
+				hotels := getHotels(server)
+				tours := getTours(server)
+				internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
+			}
+
+			server.DB.Create(&tourItem)
+			if tourItem.ID == 0 {
+				internal.Render(ctx, http.StatusBadRequest, views.Error("Error creating tour item"))
+				return
+			}
+		}
+
 		var reservation model.Reservation
+		reservation.TourItemID = tourItem.ID
 		if err := ctx.ShouldBind(&reservation); err != nil {
 			log.Error().Err(err).Msg("Error binding data")
 			hotels := getHotels(server)
 			tours := getTours(server)
 			internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
 		}
+		reservation.UserID = ctx.MustGet("user").(model.User).ID
 
-		server.DB.Create(&reservation)
+		result := server.DB.Create(&reservation)
+		if result.Error != nil {
+			internal.Render(ctx, http.StatusBadRequest, views.Error(result.Error.Error()))
+			return
+		}
 
+		infoRes := fmt.Sprintf(
+			"Reservation created with ID: %d \n code: %s, go to detail",
+			reservation.ID, reservation.Code,
+		)
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/reservations/"+strconv.Itoa(reservation.ID)+"/edit",
-				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_detail"),
+				infoRes,
 			),
 		)
 	}
@@ -47,36 +81,25 @@ func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 		var reservations []model.Reservation
 		server.DB.Find(&reservations)
 		hotels := getHotels(server)
-		tours := getTours(server)
 		users := getUers(server)
 
-		reservations = mappingData(reservations, users, hotels, tours)
+		reservations = mappingData(reservations, users, hotels)
 		internal.Render(ctx, http.StatusOK, views.ListReservations(reservations))
 	}
-}
-
-type MineReservationsResponse struct {
-	Reservations  []model.Reservation
-	TotalAdults   int
-	TotalChildren int
-	Tour          model.Tour
-	Hotel         model.Hotel
-	DepartureDate string
 }
 
 func MineReservationsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var reservations []model.Reservation
-		user := ctx.MustGet("user").(model.User)
-		tx := server.DB.Where("user_id = ?", user.ID)
-		tx = searchConditions(ctx, tx)
+		tx := server.DB
 		tx.Find(&reservations)
 		hotels := getHotels(server)
-		tours := getTours(server)
 		users := getUers(server)
+		reservations = mappingData(reservations, users, hotels)
 
-		reservations = mappingData(reservations, users, hotels, tours)
-		internal.Render(ctx, http.StatusOK, views.ListGroupReservations())
+		dropDownReservations := service_object.LoadDropDownReservations(ctx, server)
+		reservations = mappingData(reservations, users, hotels)
+		internal.Render(ctx, http.StatusOK, views.ListGroupReservations(dropDownReservations))
 	}
 }
 
@@ -153,15 +176,14 @@ func getTours(server internal.Server) []model.Tour {
 
 func getUers(server internal.Server) []model.User {
 	users := []model.User{}
-	server.DB.Table("users").Select("id, username").Find(&users)
+	server.DB.Table("users").Select("id, username, full_name").Find(&users)
 	return users
 }
 
-func mappingData(reservations []model.Reservation, users []model.User, hotels []model.Hotel, tours []model.Tour) []model.Reservation {
+func mappingData(reservations []model.Reservation, users []model.User, hotels []model.Hotel) []model.Reservation {
 	for i := range reservations {
 		reservations[i] = mappingUser(reservations[i], users)
 		reservations[i] = mappingHotel(reservations[i], hotels)
-		reservations[i] = mappingTour(reservations[i], tours)
 	}
 	return reservations
 }
@@ -182,23 +204,4 @@ func mappingHotel(reservation model.Reservation, hotels []model.Hotel) model.Res
 		}
 	}
 	return reservation
-}
-
-func mappingTour(reservation model.Reservation, tours []model.Tour) model.Reservation {
-	for i := range tours {
-		if reservation.TourID == tours[i].ID {
-			reservation.Tour = tours[i]
-		}
-	}
-	return reservation
-}
-
-func searchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
-	if ctx.Query("start_date") != "" {
-		tx = tx.Where("start_date >= ?", ctx.Query("start_date"))
-	}
-	if ctx.Query("departure_date") != "" {
-		tx = tx.Where("departure_date <= ?", ctx.Query("departure_date"))
-	}
-	return tx
 }

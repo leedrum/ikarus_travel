@@ -3,6 +3,7 @@ package views
 import (
 	"github.com/a-h/templ"
 	"github.com/leedrum/ikarus_travel/model"
+	"github.com/leedrum/ikarus_travel/service_object"
 	admin_pages "github.com/leedrum/ikarus_travel/views/admin"
 )
 
@@ -62,6 +63,6 @@ func LoginForm() templ.Component {
 	return admin_pages.LoginForm()
 }
 
-func ListGroupReservations() templ.Component {
-	return admin_pages.ListGroupReservations()
+func ListGroupReservations(dropDownReservations []service_object.DropDownReservations) templ.Component {
+	return admin_pages.ListGroupReservations(dropDownReservations)
 }

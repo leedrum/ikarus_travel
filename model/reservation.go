@@ -1,64 +1,65 @@
 package model
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 const (
-	ReservationStatusInActive = 0
-	ReservationStatusActive   = 1
-	ReservationStatusCanceled = 2
+	ReservationStatusInActive = iota
+	ReservationStatusActive
+	ReservationStatusCanceled
+)
 
+const (
 	// Payment status
-	PaymentStatusUnpaid  = 0
-	PaymentStatusPaid    = 1 // paid 100%
-	PaymentStatusDeposit = 2 // paid deposit
-	PaymentStatusLater   = 3 // pay later
-	PaymentStatusToGuide = 4 // pay to guide
-	PaymentOther         = 5 // other
+	PaymentStatusUnpaid  = iota // unpaid
+	PaymentStatusPaid           // paid 100%
+	PaymentStatusDeposit        // paid deposit
+	PaymentStatusLater          // pay later
+	PaymentStatusToGuide        // pay to guide
+	PaymentOther                // other
 )
 
 type Reservation struct {
 	gorm.Model
-	ID            int    `gorm:"primaryKey" json:"id"`
-	Code          string `json:"code" form:"code" gorm:"unique;index"`
-	TourID        int    `json:"tour_id" form:"tour_id" gorm:""` // TourID is the foreign key
-	Tour          Tour   `json:"tour" form:"tour" gorm:"references:ID"`
-	CustomerName  string `json:"customer_name" form:"customer_name"`
-	Phone         string `json:"phone" form:"phone"`
-	HotelID       int    `json:"hotel_id" form:"hotel_id"` // HotelID is the foreign key
-	Hotel         Hotel  `json:"hotel" form:"hotel" gorm:"references:ID"`
-	RoomNote      string `json:"room_note" form:"room_note"`
-	Adults        int    `json:"adults" form:"adults"`
-	AdultsPrice   int    `json:"adults_price" form:"adults_price"`
-	Children      int    `json:"children" form:"children"`
-	ChildrenPrice int    `json:"children_price" form:"children_price"`
-	DepartureDate string `json:"departure_date" form:"departure_date"`
-	PickupTime    string `json:"pickup_time" form:"pickup_time"`
-	StartTime     string `json:"start_time" form:"start_time"`
-	EndTime       string `json:"end_time" form:"end_time"`
-	Status        int    `json:"status" form:"status" gorm:"default:1"`
-	PaymentStatus int    `json:"payment_status" form:"payment_status" gorm:"default:0"`
-	TotalPaid     int    `json:"total_paid" form:"total_paid" gorm:"default:0"`
-	CurrencyPaid  string `json:"currency_paid" form:"currency_paid"`
-	PaymentNote   string `json:"payment_note" form:"payment_note"`
-	Note          string `json:"note" form:"note"`
-	UserID        int    `json:"user_id" form:"user_id"` // UserID is the foreign key
-	User          User   `gorm:"references:ID" json:"user" form:"user"`
+	ID            int       `gorm:"primaryKey" json:"id"`
+	Code          string    `json:"code" form:"code" gorm:"unique;index"`
+	CustomerName  string    `json:"customer_name" form:"customer_name"`
+	Phone         string    `json:"phone" form:"phone"`
+	HotelID       int       `json:"hotel_id" form:"hotel_id"` // HotelID is the foreign key
+	RoomNote      string    `json:"room_note" form:"room_note"`
+	Adults        int       `json:"adults" form:"adults"`
+	AdultsPrice   int       `json:"adults_price" form:"adults_price"`
+	Children      int       `json:"children" form:"children"`
+	ChildrenPrice int       `json:"children_price" form:"children_price"`
+	DepartureDate string    `json:"departure_date" form:"departure_date"`
+	PickupTime    string    `json:"pickup_time" form:"pickup_time"`
+	StartTime     string    `json:"start_time" form:"start_time"`
+	EndTime       string    `json:"end_time" form:"end_time"`
+	Status        int       `json:"status" form:"status" gorm:"default:1"`
+	PaymentStatus int       `json:"payment_status" form:"payment_status" gorm:"default:0"`
+	Note          string    `json:"note" form:"note"`
+	UserID        int       `json:"user_id" form:"user_id"` // UserID is the foreign key
+	User          User      `gorm:"references:ID" json:"user" form:"user"`
+	TourItemID    int       `json:"tour_item_id" form:"tour_item_id"`
+	Payments      []Payment `json:"payment" gorm:"foreignKey:ReservationID"`
+	TourItem      TourItem  `json:"tour_item" gorm:"references:ID"`
+	Hotel         Hotel     `json:"hotel" gorm:"references:ID"`
 }
 
 func (u *Reservation) BeforeCreate(tx *gorm.DB) (err error) {
 	uid := uuid.New()
 	u.Code = "RES-" + uid.String()
-	fmt.Println("BeforeCreate", u.Code)
 	return nil
 }
 
+func (r *Reservation) TotalPrice() int {
+	return r.Adults*r.AdultsPrice + r.Children*r.ChildrenPrice
+}
+
 func (r *Reservation) GetStatus() string {
-	return r.GetStatusStr(0)
+	return r.GetStatusStr(r.Status)
 }
 
 func (r *Reservation) GetStatusStr(n int) string {
@@ -101,4 +102,24 @@ func (r *Reservation) GetPaymentStatusStr(n int) string {
 	default:
 		return "Unknown"
 	}
+}
+
+func (r *Reservation) GetPaidUSD() int {
+	total := 0
+	for _, payment := range r.Payments {
+		if payment.Currency == CurrencyUSD {
+			total += payment.Amount
+		}
+	}
+	return total
+}
+
+func (r *Reservation) GetPaidVND() int {
+	total := 0
+	for _, payment := range r.Payments {
+		if payment.Currency == CurrencyVND {
+			total += payment.Amount
+		}
+	}
+	return total
 }
