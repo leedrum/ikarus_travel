@@ -1,0 +1,25 @@
+package admin
+
+import (
+  "strconv"
+
+  "github.com/leedrum/ikarus_travel/model"
+  "github.com/leedrum/ikarus_travel/views/icons"
+  "github.com/leedrum/ikarus_travel/views/components"
+)
+
+templ PartialPayments(reservation model.Reservation) {
+  <div class="w-full">
+      <div class="reload-btn">
+        <button class="btn primary flex items-center" hx-get={ "/reservations/" + strconv.Itoa(reservation.ID) + "/payments" }
+                hx-target="#list-payments"
+                hx-swap="innerHTML"
+                hx-indicator="#spinner"
+                >
+          @icons.Money()
+          @components.IndicatorLoading()
+        </button>
+        <div id="list-payments"></div>
+      </div>
+    </div>
+}

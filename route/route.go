@@ -25,6 +25,12 @@ func InitRoutes(server *internal.Server) {
 	{
 		routerResUser.GET("/mine", ssr.MineReservationsHandler(*server))
 		routerResUser.GET("/new", ssr.NewReservationHandler(*server))
+		routerResPayment := routerResUser.Group("/:res_id/payments")
+		{
+			routerResPayment.GET("/", ssr.ListResPaymentHandler(*server))
+			routerResPayment.POST("/", ssr.CreateResPaymentHandler(*server))
+			routerResPayment.DELETE("/:id", ssr.DeleteResPaymentHandler(*server))
+		}
 	}
 
 	adminRoute := router.Group("/admin")

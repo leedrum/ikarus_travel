@@ -66,3 +66,7 @@ func LoginForm() templ.Component {
 func ListGroupReservations(dropDownReservations []service_object.DropDownReservations) templ.Component {
 	return admin_pages.ListGroupReservations(dropDownReservations)
 }
+
+func ListPayments(payments []model.Payment) templ.Component {
+	return admin_pages.ListPayments(payments)
+}

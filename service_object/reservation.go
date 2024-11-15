@@ -26,8 +26,7 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	var tours []model.Tour
 
 	tx := server.DB
-	txReservation := searchConditions(ctx, tx)
-	tx.Find(&tourItems)
+	searchConditions(ctx, tx).Find(&tourItems)
 	reservationIDs := []int{}
 	tourIDs := []int{}
 
@@ -41,7 +40,7 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	}
 
 	if len(reservationIDs) > 0 {
-		txReservation.Preload(
+		tx.Preload(
 			"Hotel").Preload(
 			"TourItem").Preload(
 			"Payments").Where(
@@ -65,7 +64,7 @@ func LoadReservation(reservation model.Reservation, tour model.Tour) DropDownRes
 		TourItem: model.TourItem{
 			ID:            reservation.ID,
 			TourID:        tour.ID,
-			DepartureDate: reservation.DepartureDate,
+			DepartureDate: reservation.TourItem.DepartureDate,
 		},
 		Tour:          tour,
 		Reservations:  []model.Reservation{reservation},
