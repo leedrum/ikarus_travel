@@ -57,7 +57,11 @@ templ ListPayments(payments []model.Payment) {
                   { payment.Note }
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                  <form hx-delete={ "/admin/payments/" + strconv.Itoa(payment.ID) } hx-confirm={ locales.Translate(ctx, "are_you_sure") } hx-target="closest tr" hx-swap="outerHTML swap:1s">
+                  <form
+                    hx-delete={ "/reservations/" + strconv.Itoa(payment.ReservationID) +"/payments/" + strconv.Itoa(payment.ID) }
+                    hx-confirm={ locales.Translate(ctx, "are_you_sure") }
+                    hx-target="closest tr"
+                    hx-swap="outerHTML swap:1s">
                     <button type="submit" class="text-red-600 hover:text-red-900">
                       @icons.Delete()
                     </button>

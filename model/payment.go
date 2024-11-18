@@ -26,7 +26,7 @@ type Payment struct {
 	Currency      int       `json:"currency" form:"currency"`
 	PaymentMethod int       `json:"payment_method" form:"payment_method"`
 	Note          string    `json:"note" form:"note"`
-	UserID        int       `json:"user_id" form:"user_id"`
+	UserID        int       `json:"user_id" reference:"ID"`
 	User          User      `json:"user"`
 	CreatedAt     time.Time `json:"created_at"`
 }
@@ -48,6 +48,21 @@ func (p *Payment) GetCurrency() string {
 		return "USD"
 	case CurrencyVND:
 		return "VND"
+	default:
+		return "Unknown"
+	}
+}
+
+func (p Payment) GetPaymentMethod() string {
+	switch p.PaymentMethod {
+	case PaymentMethodCash:
+		return "Cash"
+	case PaymentMethodBankTransfer:
+		return "Bank Transfer"
+	case PaymentMethodCreditCard:
+		return "Credit Card"
+	case PaymentMethodOther:
+		return "Other"
 	default:
 		return "Unknown"
 	}

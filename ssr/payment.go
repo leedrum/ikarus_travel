@@ -37,6 +37,7 @@ func CreateResPaymentHandler(server internal.Server) gin.HandlerFunc {
 			return
 		}
 		payment.ReservationID = reservationID
+		payment.UserID = ctx.MustGet("user").(model.User).ID
 		if err := server.DB.Create(&payment).Error; err != nil {
 			internal.Render(ctx, http.StatusBadRequest, views.Error("Error creating payment"))
 			return
@@ -75,7 +76,6 @@ func DeleteResPaymentHandler(server internal.Server) gin.HandlerFunc {
 			internal.Render(ctx, http.StatusBadRequest, views.Error("Error deleting payment"))
 			return
 		}
-		payments := model.GetPaymentHistory([]int{reservationID}, server.DB)
-		internal.Render(ctx, http.StatusOK, views.ListPayments(payments))
+		ctx.Data(http.StatusOK, "text/html", []byte(""))
 	}
 }

@@ -10,16 +10,18 @@ import (
 
 templ PartialPayments(reservation model.Reservation) {
   <div class="w-full">
-      <div class="reload-btn">
-        <button class="btn primary flex items-center" hx-get={ "/reservations/" + strconv.Itoa(reservation.ID) + "/payments" }
-                hx-target="#list-payments"
-                hx-swap="innerHTML"
-                hx-indicator="#spinner"
-                >
-          @icons.Money()
-          @components.IndicatorLoading()
-        </button>
-        <div id="list-payments"></div>
-      </div>
+    <div class="mx-auto max-w-xl flex reload-btn">
+      <button class="btn primary flex items-center text-white text-blue-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2"
+              hx-get={ "/reservations/" + strconv.Itoa(reservation.ID) + "/payments" }
+              hx-target="#list-payments"
+              hx-swap="innerHTML"
+              hx-indicator="#spinner"
+              >
+        @icons.Money()
+        @components.IndicatorLoading()
+      </button>
+      @AddPayment(reservation.ID)
     </div>
+    <div id="list-payments"></div>
+  </div>
 }
