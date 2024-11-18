@@ -22,8 +22,9 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
             hx-target="#wrap-list-tours"
             hx-indicator="#spinner"
             hx-replace-url="true"
+            hx-history="true"
             hx-select="#accordion-collapse"
-            hx-ext="response-"
+            hx-ext="response-target"
             hx-on::after-request="initAccordions();"
           >
             <div class="sm:col-span-2">
@@ -169,7 +170,8 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                           <th scope="row" colspan="4" class="px-2 py-3 text-base">Total</th>
                           <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalAdults) }</td>
                           <td class="px-2 py-3" colspan="4">{ strconv.Itoa(dropDownReservation.TotalChildren) }</td>
-                          <td class="px-2 py-3"></td>
+                          <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalPaidUSD) } USD</td>
+                          <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalPaidVND) } VND</td>
                         </tr>
                       </tfoot>
                     </table>

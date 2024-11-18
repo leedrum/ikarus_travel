@@ -86,15 +86,7 @@ func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 
 func MineReservationsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var reservations []model.Reservation
-		tx := server.DB
-		tx.Find(&reservations)
-		hotels := getHotels(server)
-		users := getUers(server)
-		reservations = mappingData(reservations, users, hotels)
-
 		dropDownReservations := service_object.LoadDropDownReservations(ctx, server)
-		reservations = mappingData(reservations, users, hotels)
 		internal.Render(ctx, http.StatusOK, views.ListGroupReservations(dropDownReservations))
 	}
 }
