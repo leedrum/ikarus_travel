@@ -14,10 +14,10 @@ templ ListPayments(payments []model.Payment) {
     <div><i>Empty payments</i></div>
   } else {
     <div class="w-full">
-      <div class="mx-auto w-full">
+      <div class="mx-auto w-full overflow-x-auto">
         <div class="w-full my-2" id="error-area"></div>
         <div class="w-full my-2" id="success-area"></div>
-        <table class="w-full">
+        <table class="w-full" style="min-width: 900px;">
           <thead>
             <tr>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ID</th>
