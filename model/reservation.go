@@ -41,9 +41,9 @@ type Reservation struct {
 	PaymentStatus int       `json:"payment_status" form:"payment_status" gorm:"default:0"`
 	Note          string    `json:"note" form:"note"`
 	UserID        int       `json:"user_id" form:"user_id"` // UserID is the foreign key
-	User          User      `gorm:"references:ID" json:"user" form:"user"`
 	TourItemID    int       `json:"tour_item_id" form:"tour_item_id"`
 	Payments      []Payment `json:"payment" gorm:"foreignKey:ReservationID"`
+	User          User      `json:"user" gorm:"references:ID"`
 	TourItem      TourItem  `json:"tour_item" gorm:"references:ID"`
 	Hotel         Hotel     `json:"hotel" gorm:"references:ID"`
 }

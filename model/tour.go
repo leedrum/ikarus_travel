@@ -8,10 +8,11 @@ import (
 
 type Tour struct {
 	gorm.Model
-	ID          int    `gorm:"primaryKey" json:"id"`
-	Name        string `json:"name" form:"name"`
-	Description string `json:"description" form:"description"`
-	Status      int    `json:"status" form:"status"`
+	ID          int        `gorm:"primaryKey" json:"id"`
+	Name        string     `json:"name" form:"name"`
+	Description string     `json:"description" form:"description"`
+	Status      int        `json:"status" form:"status"`
+	TourItems   []TourItem `json:"tour_items" gorm:"foreignKey:TourID"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

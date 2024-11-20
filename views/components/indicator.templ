@@ -1,0 +1,11 @@
+package components
+
+import (
+  "github.com/leedrum/ikarus_travel/views/icons"
+)
+
+templ IndicatorLoading() {
+  <span id="spinner" class="w-4 h-4 flex items-center htmx-indicator">
+    @icons.Loading()
+  </span>
+}

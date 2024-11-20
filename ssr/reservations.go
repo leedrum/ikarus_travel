@@ -24,12 +24,8 @@ func NewReservationHandler(server internal.Server) gin.HandlerFunc {
 
 func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// time.Sleep(9 * time.Second)
 		tourItem := model.TourItem{}
-		// check if exist tour item
-		server.DB.Where(
-			"tour_id = ?", ctx.PostForm("tour_id"),
-		).Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
+		server.DB.Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
 
 		if tourItem.ID == 0 {
 
@@ -90,15 +86,7 @@ func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 
 func MineReservationsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var reservations []model.Reservation
-		tx := server.DB
-		tx.Find(&reservations)
-		hotels := getHotels(server)
-		users := getUers(server)
-		reservations = mappingData(reservations, users, hotels)
-
 		dropDownReservations := service_object.LoadDropDownReservations(ctx, server)
-		reservations = mappingData(reservations, users, hotels)
 		internal.Render(ctx, http.StatusOK, views.ListGroupReservations(dropDownReservations))
 	}
 }
@@ -106,11 +94,12 @@ func MineReservationsHandler(server internal.Server) gin.HandlerFunc {
 func EditReservationHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
+
 		hotels := getHotels(server)
 		tours := getTours(server)
 
 		if err != nil {
-			internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
+			internal.Render(ctx, http.StatusBadRequest, views.Error("Invalid reservation ID"))
 			return
 		}
 
@@ -138,8 +127,27 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 		tours := getTours(server)
 
 		if err != nil {
-			internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
+			internal.Render(ctx, http.StatusBadRequest, views.Error("Invalid reservation ID"))
 			return
+		}
+
+		tourItem := model.TourItem{}
+		server.DB.Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
+
+		if tourItem.ID == 0 {
+
+			if err := ctx.ShouldBind(&tourItem); err != nil {
+				log.Error().Err(err).Msg("Error binding data")
+				hotels := getHotels(server)
+				tours := getTours(server)
+				internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
+			}
+
+			server.DB.Create(&tourItem)
+			if tourItem.ID == 0 {
+				internal.Render(ctx, http.StatusBadRequest, views.Error("Error creating tour item"))
+				return
+			}
 		}
 
 		var reservation model.Reservation
@@ -150,6 +158,7 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 			internal.Render(ctx, http.StatusBadRequest, views.EditReservation(reservation, hotels, tours))
 			return
 		}
+		reservation.TourItemID = tourItem.ID
 
 		server.DB.Save(&reservation)
 
