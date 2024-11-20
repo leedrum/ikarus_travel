@@ -621,7 +621,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusUnpaid) {
+			if reservation.PaymentStatus == model.PaymentStatusUnpaid {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -657,7 +657,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusPaid) {
+			if reservation.PaymentStatus == model.PaymentStatusPaid {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -693,7 +693,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusLater) {
+			if reservation.PaymentStatus == model.PaymentStatusLater {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -729,7 +729,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusDeposit) {
+			if reservation.PaymentStatus == model.PaymentStatusDeposit {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -765,7 +765,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusToGuide) {
+			if reservation.PaymentStatus == model.PaymentStatusToGuide {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -801,7 +801,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentOther) {
+			if reservation.PaymentStatus == model.PaymentOther {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

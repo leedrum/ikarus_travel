@@ -204,37 +204,37 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
             <div class="mt-2.5">
               <select id="payment_status" name="payment_status" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option value={strconv.Itoa(model.PaymentStatusUnpaid)}
-                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusUnpaid)) {
+                  if (reservation.PaymentStatus == model.PaymentStatusUnpaid) {
                     selected
                   }>
                   { locales.Translate(ctx, "unpaid") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusPaid)}
-                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusPaid)) {
+                  if (reservation.PaymentStatus == model.PaymentStatusPaid) {
                     selected
                   }>
                   { locales.Translate(ctx, "paid") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusLater)}
-                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusLater)) {
+                  if (reservation.PaymentStatus == model.PaymentStatusLater) {
                     selected
                   }>
                   { locales.Translate(ctx, "paid_later") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusDeposit)}
-                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusDeposit)) {
+                  if (reservation.PaymentStatus == model.PaymentStatusDeposit) {
                     selected
                   }>
                   { locales.Translate(ctx, "deposit") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentStatusToGuide)}
-                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentStatusToGuide)) {
+                  if (reservation.PaymentStatus == model.PaymentStatusToGuide) {
                     selected
                   }>
                   { locales.Translate(ctx, "pay_to_guide") }
                 </option>
                 <option value={strconv.Itoa(model.PaymentOther)}
-                  if (reservation.GetPaymentStatusStr(0) == strconv.Itoa(model.PaymentOther)) {
+                  if (reservation.PaymentStatus == model.PaymentOther) {
                     selected
                   }>
                   { locales.Translate(ctx, "other") }
