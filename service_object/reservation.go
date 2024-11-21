@@ -1,6 +1,8 @@
 package service_object
 
 import (
+	"slices"
+
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/model"
@@ -26,13 +28,18 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	var tours []model.Tour
 
 	tx := server.DB
-	searchConditions(ctx, tx).Find(&tourItems)
+	searchConditions(ctx, tx).Order("departure_date DESC").Limit(10).Find(&tourItems)
 	reservationIDs := []int{}
 	tourIDs := []int{}
 
 	for _, item := range tourItems {
-		reservationIDs = append(reservationIDs, item.ID)
-		tourIDs = append(tourIDs, item.TourID)
+		if !slices.Contains(reservationIDs, item.ID) {
+			reservationIDs = append(reservationIDs, item.ID)
+		}
+
+		if !slices.Contains(tourIDs, item.TourID) {
+			tourIDs = append(tourIDs, item.TourID)
+		}
 	}
 
 	if len(tourIDs) > 0 {
@@ -47,33 +54,28 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 			"tour_item_id IN (?)", reservationIDs).Find(&reservations)
 	}
 
-	for _, reservation := range reservations {
-		found := mappingDropDownData(dropDownReservations, reservation)
-		reservationTour := getTour(tours, reservation.TourItem)
+	for _, tourItem := range tourItems {
+		found := false
+		for _, dropDownReservation := range dropDownReservations {
+			if dropDownReservation.DepartureDate == tourItem.DepartureDate {
+				found = true
+				break
+			}
+		}
 
 		if !found {
-			dropDownReservations = append(dropDownReservations, LoadReservation(reservation, reservationTour))
+			dropDownReservations = append(dropDownReservations, DropDownReservations{
+				TourItem: tourItem,
+				Tour:     getTour(tours, tourItem),
+			})
 		}
 	}
 
-	return dropDownReservations
-}
-
-func LoadReservation(reservation model.Reservation, tour model.Tour) DropDownReservations {
-	return DropDownReservations{
-		TourItem: model.TourItem{
-			ID:            reservation.ID,
-			TourID:        tour.ID,
-			DepartureDate: reservation.TourItem.DepartureDate,
-		},
-		Tour:          tour,
-		Reservations:  []model.Reservation{reservation},
-		TotalAdults:   reservation.Adults,
-		TotalChildren: reservation.Children,
-		TotalPrice:    reservation.TotalPrice(),
-		TotalPaidUSD:  reservation.GetPaidUSD(),
-		TotalPaidVND:  reservation.GetPaidVND(),
+	for _, reservation := range reservations {
+		mappingDropDownData(dropDownReservations, reservation)
 	}
+
+	return dropDownReservations
 }
 
 func searchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {

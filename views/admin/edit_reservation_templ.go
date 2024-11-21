@@ -238,7 +238,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if strconv.Itoa(reservation.TourItem.TourID) == strconv.Itoa(tour.ID) {
+				if reservation.TourItem.TourID == tour.ID {
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" selected")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err

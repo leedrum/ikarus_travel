@@ -12,6 +12,7 @@ import (
 	"github.com/leedrum/ikarus_travel/service_object"
 	"github.com/leedrum/ikarus_travel/views"
 	"github.com/rs/zerolog/log"
+	"gorm.io/gorm/clause"
 )
 
 func NewReservationHandler(server internal.Server) gin.HandlerFunc {
@@ -51,9 +52,10 @@ func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 			tours := getTours(server)
 			internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
 		}
+		reservation.TourItemID = tourItem.ID
 		reservation.UserID = ctx.MustGet("user").(model.User).ID
 
-		result := server.DB.Create(&reservation)
+		result := server.DB.Omit(clause.Associations).Create(&reservation)
 		if result.Error != nil {
 			internal.Render(ctx, http.StatusBadRequest, views.Error(result.Error.Error()))
 			return
@@ -104,7 +106,7 @@ func EditReservationHandler(server internal.Server) gin.HandlerFunc {
 		}
 
 		var reservation model.Reservation
-		server.DB.First(&reservation, id)
+		server.DB.Preload("TourItem").First(&reservation, id)
 		internal.Render(ctx, http.StatusOK, views.EditReservation(reservation, hotels, tours))
 	}
 }
@@ -130,12 +132,16 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 			internal.Render(ctx, http.StatusBadRequest, views.Error("Invalid reservation ID"))
 			return
 		}
+		var reservation model.Reservation
+		server.DB.Where("id = ?", id).First(&reservation)
+
+		previousTourItem := model.TourItem{}
+		server.DB.Where("id = ?", reservation.TourItemID).First(&previousTourItem)
 
 		tourItem := model.TourItem{}
 		server.DB.Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
 
 		if tourItem.ID == 0 {
-
 			if err := ctx.ShouldBind(&tourItem); err != nil {
 				log.Error().Err(err).Msg("Error binding data")
 				hotels := getHotels(server)
@@ -143,15 +149,13 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 				internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
 			}
 
-			server.DB.Create(&tourItem)
+			tourItem.TourID = previousTourItem.TourID
+			server.DB.Omit(clause.Associations).Create(&tourItem)
 			if tourItem.ID == 0 {
 				internal.Render(ctx, http.StatusBadRequest, views.Error("Error creating tour item"))
 				return
 			}
 		}
-
-		var reservation model.Reservation
-		server.DB.First(&reservation, id)
 
 		err = ctx.ShouldBind(&reservation)
 		if err != nil {
@@ -159,8 +163,7 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 			return
 		}
 		reservation.TourItemID = tourItem.ID
-
-		server.DB.Save(&reservation)
+		server.DB.Omit(clause.Associations).Save(&reservation)
 
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
