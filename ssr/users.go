@@ -83,3 +83,52 @@ func DeleteUserHandler(server internal.Server) gin.HandlerFunc {
 		ctx.Data(http.StatusOK, "text/html", []byte(""))
 	}
 }
+
+func EditUserHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		var user model.User
+		server.DB.First(&user, id)
+
+		internal.Render(ctx, http.StatusOK, views.EditUser(user))
+	}
+}
+
+func UpdateUserHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		var user model.User
+		server.DB.First(&user, id)
+
+		err := ctx.ShouldBind(&user)
+		if err != nil {
+			log.Fatal(err)
+			internal.Render(ctx, http.StatusBadRequest, views.EditUser(user))
+			return
+		}
+
+		password := ctx.PostForm("password")
+		if password != "" {
+			user.HashPassword, err = internal.HashPassword(password)
+			if err != nil {
+				internal.Render(
+					ctx,
+					http.StatusBadRequest,
+					views.Error(locales.Translate(ctx, "errors.password_hash_error")),
+				)
+				return
+			}
+		}
+
+		server.DB.Save(&user)
+
+		internal.Render(
+			ctx,
+			http.StatusOK,
+			views.SuccessWithLink(
+				"/admin/users",
+				"User updated",
+			),
+		)
+	}
+}
