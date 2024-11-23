@@ -31,8 +31,11 @@ templ Success(message string) {
 templ SuccessWithLink(link string, message string) {
     @templateSuccess() {
         <a href={ templ.SafeURL(link)  } class="text-indigo-600 hover:text-indigo-900">
-            { locales.Translate(ctx, "go_to_detail") }
-            { message }
+            if message == "" {
+                { locales.Translate(ctx, "go_to_detail") }
+            } else {
+                { message }
+            }
         </a>
     }
 }

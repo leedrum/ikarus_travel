@@ -132,3 +132,90 @@ func UpdateUserHandler(server internal.Server) gin.HandlerFunc {
 		)
 	}
 }
+
+func PasswordHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if internal.UserFromContext(ctx).ID == 0 {
+			internal.Render(ctx, http.StatusUnauthorized, views.Error("Unauthorized"))
+			return
+		}
+
+		internal.Render(ctx, http.StatusOK, views.Password())
+	}
+}
+
+func ChangePasswordHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		user := internal.UserFromContext(ctx)
+		current_password := ctx.PostForm("current_password")
+		newPassword := ctx.PostForm("new_password")
+		confirmPassword := ctx.PostForm("confirm_password")
+
+		if current_password == "" {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.password_cannot_be_empty")),
+			)
+			return
+		}
+
+		if newPassword == "" {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.new_password_cannot_be_empty")),
+			)
+			return
+		}
+
+		if confirmPassword == "" {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.confirm_password_cannot_be_empty")),
+			)
+			return
+		}
+
+		if newPassword != confirmPassword {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.passwords_do_not_match")),
+			)
+			return
+		}
+
+		if !internal.CheckPasswordHash(current_password, user.HashPassword) {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.password_incorrect")),
+			)
+			return
+		}
+
+		hashedPassword, err := internal.HashPassword(newPassword)
+		if err != nil {
+			internal.Render(
+				ctx,
+				http.StatusBadRequest,
+				views.Error(locales.Translate(ctx, "errors.password_hash_error")),
+			)
+			return
+		}
+
+		user.HashPassword = hashedPassword
+		server.DB.Save(&user)
+
+		internal.Render(
+			ctx,
+			http.StatusOK,
+			views.SuccessWithLink(
+				"/admin",
+				"Password changed",
+			),
+		)
+	}
+}

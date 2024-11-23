@@ -63,3 +63,10 @@ en:
   create_reservation: "Create reservation"
   my_reservation: "My reservation"
   payments: "Payments"
+  password_reset:
+    change_password: "Change password"
+    current_password: "Current password"
+    new_password: "New password"
+    confirm_password: "Confirm password"
+    password_not_match: "Password not match"
+    password_changed: "Password changed"

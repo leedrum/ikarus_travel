@@ -5,6 +5,8 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
+	"github.com/leedrum/ikarus_travel/model"
 )
 
 func (server *Server) InitSessionStore() {
@@ -21,4 +23,8 @@ func (server *Server) InitSessionStore() {
 	})
 
 	server.SessionStore = &store
+}
+
+func UserFromContext(ctx *gin.Context) model.User {
+	return ctx.MustGet("user").(model.User)
 }
