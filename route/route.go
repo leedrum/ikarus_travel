@@ -44,7 +44,11 @@ func InitRoutes(server *internal.Server) {
 			adminUserRoutes.GET("/", ssr.ListUsersHandler(*server))
 			adminUserRoutes.GET("/new", ssr.NewUserHandler(*server))
 			adminUserRoutes.POST("/", ssr.CreateUserHandler(*server))
+			adminUserRoutes.GET("/:id", ssr.EditUserHandler(*server))
+			adminUserRoutes.PUT("/:id", ssr.UpdateUserHandler(*server))
 			adminUserRoutes.DELETE("/:id", ssr.DeleteUserHandler(*server))
+			adminUserRoutes.GET("/password", ssr.PasswordHandler())
+			adminUserRoutes.PUT("/password/change", ssr.ChangePasswordHandler(*server))
 		}
 
 		tourRoutes := adminRoute.Group("/tours")

@@ -19,6 +19,14 @@ func ListUsers(users []model.User) templ.Component {
 	return admin_pages.ListUsers(users)
 }
 
+func EditUser(user model.User) templ.Component {
+	return admin_pages.EditUser(user)
+}
+
+func Password() templ.Component {
+	return admin_pages.Password()
+}
+
 func NewTour() templ.Component {
 	return admin_pages.NewTour()
 }
