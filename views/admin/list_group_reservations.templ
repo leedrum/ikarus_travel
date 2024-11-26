@@ -160,6 +160,7 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                                 @icons.DeleteWithForm("/admin/reservations/" + strconv.Itoa(reservation.ID))
                                 @icons.Copy(strconv.Itoa(reservation.ID), reservation.Code)
                               }
+                              @icons.QRCodeWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/qr_code", strconv.Itoa(reservation.ID))
                             </div>
                           </td>
                         </tr>

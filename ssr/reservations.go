@@ -1,6 +1,7 @@
 package ssr
 
 import (
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -171,6 +172,35 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_detail"),
 			),
 		)
+	}
+}
+
+func GenerateQRCodeHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			internal.Render(ctx, http.StatusBadRequest, views.Error("Invalid reservation ID"))
+			return
+		}
+
+		var reservation model.Reservation
+		server.DB.First(&reservation, id)
+
+		qrCode := internal.IkarusQRCode{
+			Content: server.Config.HTTPServerAddress + "/reservations/" + reservation.Code + "/preview",
+			Size:    256,
+		}
+
+		qrCodeData, err := qrCode.Generate()
+		if err != nil {
+			msg_str := "Error generating QR code"
+			message := fmt.Sprintf("%s: %v", msg_str, err)
+			log.Error().Err(err).Msg(message)
+			internal.Render(ctx, http.StatusInternalServerError, views.Error(msg_str))
+			return
+		}
+		imgBase64 := base64.StdEncoding.EncodeToString(qrCodeData)
+		internal.Render(ctx, http.StatusOK, views.QRCode("data:image/png;base64, "+imgBase64))
 	}
 }
 
