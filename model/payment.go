@@ -22,7 +22,7 @@ type Payment struct {
 	gorm.Model
 	ID            int       `json:"id"`
 	ReservationID int       `json:"reservation_id" form:"reservation_id"`
-	Amount        int       `json:"amount" form:"amount"`
+	Amount        float64   `json:"amount" form:"amount"`
 	Currency      int       `json:"currency" form:"currency"`
 	PaymentMethod int       `json:"payment_method" form:"payment_method"`
 	Note          string    `json:"note" form:"note"`

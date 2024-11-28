@@ -15,9 +15,9 @@ type DropDownReservations struct {
 	Reservations  []model.Reservation
 	TotalAdults   int
 	TotalChildren int
-	TotalPrice    int
-	TotalPaidUSD  int
-	TotalPaidVND  int
+	TotalPrice    float64
+	TotalPaidUSD  float64
+	TotalPaidVND  float64
 }
 
 func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDownReservations {

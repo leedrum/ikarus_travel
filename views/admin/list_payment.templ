@@ -7,6 +7,7 @@ import (
   "github.com/leedrum/ikarus_travel/model"
   "github.com/leedrum/ikarus_travel/views/icons"
   "github.com/leedrum/ikarus_travel/locales"
+  "github.com/leedrum/ikarus_travel/internal"
 )
 
 templ ListPayments(payments []model.Payment) {
@@ -48,7 +49,7 @@ templ ListPayments(payments []model.Payment) {
                   { payment.User.FullName }
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                  { strconv.Itoa(payment.Amount) } { payment.GetCurrency() }
+                  { internal.FormatMoney(payment.Amount) } { payment.GetCurrency() }
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                   { payment.CreatedAt.Format(time.RFC1123) }

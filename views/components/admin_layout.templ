@@ -9,7 +9,7 @@ import (
 templ AdminLayout(title string) {
 	<!DOCTYPE html>
 	<html lang="en">
-		@Header()
+		@Header(title)
 		<body>
 			<main class="min-h-screen w-full">
 				<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -34,9 +34,7 @@ templ AdminLayout(title string) {
                       aria-controls="dropdown-menu-users" data-collapse-toggle="dropdown-menu-users">
                       @icons.User()
                       <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{ locales.Translate(ctx, "users") }</span>
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                      </svg>
+                      @icons.ArrowDown()
                     </button>
 
                     <ul id="dropdown-menu-users" class="hidden py-2 space-y-2">
@@ -64,21 +62,15 @@ templ AdminLayout(title string) {
                   </li>
                   <li>
                       <a href="/admin/tours" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M9 7V2.22117C8.81709 2.31517 8.64812 2.43766 8.5 2.58579L4.58579 6.5C4.43766 6.64812 4.31517 6.81709 4.22117 7H9ZM11 7V2H18C19.1046 2 20 2.89543 20 4V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V9H9C10.1046 9 11 8.10457 11 7ZM13 5C12.4477 5 12 5.44772 12 6C12 6.55228 12.4477 7 13 7H16C16.5523 7 17 6.55228 17 6C17 5.44772 16.5523 5 16 5H13ZM13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10H16C16.5523 10 17 9.55228 17 9C17 8.44772 16.5523 8 16 8H13ZM7 12C7 11.4477 7.44772 11 8 11H12H16C16.5523 11 17 11.4477 17 12V15V18C17 18.5523 16.5523 19 16 19H12H8C7.44772 19 7 18.5523 7 18V15V12ZM15 13V14H13V13H15ZM15 16H13V17H15V16ZM11 13V14H9V13H11ZM11 16H9V17H11V16Z" fill="#383838"/>
-                        </svg>
+                        @icons.Tour()
                         <span class="flex-1 ms-3 whitespace-nowrap">{ locales.Translate(ctx, "tour") }</span>
                       </a>
                   </li>
                   <li>
                     <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 14V21M5 4.97117V14.5121C10.6 8.97427 13.4 17.1522 19 14.4262V4.8853C13.4 7.61128 10.6 -0.566659 5 4.97117Z" stroke="#383838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
+                      @icons.Reservation()
                       <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{ locales.Translate(ctx, "reservation") }</span>
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                      </svg>
+                      @icons.ArrowDown()
                     </button>
                     <ul id="dropdown-example" class="hidden py-2 space-y-2">
                       if ctx.Value("user").(model.User).Role == model.RoleAdmin {
