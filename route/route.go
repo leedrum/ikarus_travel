@@ -18,6 +18,7 @@ func InitRoutes(server *internal.Server) {
 	router.GET("/login", ssr.LoginFormHandler(*server))
 	router.POST("/login", ssr.LoginHandler(*server))
 	router.GET("/logout", ssr.LogoutHandler)
+	router.GET("reservations/preview/:code", ssr.PreviewQRCodeHandler(*server))
 	router.Use(middlewares.AuthRequired(*server))
 	router.GET("/", ssr.IndexHandler())
 

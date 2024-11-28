@@ -1,0 +1,132 @@
+package guest
+
+import (
+  "strconv"
+
+  "github.com/leedrum/ikarus_travel/locales"
+	"github.com/leedrum/ikarus_travel/model"
+  "github.com/leedrum/ikarus_travel/views/components"
+  "github.com/leedrum/ikarus_travel/views/icons"
+  "github.com/leedrum/ikarus_travel/views/guest/partials"
+  "github.com/leedrum/ikarus_travel/internal"
+)
+
+templ PreviewReservation(reservation model.Reservation) {
+  @components.GuestLayout("Preview Reservation" + " - " + reservation.TourItem.Tour.Name) {
+  <div class="max-w-screen-md mx-auto my-0">
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700 bg-white sticky top-0">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center" id="default-tab"
+        data-tabs-toggle="#default-tab-content" role="tablist">
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg" id="reservation-tab" data-tabs-target="#reservation" type="button"
+            role="tab" aria-controls="reservation" aria-selected="false">
+            @icons.Reservation()
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            id="hotel-tab" data-tabs-target="#hotel" type="button" role="tab" aria-controls="hotel" aria-selected="false">
+            @icons.Hotel()
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            id="tour-tab" data-tabs-target="#tour" type="button" role="tab" aria-controls="tour" aria-selected="false">
+            @icons.Tour()
+          </button>
+        </li>
+        <li role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            id="payment-tab" data-tabs-target="#payment" type="button" role="tab" aria-controls="payment" aria-selected="false">
+            @icons.Money()
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div id="default-tab-content">
+      <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
+        <p>
+          @guest.ReservationStatus(reservation)
+        </p>
+        <dl class="max-w-full text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">ID</dt>
+            <dd class="text-lg font-semibold">{ strconv.Itoa(reservation.ID) }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "name") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.CustomerName }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "phone") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.Phone }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "departure_date") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.DepartureDate }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "pickup_time") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.PickupTime }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "start_time") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.StartTime }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "end_time") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.EndTime }</dd>
+          </div>
+          <div class="flex flex-col py-3">
+            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "note") }</dt>
+            <dd class="text-lg font-semibold">{ reservation.Note }</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "hotel") }</dt>
+          <dd class="text-lg font-semibold">{ reservation.Hotel.Name }</dd>
+        </div>
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "address") }</dt>
+          <dd class="text-lg font-semibold">{ reservation.Hotel.Address }</dd>
+        </div>
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "description") }</dt>
+          <dd class="text-lg font-semibold">{ reservation.Hotel.Description }</dd>
+        </div>
+      </div>
+      <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="tour" role="tabpanel" aria-labelledby="tour-tab">
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "tour") }</dt>
+          <dd class="text-lg font-semibold">{ reservation.Tour.Name }</dd>
+        </div>
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "description") }</dt>
+          <dd class="text-lg font-semibold">{ reservation.Tour.Description }</dd>
+        </div>
+      </div>
+      <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "total_price") }</dt>
+          <dd class="text-lg font-semibold">{ internal.FormatMoney(reservation.TotalPrice()) } USD</dd>
+        </div>
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "total_paid") }</dt>
+          <dd class="text-lg font-semibold">
+            <p>{ internal.FormatMoney(reservation.GetPaidUSD()) } USD</p>
+            <p>{ internal.FormatMoney(reservation.GetPaidVND()) } VND</p>
+          </dd>
+        </div>
+        <div class="flex flex-col py-3">
+          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "payment_status") }</dt>
+          <dd class="text-lg font-semibold">
+            @guest.ReservationStatusPayment(reservation)
+          </dd>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+}
