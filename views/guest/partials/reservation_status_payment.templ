@@ -1,0 +1,34 @@
+package guest
+
+import (
+  "github.com/leedrum/ikarus_travel/model"
+)
+
+templ ReservationStatusPayment(reservation model.Reservation) {
+  <span class={getClassResPaymentStatus(reservation.PaymentStatus)}>{ reservation.GetPaymentStatus() }</span>
+}
+
+func getClassResPaymentStatus(status int) string {
+  basedClasses := "text-xs font-medium me-2 px-2.5 py-0.5 rounded "
+  backgroundLevel := "200"
+  textLevel := "800"
+  darkBackgroundLevel := "900"
+  darkTextLevel := "300"
+  color := ""
+
+  switch status {
+  case model.PaymentStatusDeposit, model.PaymentStatusLater, model.PaymentStatusToGuide:
+    color ="yellow"
+  case model.PaymentStatusPaid:
+    color = "green"
+  case model.PaymentStatusUnpaid:
+    color = "red"
+  case model.PaymentOther:
+    color = "blue"
+  default:
+    color = "gray"
+  }
+
+  // ex: //"bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+  return basedClasses + "bg-" + color + "-" + backgroundLevel + " text-" + color + "-" + textLevel + " dark:bg-" + color + "-" + darkBackgroundLevel + " dark:text-" + color + "-" + darkTextLevel
+}

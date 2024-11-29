@@ -40,12 +40,13 @@ type Reservation struct {
 	Status        int       `json:"status" form:"status" gorm:"default:1"`
 	PaymentStatus int       `json:"payment_status" form:"payment_status" gorm:"default:0"`
 	Note          string    `json:"note" form:"note"`
-	UserID        int       `json:"user_id" form:"user_id"` // UserID is the foreign key
+	UserID        int       `json:"user_id" form:"user_id"`
 	TourItemID    int       `json:"tour_item_id"`
 	Payments      []Payment `json:"payment" gorm:"foreignKey:ReservationID"`
 	User          User      `json:"user" gorm:"references:ID"`
 	TourItem      TourItem  `json:"tour_item" gorm:"references:ID"`
 	Hotel         Hotel     `json:"hotel" gorm:"references:ID"`
+	Tour          Tour      `json:"tour" gorm:"foreignKey:TourItemID;references:ID"`
 }
 
 func (u *Reservation) BeforeCreate(tx *gorm.DB) (err error) {
@@ -54,8 +55,8 @@ func (u *Reservation) BeforeCreate(tx *gorm.DB) (err error) {
 	return nil
 }
 
-func (r *Reservation) TotalPrice() int {
-	return r.Adults*r.AdultsPrice + r.Children*r.ChildrenPrice
+func (r *Reservation) TotalPrice() float64 {
+	return float64(r.Adults*r.AdultsPrice + r.Children*r.ChildrenPrice)
 }
 
 func (r *Reservation) GetStatus() string {
@@ -78,6 +79,10 @@ func (r *Reservation) GetStatusStr(n int) string {
 	default:
 		return "Unknown"
 	}
+}
+
+func (r *Reservation) GetPaymentStatus() string {
+	return r.GetPaymentStatusStr(r.PaymentStatus)
 }
 
 func (r *Reservation) GetPaymentStatusStr(n int) string {
@@ -104,8 +109,8 @@ func (r *Reservation) GetPaymentStatusStr(n int) string {
 	}
 }
 
-func (r *Reservation) GetPaidUSD() int {
-	total := 0
+func (r *Reservation) GetPaidUSD() float64 {
+	total := 0.0
 	for _, payment := range r.Payments {
 		if payment.Currency == CurrencyUSD {
 			total += payment.Amount
@@ -114,8 +119,8 @@ func (r *Reservation) GetPaidUSD() int {
 	return total
 }
 
-func (r *Reservation) GetPaidVND() int {
-	total := 0
+func (r *Reservation) GetPaidVND() float64 {
+	total := 0.0
 	for _, payment := range r.Payments {
 		if payment.Currency == CurrencyVND {
 			total += payment.Amount

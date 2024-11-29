@@ -43,6 +43,7 @@ en:
   canceled: "Canceled"
   payment_status: "Payment status"
   total_paid: "Total paid"
+  total_price: "Total price"
   unpaid: "Unpaid"
   paid: "Paid"
   paid_later: "Paid later"

@@ -1,0 +1,14 @@
+package components
+
+templ GuestLayout(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		@Header(title)
+		<body>
+			<main class="min-h-screen w-full">
+        { children... }
+			</main>
+		</body>
+		@Footer()
+	</html>
+}

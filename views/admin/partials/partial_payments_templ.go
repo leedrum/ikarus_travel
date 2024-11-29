@@ -50,7 +50,7 @@ func PartialPayments(reservation model.Reservation) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#list-payments\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#list-payments\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner\" hx-trigger=\"click delay:0.5s once\" hx-disabled-elt=\"this\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

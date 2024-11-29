@@ -8,6 +8,7 @@ import (
   "github.com/leedrum/ikarus_travel/locales"
   "github.com/leedrum/ikarus_travel/model"
 	"github.com/leedrum/ikarus_travel/service_object"
+	"github.com/leedrum/ikarus_travel/internal"
 )
 
 templ ListGroupReservations(dropDownReservations []service_object.DropDownReservations) {
@@ -146,9 +147,9 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                             </div>
                           </td>
                           <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults*reservation.AdultsPrice + reservation.Children*reservation.ChildrenPrice) } USD</td>
-                          <td class="px-2 py-4">{ strconv.Itoa(reservation.GetPaidUSD()) } USD</td>
+                          <td class="px-2 py-4">{ internal.FormatMoney(reservation.GetPaidUSD()) } USD</td>
                           // <td class="px-2 py-4">{ strconv.Itoa(reservation.GetBlance()) }</td> // balance
-                          <td class="px-2 py-4">{ strconv.Itoa(reservation.GetPaidVND()) } VND</td>
+                          <td class="px-2 py-4">{ internal.FormatMoney(reservation.GetPaidVND()) } VND</td>
                           <td class="px-2 py-4">{ reservation.User.FullName }</td>
                           <td class="px-2 py-4">{ strconv.Itoa(reservation.ID) }</td>
                           <td class="px-2 py-4">{ reservation.CreatedAt.Local().Format("02-01-2006") }</td>
@@ -160,6 +161,7 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                                 @icons.DeleteWithForm("/admin/reservations/" + strconv.Itoa(reservation.ID))
                                 @icons.Copy(strconv.Itoa(reservation.ID), reservation.Code)
                               }
+                              @icons.QRCodeWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/qr_code", strconv.Itoa(reservation.ID))
                             </div>
                           </td>
                         </tr>
@@ -170,8 +172,8 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                           <th scope="row" colspan="4" class="px-2 py-3 text-base">Total</th>
                           <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalAdults) }</td>
                           <td class="px-2 py-3" colspan="4">{ strconv.Itoa(dropDownReservation.TotalChildren) }</td>
-                          <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalPaidUSD) } USD</td>
-                          <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalPaidVND) } VND</td>
+                          <td class="px-2 py-3">{ internal.FormatMoney(dropDownReservation.TotalPaidUSD) } USD</td>
+                          <td class="px-2 py-3">{ internal.FormatMoney(dropDownReservation.TotalPaidVND) } VND</td>
                         </tr>
                       </tfoot>
                     </table>
