@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  ikarus:
+    build: .
+    dockerfile: Dockerfile.vps
+    environment:
+      - ENVIRONMENT=$ENVIRONMENT
+      - DB_SOURCE=$DB_SOURCE
+      - HTTP_SERVER_ADDRESS=$HTTP_SERVER_ADDRESS
+      - TOKEN_SYMMETRIC_KEY=$TOKEN_SYMMETRIC_KEY
+      - DOMAIN=$DOMAIN
+    # entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
+    command: [ "./main" ]
+    labels:
+      - "traefik.http.routers.ikarus.rule=Host(`$DOMAIN`)"
+      - "traefik.http.routers.ikarus.tls=true"
+      - "traefik.http.routers.ikarus.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ikarus.loadbalancer.server.port=8080"
+    expose:
+      - "8080"
