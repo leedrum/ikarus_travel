@@ -186,8 +186,12 @@ func GenerateQRCodeHandler(server internal.Server) gin.HandlerFunc {
 		var reservation model.Reservation
 		server.DB.First(&reservation, id)
 
+		domain := server.Config.HTTPServerAddress
+		if domain == "" {
+			domain = server.Config.DomainAddress
+		}
 		qrCode := internal.IkarusQRCode{
-			Content: server.Config.HTTPServerAddress + "/reservations/preview/" + reservation.Code,
+			Content: domain + "/reservations/preview/" + reservation.Code,
 			Size:    256,
 		}
 
