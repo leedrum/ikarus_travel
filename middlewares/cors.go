@@ -3,10 +3,13 @@ package middlewares
 import (
 	"net/http"
 
+	"strings"
+
 	"github.com/gin-gonic/gin"
+	"github.com/leedrum/ikarus_travel/internal"
 )
 
-func CORSMiddleware() gin.HandlerFunc {
+func CORSMiddleware(server internal.Server) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Check if Gin is not running in production mode
 		if gin.Mode() != gin.ReleaseMode {
@@ -25,7 +28,7 @@ func CORSMiddleware() gin.HandlerFunc {
 			} else {
 				// For non-GET requests, check the referer
 				referer := c.GetHeader("Referer")
-				if referer != "https://ikarus.koyeb.app" {
+				if !strings.Contains(referer, server.Config.DomainAddress) {
 					c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Access denied"})
 					return
 				}

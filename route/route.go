@@ -10,10 +10,10 @@ import (
 
 func InitRoutes(server *internal.Server) {
 	router := gin.Default()
-	router.Use(middlewares.CORSMiddleware())
+	router.Use(sessions.Sessions(server.Config.SessionName, *server.SessionStore))
+	router.Use(middlewares.CORSMiddleware(*server))
 	router.Use(middlewares.TimeoutMiddleware())
 	router.Use(middlewares.I18nMiddleware())
-	router.Use(sessions.Sessions(server.Config.SessionName, *server.SessionStore))
 
 	router.GET("/login", ssr.LoginFormHandler(*server))
 	router.POST("/login", ssr.LoginHandler(*server))
