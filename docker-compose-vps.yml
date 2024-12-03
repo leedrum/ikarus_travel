@@ -1,8 +1,9 @@
 version: "3.9"
 services:
   ikarus:
-    build: .
-    dockerfile: Dockerfile.vps
+    build:
+      context: .
+      dockerfile: Dockerfile.vps
     environment:
       - ENVIRONMENT=$ENVIRONMENT
       - DB_SOURCE=$DB_SOURCE
@@ -11,10 +12,13 @@ services:
       - DOMAIN=$DOMAIN
     # entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
     command: [ "./main" ]
+    networks:
+      - web
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.ikarus.rule=Host(`$DOMAIN`)"
-      - "traefik.http.routers.ikarus.tls=true"
-      - "traefik.http.routers.ikarus.tls.certresolver=letsencrypt"
-      - "traefik.http.services.ikarus.loadbalancer.server.port=8080"
-    expose:
-      - "8080"
+      - "traefik.http.routers.grafana.entrypoints=web,websecure"
+      - "traefik.http.routers.grafana.tls.certresolver=myresolver"
+networks:
+  web:
+    external: true
