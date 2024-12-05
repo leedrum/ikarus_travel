@@ -23,7 +23,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /root/projects/ikarus || exit
-          git checkout main
+          git checkout .
           git pull origin main
           cd ../traefik || exit
           sudo docker-compose -f docker-compose-vps.yml down
