@@ -25,7 +25,6 @@ jobs:
           cd /root/projects/ikarus || exit
           git checkout .
           git pull origin main
-          cd ../traefik || exit
           sudo docker-compose -f docker-compose-vps.yml down
           sudo docker-compose -f docker-compose-vps.yml build --no-cache
           sudo ENVIRONMENT=release DB_SOURCE=${{ secrets.DB_SOURCE }} HTTP_SERVER_ADDRESS=${{ secrets.HTTP_SERVER_ADDRESS }} TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }} DOMAIN=${{ secrets.DOMAIN }} docker-compose -f docker-compose-vps.yml up -d
