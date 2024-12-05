@@ -24,6 +24,7 @@ jobs:
         script: |
           cd /root/projects/ikarus || exit
           git checkout .
+          git checkout main
           git pull origin main
           sudo docker-compose -f docker-compose-vps.yml down
           sudo docker-compose -f docker-compose-vps.yml build --no-cache
