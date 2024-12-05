@@ -1,4 +1,5 @@
-version: "3.9"
+version: "3"
+
 services:
   ikarus:
     build:
@@ -10,7 +11,7 @@ services:
       - HTTP_SERVER_ADDRESS=$HTTP_SERVER_ADDRESS
       - TOKEN_SYMMETRIC_KEY=$TOKEN_SYMMETRIC_KEY
       - DOMAIN=$DOMAIN
-    # entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
+    entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
     command: [ "./main" ]
     networks:
       - web
