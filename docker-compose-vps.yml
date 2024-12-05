@@ -23,3 +23,5 @@ services:
 networks:
   web:
     external: true
+  postgres-network:
+    driver: bridge
