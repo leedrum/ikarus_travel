@@ -14,24 +14,18 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Set up SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
-
-    - name: Deploy Application
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} << 'EOF'
-        # Pull latest code from GitHub
-        cd /root/projects/ikarus || exit
-        gi checkout main
-        git pull origin main
-
-        cd ../traefik || exit
-        # Build and run the Docker container
-        sudo docker-compose -f docker-compose-vps.yml down ikarus  # Stop existing containers
-        sudo docker-compose -f docker-compose-vps.yml build ikarus --no-cache  # Build without cache
-        sudo ENVIRONMENT=release DB_SOURCE=${{ secrets.DB_SOURCE }} HTTP_SERVER_ADDRESS=${{ secrets.HTTP_SERVER_ADDRESS }} TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }} DOMAIN=${{ secrets.DOMAIN }} docker-compose -f docker-compose-vps.yml up ikarus -d  # Start new container
-        EOF
+    - name: executing remote ssh commands
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd /root/projects/ikarus || exit
+          git checkout main
+          git pull origin main
+          cd ../traefik || exit
+          sudo docker-compose -f docker-compose-vps.yml down ikarus
+          sudo docker-compose -f docker-compose-vps.yml build ikarus --no-cache
+          sudo ENVIRONMENT=release DB_SOURCE=${{ secrets.DB_SOURCE }} HTTP_SERVER_ADDRESS=${{ secrets.HTTP_SERVER_ADDRESS }} TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }} DOMAIN=${{ secrets.DOMAIN }} docker-compose -f docker-compose-vps.yml up ikarus -d
