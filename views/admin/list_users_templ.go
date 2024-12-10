@@ -48,7 +48,7 @@ func ListUsers(users []model.User) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full\"><div class=\"mx-auto w-full\"><div class=\"w-full my-2\" id=\"error-area\"></div><div class=\"w-full my-2\" id=\"success-area\"></div><table class=\"w-full\"><thead><tr><th class=\"px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full overflow-x-auto\"><div class=\"mx-auto w-full\"><div class=\"w-full my-2\" id=\"error-area\"></div><div class=\"w-full my-2\" id=\"success-area\"></div><table class=\"w-full\"><thead><tr><th class=\"px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

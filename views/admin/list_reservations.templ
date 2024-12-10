@@ -12,10 +12,10 @@ import (
 templ ListReservations(reservations []model.Reservation) {
   @components.AdminLayout("List Hotels"){
     <div class="w-full">
-      <div class="mx-auto w-full">
+      <div class="mx-auto w-full overflow-x-auto">
         if ctx.Value("user").(model.User).Role == model.RoleAdmin {
           <div class="flex justify-between items-center">
-            <a href={ templ.SafeURL("/admin/hotels/new") }
+            <a href={ templ.SafeURL("/reservations/new") }
               class="btn primary flex items-center text-black-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2" type="button">
               @icons.Reservation()
               +
@@ -67,11 +67,11 @@ templ ListReservations(reservations []model.Reservation) {
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                   <a href={ templ.SafeURL("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/edit") } class="text-indigo-600 hover:text-indigo-900">
-                    { locales.Translate(ctx, "edit") }
+                    @icons.Edit()
                   </a>
                   <form hx-delete={ "/admin/reservations/" + strconv.Itoa(reservation.ID) } hx-confirm={ locales.Translate(ctx, "are_you_sure") } hx-target="closest tr" hx-swap="outerHTML swap:1s">
                     <button type="submit" class="text-red-600 hover:text-red-900">
-                      { locales.Translate(ctx, "delete") }
+                      @icons.Delete()
                     </button>
                   </form>
                 </td>

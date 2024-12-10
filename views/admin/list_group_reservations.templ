@@ -58,7 +58,7 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
             for index, dropDownReservation := range dropDownReservations {
               <h2 id={ "accordion-collapse-heading-" + strconv.Itoa(index) }>
                 <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target={ "#accordion-collapse-body-" + strconv.Itoa(index) } aria-expanded="true" aria-controls={ "accordion-collapse-body-" + strconv.Itoa(index) }>
-                  <div class="flex">
+                  <div class="flex flex-col md:flex-row">
                     <div class="flex items center mr-2">
                       <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
@@ -69,9 +69,6 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                     <div class="flex items-center mr-3">
                       @icons.Adult()
                       <span class="text-gray-900 dark:text-gray-100 ml-1">{ strconv.Itoa(dropDownReservation.TotalAdults) }</span>
-                    </div>
-
-                    <div class="flex items-center mr-3">
                       @icons.Children()
                       <span class="text-gray-900 dark:text-gray-100 ml-1">{ strconv.Itoa(dropDownReservation.TotalChildren) }</span>
                     </div>
@@ -102,9 +99,9 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                     <table class="w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-auto" style="min-width: 1600px;">
                       <thead class="z-10 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 rounded-s-lg">
                         <th scope="col" class="px-2 py-3"></th>
+                        <th scope="col" class="px-2 py-3">@icons.Human()</th>
                         <th scope="col" class="px-2 py-3">@icons.Hotel()</th>
                         <th scope="col" class="px-2 py-3">@icons.Room()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Human()</th>
                         <th scope="col" class="px-2 py-3">@icons.Adult()</th>
                         <th scope="col" class="px-2 py-3">@icons.Children()</th>
                         <th scope="col" class="px-2 py-3">@icons.TelePhone()</th>
@@ -132,9 +129,9 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                       for index, reservation := range dropDownReservation.Reservations {
                         <tr class="bg-white dark:bg-gray-800">
                           <td class="px-2 py-4">{ strconv.Itoa(index+1) }</td>
+                          <td class="px-2 py-4">{ reservation.CustomerName }</td>
                           <td class="px-2 py-4">{ reservation.Hotel.Name }</td>
                           <td class="px-2 py-4">{ reservation.RoomNote }</td>
-                          <td class="px-2 py-4">{ reservation.CustomerName }</td>
                           <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults) }</td>
                           <td class="px-2 py-4">{ strconv.Itoa(reservation.Children) }</td>
                           <td class="px-2 py-4">{ reservation.Phone }</td>
@@ -186,27 +183,27 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
 
       </div>
     </div>
-    <style>
-      table thead {
-        top: 0;
-        position: sticky;
-      }
-      table thead td:nth-child(4), table thead th:nth-child(4) {
-        position: sticky;
-        left: 0;
-      }
-      table thead th:nth-child(4) {
-        background-color: #f3f4f6;
-      }
-      table tbody tr,
-      table thead tr {
-        position: relative;
-      }
-      table tbody td:nth-child(4) {
-        position: sticky;
-        background-color: white;
-        left: 0;
-      }
-    </style>
+    // <style>
+    //   table thead {
+    //     top: 0;
+    //     position: sticky;
+    //   }
+    //   table thead td:nth-child(4), table thead th:nth-child(4) {
+    //     position: sticky;
+    //     left: 0;
+    //   }
+    //   table thead th:nth-child(4) {
+    //     background-color: #f3f4f6;
+    //   }
+    //   table tbody tr,
+    //   table thead tr {
+    //     position: relative;
+    //   }
+    //   table tbody td:nth-child(4) {
+    //     position: sticky;
+    //     background-color: white;
+    //     left: 0;
+    //   }
+    // </style>
   }
 }

@@ -117,7 +117,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex\"><div class=\"flex items center mr-2\"><svg class=\"w-4 h-4 mr-1\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" viewBox=\"0 0 20 20\"><path d=\"M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z\"></path></svg> <span class=\"text-gray-900 dark:text-gray-100 mr-1\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col md:flex-row\"><div class=\"flex items center mr-2\"><svg class=\"w-4 h-4 mr-1\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" viewBox=\"0 0 20 20\"><path d=\"M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z\"></path></svg> <span class=\"text-gray-900 dark:text-gray-100 mr-1\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -151,7 +151,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"flex items-center mr-3\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -166,7 +166,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dropDownReservation.TotalChildren))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 76, Col: 123}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 73, Col: 123}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -179,7 +179,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(dropDownReservation.Tour.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 80, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 77, Col: 59}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -192,7 +192,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs("accordion-collapse-body-" + strconv.Itoa(index))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 89, Col: 71}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 86, Col: 71}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -205,7 +205,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("accordion-collapse-heading-" + strconv.Itoa(index))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 89, Col: 157}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 86, Col: 157}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -218,13 +218,21 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs("table-search-" + strconv.Itoa(index))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 96, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 93, Col: 82}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\" placeholder=\"Search for items\"></div></div><div class=\"relative overflow-x-auto shadow-md sm:rounded-lg\"><table class=\"w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-auto\" style=\"min-width: 1600px;\"><thead class=\"z-10 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 rounded-s-lg\"><th scope=\"col\" class=\"px-2 py-3\"></th><th scope=\"col\" class=\"px-2 py-3\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Human().Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</th><th scope=\"col\" class=\"px-2 py-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -237,14 +245,6 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					return templ_7745c5c3_Err
 				}
 				templ_7745c5c3_Err = icons.Room().Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</th><th scope=\"col\" class=\"px-2 py-3\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = icons.Human().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -348,7 +348,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var14 string
 					templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(index + 1))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 134, Col: 71}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 131, Col: 71}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 					if templ_7745c5c3_Err != nil {
@@ -359,9 +359,9 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var15 string
-					templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.Hotel.Name)
+					templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.CustomerName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 135, Col: 72}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 132, Col: 74}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 					if templ_7745c5c3_Err != nil {
@@ -372,9 +372,9 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var16 string
-					templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.RoomNote)
+					templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.Hotel.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 136, Col: 70}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 133, Col: 72}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 					if templ_7745c5c3_Err != nil {
@@ -385,9 +385,9 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var17 string
-					templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.CustomerName)
+					templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.RoomNote)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 137, Col: 74}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 134, Col: 70}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 					if templ_7745c5c3_Err != nil {
@@ -400,7 +400,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var18 string
 					templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(reservation.Adults))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 138, Col: 82}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 135, Col: 82}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 					if templ_7745c5c3_Err != nil {
@@ -413,7 +413,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var19 string
 					templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(reservation.Children))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 139, Col: 84}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 136, Col: 84}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 					if templ_7745c5c3_Err != nil {
@@ -426,7 +426,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var20 string
 					templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.Phone)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 140, Col: 67}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 137, Col: 67}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 					if templ_7745c5c3_Err != nil {
@@ -439,7 +439,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var21 string
 					templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.PickupTime)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 143, Col: 59}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 140, Col: 59}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 					if templ_7745c5c3_Err != nil {
@@ -452,7 +452,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var22 string
 					templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.StartTime)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 145, Col: 61}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 142, Col: 61}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 					if templ_7745c5c3_Err != nil {
@@ -465,7 +465,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var23 string
 					templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.EndTime)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 145, Col: 100}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 142, Col: 100}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 					if templ_7745c5c3_Err != nil {
@@ -478,7 +478,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var24 string
 					templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(reservation.Adults*reservation.AdultsPrice + reservation.Children*reservation.ChildrenPrice))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 149, Col: 155}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 146, Col: 155}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 					if templ_7745c5c3_Err != nil {
@@ -491,7 +491,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var25 string
 					templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(internal.FormatMoney(reservation.GetPaidUSD()))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 150, Col: 96}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 147, Col: 96}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 					if templ_7745c5c3_Err != nil {
@@ -504,7 +504,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var26 string
 					templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(internal.FormatMoney(reservation.GetPaidVND()))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 152, Col: 96}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 149, Col: 96}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 					if templ_7745c5c3_Err != nil {
@@ -517,7 +517,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var27 string
 					templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.User.FullName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 153, Col: 75}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 150, Col: 75}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 					if templ_7745c5c3_Err != nil {
@@ -530,7 +530,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var28 string
 					templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(reservation.ID))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 154, Col: 78}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 151, Col: 78}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 					if templ_7745c5c3_Err != nil {
@@ -543,7 +543,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					var templ_7745c5c3_Var29 string
 					templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.CreatedAt.Local().Format("02-01-2006"))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 155, Col: 100}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 152, Col: 100}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 					if templ_7745c5c3_Err != nil {
@@ -591,7 +591,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var30 string
 				templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dropDownReservation.TotalAdults))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 173, Col: 95}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 170, Col: 95}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 				if templ_7745c5c3_Err != nil {
@@ -604,7 +604,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var31 string
 				templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dropDownReservation.TotalChildren))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 174, Col: 109}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 171, Col: 109}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 				if templ_7745c5c3_Err != nil {
@@ -617,7 +617,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var32 string
 				templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(internal.FormatMoney(dropDownReservation.TotalPaidUSD))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 175, Col: 104}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 172, Col: 104}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 				if templ_7745c5c3_Err != nil {
@@ -630,7 +630,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 				var templ_7745c5c3_Var33 string
 				templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(internal.FormatMoney(dropDownReservation.TotalPaidVND))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 176, Col: 104}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_group_reservations.templ`, Line: 173, Col: 104}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 				if templ_7745c5c3_Err != nil {
@@ -641,7 +641,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div><style>\n      table thead {\n        top: 0;\n        position: sticky;\n      }\n      table thead td:nth-child(4), table thead th:nth-child(4) {\n        position: sticky;\n        left: 0;\n      }\n      table thead th:nth-child(4) {\n        background-color: #f3f4f6;\n      }\n      table tbody tr,\n      table thead tr {\n        position: relative;\n      }\n      table tbody td:nth-child(4) {\n        position: sticky;\n        background-color: white;\n        left: 0;\n      }\n    </style>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div>                     ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
