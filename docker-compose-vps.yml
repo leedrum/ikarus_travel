@@ -10,16 +10,16 @@ services:
       - DB_SOURCE=$DB_SOURCE
       - HTTP_SERVER_ADDRESS=$HTTP_SERVER_ADDRESS
       - TOKEN_SYMMETRIC_KEY=$TOKEN_SYMMETRIC_KEY
-      - DOMAIN=$DOMAIN
+      - DOMAIN_ADDRESS=$DOMAIN_ADDRESS
     entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
     command: [ "./main" ]
     networks:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ikarus.rule=Host(`$DOMAIN`)"
-      - "traefik.http.routers.grafana.entrypoints=web,websecure"
-      - "traefik.http.routers.grafana.tls.certresolver=myresolver"
+      - "traefik.http.routers.ikarus.rule=Host(`$DOMAIN_ADDRESS`)"
+      - "traefik.http.routers.ikarus.entrypoints=web,websecure"
+      - "traefik.http.routers.ikarus.tls.certresolver=myresolver"
 networks:
   web:
     external: true
