@@ -14,7 +14,7 @@ templ ListTours(tours []model.Tour) {
       <div class="mx-auto w-full">
         if ctx.Value("user").(model.User).Role == model.RoleAdmin {
           <div class="flex justify-between items-center">
-            <a href={ templ.SafeURL("/admin/hotels/new") }
+            <a href={ templ.SafeURL("/admin/tours/new") }
               class="btn primary flex items-center text-black-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2" type="button">
               @icons.Tour()
               +
