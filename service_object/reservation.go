@@ -50,7 +50,8 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 		tx.Preload(
 			"Hotel").Preload(
 			"TourItem").Preload(
-			"Payments").Where(
+			"Payments").Preload(
+			"User").Where(
 			"tour_item_id IN (?)", reservationIDs).Find(&reservations)
 	}
 
