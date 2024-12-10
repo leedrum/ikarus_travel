@@ -5,6 +5,7 @@ import (
 	"github.com/leedrum/ikarus_travel/views/components"
 	"github.com/leedrum/ikarus_travel/model"
   "strconv"
+	"github.com/leedrum/ikarus_travel/views/icons"
 )
 
 templ ListUsers(users []model.User) {
@@ -50,11 +51,11 @@ templ ListUsers(users []model.User) {
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                   <a href={ templ.SafeURL("/admin/users/" + strconv.Itoa(user.ID)) } class="text-indigo-600 hover:text-indigo-900">
-                    { locales.Translate(ctx, "edit") }
+                    @icons.Edit()
                   </a>
                   <form hx-delete={ "/admin/users/" + strconv.Itoa(user.ID) } hx-confirm={ locales.Translate(ctx, "are_you_sure") } hx-target="closest tr" hx-swap="outerHTML swap:1s">
                     <button type="submit" class="text-red-600 hover:text-red-900">
-                      { locales.Translate(ctx, "delete") }
+                      @icons.Delete()
                     </button>
                   </form>
                 </td>
