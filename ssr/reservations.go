@@ -188,7 +188,7 @@ func GenerateQRCodeHandler(server internal.Server) gin.HandlerFunc {
 
 		domain := server.Config.DomainAddress
 		qrCode := internal.IkarusQRCode{
-			Content: domain + "/reservations/preview/" + reservation.Code,
+			Content: "https://" + domain + "/reservations/preview/" + reservation.Code,
 			Size:    256,
 		}
 
