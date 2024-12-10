@@ -5,12 +5,22 @@ import (
 	"github.com/leedrum/ikarus_travel/views/components"
 	"github.com/leedrum/ikarus_travel/model"
   "strconv"
+  "github.com/leedrum/ikarus_travel/views/icons"
 )
 
 templ ListTours(tours []model.Tour) {
   @components.AdminLayout("List Tours"){
     <div class="w-full">
       <div class="mx-auto w-full">
+        if ctx.Value("user").(model.User).Role == model.RoleAdmin {
+          <div class="flex justify-between items-center">
+            <a href={ templ.SafeURL("/admin/hotels/new") }
+              class="btn primary flex items-center text-black-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2" type="button">
+              @icons.Tour()
+              +
+            </a>
+          </div>
+        }
         <div class="w-full my-2" id="error-area"></div>
         <div class="w-full my-2" id="success-area"></div>
         <table class="w-full">
