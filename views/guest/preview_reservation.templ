@@ -45,43 +45,74 @@ templ PreviewReservation(reservation model.Reservation) {
     </div>
     <div id="default-tab-content">
       <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
-        <p>
-          @guest.ReservationStatus(reservation)
-        </p>
-        <dl class="max-w-full text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">ID</dt>
-            <dd class="text-lg font-semibold">{ strconv.Itoa(reservation.ID) }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "name") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.CustomerName }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "phone") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.Phone }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "departure_date") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.DepartureDate }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "pickup_time") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.PickupTime }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "start_time") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.StartTime }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "end_time") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.EndTime }</dd>
-          </div>
-          <div class="flex flex-col py-3">
-            <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "note") }</dt>
-            <dd class="text-lg font-semibold">{ reservation.Note }</dd>
-          </div>
-        </dl>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                ID: { strconv.Itoa(reservation.ID) }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                @guest.ReservationStatus(reservation)
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "name") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                { reservation.CustomerName }
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "phone") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                { reservation.Phone }
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "departure_date") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                { reservation.DepartureDate }
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "pickup_time") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                { reservation.PickupTime }
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "start_time") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                { reservation.StartTime }
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "end_time") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                { reservation.EndTime }
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "note") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                { reservation.Note }
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
         <div class="flex flex-col py-3">
@@ -108,23 +139,41 @@ templ PreviewReservation(reservation model.Reservation) {
         </div>
       </div>
       <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-        <div class="flex flex-col py-3">
-          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "total_price") }</dt>
-          <dd class="text-lg font-semibold">{ internal.FormatMoney(reservation.TotalPrice()) } USD</dd>
-        </div>
-        <div class="flex flex-col py-3">
-          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "total_paid") }</dt>
-          <dd class="text-lg font-semibold">
-            <p>{ internal.FormatMoney(reservation.GetPaidUSD()) } USD</p>
-            <p>{ internal.FormatMoney(reservation.GetPaidVND()) } VND</p>
-          </dd>
-        </div>
-        <div class="flex flex-col py-3">
-          <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "payment_status") }</dt>
-          <dd class="text-lg font-semibold">
-            @guest.ReservationStatusPayment(reservation)
-          </dd>
-        </div>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "payment_status") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                @guest.ReservationStatusPayment(reservation)
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "total_price") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                { internal.FormatMoney(reservation.TotalPrice()) } USD
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+                { locales.Translate(ctx, "total_paid") }
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                { internal.FormatMoney(reservation.GetPaidUSD()) } USD
+              </td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-900 uppercase tracking-wider">
+              </th>
+              <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                { internal.FormatMoney(reservation.GetPaidVND()) } VND
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
