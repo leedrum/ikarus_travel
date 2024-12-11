@@ -2,6 +2,7 @@ package service_object
 
 import (
 	"slices"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
@@ -28,7 +29,7 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	var tours []model.Tour
 
 	tx := server.DB
-	searchConditions(ctx, tx).Order("departure_date DESC").Limit(10).Find(&tourItems)
+	searchConditions(ctx, tx).Order("departure_date DESC").Find(&tourItems)
 	reservationIDs := []int{}
 	tourIDs := []int{}
 
@@ -82,9 +83,10 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 func searchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
 	if ctx.Query("from_date") != "" {
 		tx = tx.Where("departure_date >= ?", ctx.Query("from_date"))
-	}
-	if ctx.Query("departure_date") != "" {
+	} else if ctx.Query("departure_date") != "" {
 		tx = tx.Where("departure_date = ?", ctx.Query("departure_date"))
+	} else {
+		tx = tx.Where("departure_date >= ?", time.Now().AddDate(0, 0, -7).Format("02/01/2006"))
 	}
 	return tx
 }
