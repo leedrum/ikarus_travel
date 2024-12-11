@@ -78,11 +78,8 @@ func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 func ListReservationsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var reservations []model.Reservation
-		server.DB.Find(&reservations)
-		hotels := getHotels(server)
-		users := getUers(server)
-
-		reservations = mappingData(reservations, users, hotels)
+		tx := service_object.SearchConditions(ctx, server.DB)
+		tx.Preload("Hotel").Preload("TourItem").Preload("User").Find(&reservations)
 		internal.Render(ctx, http.StatusOK, views.ListReservations(reservations))
 	}
 }
@@ -225,36 +222,4 @@ func getTours(server internal.Server) []model.Tour {
 	tours := []model.Tour{}
 	server.DB.Table("tours").Select("id, name").Find(&tours)
 	return tours
-}
-
-func getUers(server internal.Server) []model.User {
-	users := []model.User{}
-	server.DB.Table("users").Select("id, username, full_name").Find(&users)
-	return users
-}
-
-func mappingData(reservations []model.Reservation, users []model.User, hotels []model.Hotel) []model.Reservation {
-	for i := range reservations {
-		reservations[i] = mappingUser(reservations[i], users)
-		reservations[i] = mappingHotel(reservations[i], hotels)
-	}
-	return reservations
-}
-
-func mappingUser(reservation model.Reservation, users []model.User) model.Reservation {
-	for i := range users {
-		if reservation.UserID == users[i].ID {
-			reservation.User = users[i]
-		}
-	}
-	return reservation
-}
-
-func mappingHotel(reservation model.Reservation, hotels []model.Hotel) model.Reservation {
-	for i := range hotels {
-		if reservation.HotelID == hotels[i].ID {
-			reservation.Hotel = hotels[i]
-		}
-	}
-	return reservation
 }

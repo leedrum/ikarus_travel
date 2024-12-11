@@ -29,7 +29,7 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	var tours []model.Tour
 
 	tx := server.DB
-	searchConditions(ctx, tx).Order("departure_date DESC").Find(&tourItems)
+	SearchConditions(ctx, tx).Order("departure_date DESC").Find(&tourItems)
 	reservationIDs := []int{}
 	tourIDs := []int{}
 
@@ -80,32 +80,33 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	return dropDownReservations
 }
 
-func searchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
+func SearchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
 	if ctx.Query("from_date") != "" {
 		tx = tx.Where("departure_date >= ?", ctx.Query("from_date"))
 	} else if ctx.Query("departure_date") != "" {
 		tx = tx.Where("departure_date = ?", ctx.Query("departure_date"))
 	} else {
-		tx = tx.Where("departure_date >= ?", time.Now().AddDate(0, 0, -7).Format("02/01/2006"))
+		tx = tx.Where("departure_date > ?", time.Now().AddDate(0, 0, -8).Format("02/01/2006"))
+	}
+
+	if ctx.Query("customer_name") != "" {
+		tx = tx.Where("LOWER(customer_name) LIKE LOWER(?)", "%"+ctx.Query("customer_name")+"%")
 	}
 	return tx
 }
 
-func mappingDropDownData(dropDownReservations []DropDownReservations, reservation model.Reservation) bool {
-	var found bool
+func mappingDropDownData(dropDownReservations []DropDownReservations, reservation model.Reservation) {
 	for i, dropDownReservation := range dropDownReservations {
 		if dropDownReservation.DepartureDate == reservation.DepartureDate {
 			dropDownReservations[i].Reservations = append(dropDownReservation.Reservations, reservation)
 			dropDownReservations[i].TotalAdults += reservation.Adults
 			dropDownReservations[i].TotalChildren += reservation.Children
+			dropDownReservations[i].TotalPrice += reservation.TotalPrice()
 			dropDownReservations[i].TotalPaidUSD += reservation.GetPaidUSD()
 			dropDownReservations[i].TotalPaidVND += reservation.GetPaidVND()
-			found = true
 			break
 		}
 	}
-
-	return found
 }
 
 func getTour(tours []model.Tour, tourItem model.TourItem) model.Tour {
