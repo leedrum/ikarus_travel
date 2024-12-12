@@ -28,10 +28,12 @@ jobs:
           git pull origin main
           sudo docker-compose down
           sudo docker-compose build --no-cache
+          cp app.env.example app.env
           echo "ENVIRONMENT=release" > app.env
           echo "DB_SOURCE=${{ secrets.DB_SOURCE }}" >> app.env
           echo "HTTP_SERVER_ADDRESS=${{ secrets.HTTP_SERVER_ADDRESS }}" >> app.env
           echo "TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }}" >> app.env
           echo "DOMAIN_ADDRESS=${{ secrets.DOMAIN }}" >> app.env
+          echo "SESSION_NAME=${{ secrets.SESSION_NAME }}" >> app.env
           sudo DOMAIN_ADDRESS=${{ secrets.DOMAIN }} docker-compose up -d
           sudo docker system prune -f
