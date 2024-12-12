@@ -33,5 +33,5 @@ jobs:
           echo "HTTP_SERVER_ADDRESS=${{ secrets.HTTP_SERVER_ADDRESS }}" >> app.env
           echo "TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }}" >> app.env
           echo "DOMAIN_ADDRESS=${{ secrets.DOMAIN }}" >> app.env
-          sudo docker-compose up -d
+          sudo DOMAIN_ADDRESS=${{ secrets.DOMAIN }} docker-compose up -d
           sudo docker system prune -f

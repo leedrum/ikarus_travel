@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.vps
     entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
     command: [ "./main" ]
+    environment:
+      - DOMAIN_ADDRESS=$DOMAIN_ADDRESS
     networks:
       - web
     labels:
