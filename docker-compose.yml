@@ -4,11 +4,11 @@ services:
   ikarus:
     build:
       context: .
-      dockerfile: Dockerfile.vps
-    entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
-    command: [ "./main" ]
+      dockerfile: Dockerfile
     environment:
       - DOMAIN_ADDRESS=$DOMAIN_ADDRESS
+    entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
+    command: [ "./main" ]
     networks:
       - web
     labels:
