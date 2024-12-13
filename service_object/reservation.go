@@ -30,12 +30,12 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 
 	tx := server.DB
 	SearchConditions(ctx, tx).Order("departure_date DESC").Find(&tourItems)
-	reservationIDs := []int{}
+	tourItemIds := []int{}
 	tourIDs := []int{}
 
 	for _, item := range tourItems {
-		if !slices.Contains(reservationIDs, item.ID) {
-			reservationIDs = append(reservationIDs, item.ID)
+		if !slices.Contains(tourItemIds, item.ID) {
+			tourItemIds = append(tourItemIds, item.ID)
 		}
 
 		if !slices.Contains(tourIDs, item.TourID) {
@@ -47,13 +47,13 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 		tx.Where("id IN (?)", tourIDs).Find(&tours)
 	}
 
-	if len(reservationIDs) > 0 {
+	if len(tourItemIds) > 0 {
 		tx.Preload(
 			"Hotel").Preload(
 			"TourItem").Preload(
 			"Payments").Preload(
 			"User").Where(
-			"tour_item_id IN (?)", reservationIDs).Find(&reservations)
+			"tour_item_id IN (?)", tourItemIds).Find(&reservations)
 	}
 
 	for _, tourItem := range tourItems {

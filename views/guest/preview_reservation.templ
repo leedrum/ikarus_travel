@@ -131,11 +131,11 @@ templ PreviewReservation(reservation model.Reservation) {
       <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="tour" role="tabpanel" aria-labelledby="tour-tab">
         <div class="flex flex-col py-3">
           <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "tour") }</dt>
-          <dd class="text-lg font-semibold">{ reservation.Tour.Name }</dd>
+          <dd class="text-lg font-semibold">{ reservation.TourItem.Tour.Name }</dd>
         </div>
         <div class="flex flex-col py-3">
           <dt class="my-1 text-gray-500 md:text-lg dark:text-gray-400">{ locales.Translate(ctx, "description") }</dt>
-          <dd class="text-lg font-semibold">{ reservation.Tour.Description }</dd>
+          <dd class="text-lg font-semibold">{ reservation.TourItem.Tour.Description }</dd>
         </div>
       </div>
       <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="payment" role="tabpanel" aria-labelledby="payment-tab">

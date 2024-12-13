@@ -383,9 +383,9 @@ func PreviewReservation(reservation model.Reservation) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var25 string
-			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.Tour.Name)
+			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.TourItem.Tour.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/guest/preview_reservation.templ`, Line: 134, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/guest/preview_reservation.templ`, Line: 134, Col: 76}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 			if templ_7745c5c3_Err != nil {
@@ -409,9 +409,9 @@ func PreviewReservation(reservation model.Reservation) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var27 string
-			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.Tour.Description)
+			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.TourItem.Tour.Description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/guest/preview_reservation.templ`, Line: 138, Col: 74}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/guest/preview_reservation.templ`, Line: 138, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 			if templ_7745c5c3_Err != nil {

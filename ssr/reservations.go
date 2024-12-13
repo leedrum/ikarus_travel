@@ -206,8 +206,9 @@ func PreviewQRCodeHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		code := ctx.Param("code")
 		var reservation model.Reservation
-		server.DB.Preload("Payments").Preload("Hotel").Preload("TourItem").Preload("Tour").Where(
+		server.DB.Preload("Payments").Preload("Hotel").Preload("TourItem").Where(
 			"code = ?", code).First(&reservation)
+		server.DB.Model(&reservation.TourItem).Association("Tour").Find(&reservation.TourItem.Tour)
 		internal.Render(ctx, http.StatusOK, views.PreviewReservation(reservation))
 	}
 }

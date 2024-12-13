@@ -27,7 +27,7 @@ type Reservation struct {
 	Code          string    `json:"code" form:"code" gorm:"unique;index"`
 	CustomerName  string    `json:"customer_name" form:"customer_name"`
 	Phone         string    `json:"phone" form:"phone"`
-	HotelID       int       `json:"hotel_id" form:"hotel_id"` // HotelID is the foreign key
+	HotelID       int       `json:"hotel_id" form:"hotel_id" gorm:"index"` // HotelID is the foreign key
 	RoomNote      string    `json:"room_note" form:"room_note"`
 	Adults        int       `json:"adults" form:"adults"`
 	AdultsPrice   int       `json:"adults_price" form:"adults_price"`
@@ -40,13 +40,12 @@ type Reservation struct {
 	Status        int       `json:"status" form:"status" gorm:"default:1"`
 	PaymentStatus int       `json:"payment_status" form:"payment_status" gorm:"default:0"`
 	Note          string    `json:"note" form:"note"`
-	UserID        int       `json:"user_id" form:"user_id"`
-	TourItemID    int       `json:"tour_item_id"`
+	UserID        int       `json:"user_id" form:"user_id" gorm:"index"`
+	TourItemID    int       `json:"tour_item_id" form:"tour_item_id" gorm:"index"`
 	Payments      []Payment `json:"payment" gorm:"foreignKey:ReservationID"`
 	User          User      `json:"user" gorm:"references:ID"`
 	TourItem      TourItem  `json:"tour_item" gorm:"references:ID"`
 	Hotel         Hotel     `json:"hotel" gorm:"references:ID"`
-	Tour          Tour      `json:"tour" gorm:"foreignKey:TourItemID;references:ID"`
 }
 
 func (u *Reservation) BeforeCreate(tx *gorm.DB) (err error) {
