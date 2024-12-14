@@ -34,5 +34,6 @@ jobs:
           echo "TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }}" >> app.env
           echo "DOMAIN_ADDRESS=${{ secrets.DOMAIN }}" >> app.env
           echo "SESSION_NAME=${{ secrets.SESSION_NAME }}" >> app.env
+          echo "SESSIONS_EXPIRATION=${{ secrets.SESSIONS_EXPIRATION }}" >> app.env
           sudo DOMAIN_ADDRESS=${{ secrets.DOMAIN }} docker-compose up -d
           sudo docker system prune -f
