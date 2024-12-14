@@ -12,7 +12,7 @@ import (
 func (server *Server) InitSessionStore() {
 	store := cookie.NewStore([]byte(server.Config.SessionName))
 	secureSession := false
-	if server.Config.Environment == "production" {
+	if server.Config.Environment == gin.ReleaseMode {
 		secureSession = true
 	}
 	store.Options(sessions.Options{
