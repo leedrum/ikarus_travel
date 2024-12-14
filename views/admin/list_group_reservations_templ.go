@@ -569,7 +569,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("userID").(int) {
+					if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("user").(model.User).ID {
 						templ_7745c5c3_Err = icons.EditWithLink("/admin/reservations/"+strconv.Itoa(reservation.ID)+"/edit").Render(ctx, templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -591,7 +591,7 @@ func ListGroupReservations(dropDownReservations []service_object.DropDownReserva
 							return templ_7745c5c3_Err
 						}
 					}
-					templ_7745c5c3_Err = icons.QRCodeWithLink("/admin/reservations/"+strconv.Itoa(reservation.ID)+"/qr_code", strconv.Itoa(reservation.ID)).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = icons.QRCodeWithLink("/reservations/qr_code/"+strconv.Itoa(reservation.ID), strconv.Itoa(reservation.ID)).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

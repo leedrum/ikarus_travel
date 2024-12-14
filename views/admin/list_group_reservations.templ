@@ -148,12 +148,12 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
 
                           <td class="px-2 py-4">
                             <div class="flex justify-center">
-                              if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("userID").(int) {
+                              if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("user").(model.User).ID {
                                 @icons.EditWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/edit")
                                 @icons.DeleteWithForm("/admin/reservations/" + strconv.Itoa(reservation.ID))
                                 @icons.Copy(strconv.Itoa(reservation.ID), reservation.Code)
                               }
-                              @icons.QRCodeWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/qr_code", strconv.Itoa(reservation.ID))
+                              @icons.QRCodeWithLink("/reservations/qr_code/" + strconv.Itoa(reservation.ID), strconv.Itoa(reservation.ID))
                             </div>
                           </td>
                         </tr>

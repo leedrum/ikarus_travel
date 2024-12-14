@@ -26,6 +26,8 @@ func InitRoutes(server *internal.Server) {
 	{
 		routerResUser.GET("/mine", ssr.MineReservationsHandler(*server))
 		routerResUser.GET("/new", ssr.NewReservationHandler(*server))
+		routerResUser.POST("/", ssr.CreateReservationHandler(*server))
+		routerResUser.GET("/qr_code/:id", ssr.GenerateQRCodeHandler(*server))
 		routerResPayment := routerResUser.Group("/:res_id/payments")
 		{
 			routerResPayment.GET("/", ssr.ListResPaymentHandler(*server))
@@ -74,11 +76,9 @@ func InitRoutes(server *internal.Server) {
 		resRoutes := adminRoute.Group("/reservations")
 		{
 			resRoutes.GET("/", ssr.ListReservationsHandler(*server))
-			resRoutes.POST("/", ssr.CreateReservationHandler(*server))
 			resRoutes.GET("/:id/edit", ssr.EditReservationHandler(*server))
 			resRoutes.PUT("/:id", ssr.UpdateReservationHandler(*server))
 			resRoutes.DELETE("/:id", ssr.DeleteReservationHandler(*server))
-			resRoutes.GET("/:id/qr_code", ssr.GenerateQRCodeHandler(*server))
 		}
 	}
 	server.Router = router
