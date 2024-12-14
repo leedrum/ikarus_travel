@@ -34,7 +34,7 @@ func CORSMiddleware(server internal.Server) gin.HandlerFunc {
 				}
 
 				// Set CORS headers for the allowed referer
-				c.Writer.Header().Set("Access-Control-Allow-Origin", "https://ikarus.koyeb.app")
+				c.Writer.Header().Set("Access-Control-Allow-Origin", server.Config.DomainAddress)
 				c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, PUT, DELETE, OPTIONS")
 				c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")
 			}
