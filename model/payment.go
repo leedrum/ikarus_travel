@@ -20,15 +20,16 @@ const (
 
 type Payment struct {
 	gorm.Model
-	ID            int       `json:"id"`
-	ReservationID int       `json:"reservation_id" form:"reservation_id"`
-	Amount        float64   `json:"amount" form:"amount"`
-	Currency      int       `json:"currency" form:"currency"`
-	PaymentMethod int       `json:"payment_method" form:"payment_method"`
-	Note          string    `json:"note" form:"note"`
-	UserID        int       `json:"user_id" reference:"ID"`
-	User          User      `json:"user"`
-	CreatedAt     time.Time `json:"created_at"`
+	ID            int         `json:"id"`
+	ReservationID int         `json:"reservation_id" form:"reservation_id" gorm:"index"`
+	Reservation   Reservation `json:"reservation" gorm:"references:ID"`
+	Amount        float64     `json:"amount" form:"amount"`
+	Currency      int         `json:"currency" form:"currency"`
+	PaymentMethod int         `json:"payment_method" form:"payment_method"`
+	Note          string      `json:"note" form:"note"`
+	UserID        int         `json:"user_id" reference:"ID" gorm:"index"`
+	User          User        `json:"user" gorm:"references:ID"`
+	CreatedAt     time.Time   `json:"created_at"`
 }
 
 func GetPaymentHistory(reservationID []int, db *gorm.DB) []Payment {
