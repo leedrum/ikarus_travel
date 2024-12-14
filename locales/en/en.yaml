@@ -60,6 +60,7 @@ en:
     request_timeout: "Request timeout"
     password_hash_error: "Password hash error"
     password_cannot_be_empty: "Password cannot be empty"
+    passwords_do_not_match: "Passwords do not match"
   list_reservation: "List reservation"
   create_reservation: "Create reservation"
   my_reservation: "My reservation"
