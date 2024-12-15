@@ -166,7 +166,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(hotel.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/edit_reservation.templ`, Line: 60, Col: 31}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/edit_reservation.templ`, Line: 60, Col: 32}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -877,7 +877,7 @@ func EditReservation(reservation model.Reservation, hotels []model.Hotel, tours 
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = components.AdminLayout("Edit Reservation").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.AdminLayout(locales.Translate(ctx, "edit")+" "+locales.Translate(ctx, "reservation")).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

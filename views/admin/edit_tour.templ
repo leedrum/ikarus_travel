@@ -8,7 +8,7 @@ import (
 )
 
 templ EditTour(tour model.Tour) {
-  @components.AdminLayout("Update Tour " + tour.Name){
+  @components.AdminLayout(locales.Translate(ctx, "edit") + " " + locales.Translate(ctx, "tour") + " " + tour.Name){
     <div class="w-full">
       <div class="mx-auto max-w-xl my-2" id="error-area"></div>
       <div class="mx-auto max-w-xl my-2" id="success-area"></div>

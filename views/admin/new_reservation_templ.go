@@ -465,7 +465,7 @@ func NewReservation(hotels []model.Hotel, tours []model.Tour) templ.Component {
 			var templ_7745c5c3_Var33 string
 			templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "note"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/new_reservation.templ`, Line: 195, Col: 122}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/new_reservation.templ`, Line: 168, Col: 122}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 			if templ_7745c5c3_Err != nil {
@@ -478,7 +478,7 @@ func NewReservation(hotels []model.Hotel, tours []model.Tour) templ.Component {
 			var templ_7745c5c3_Var34 string
 			templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "create"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/new_reservation.templ`, Line: 204, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/new_reservation.templ`, Line: 177, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 			if templ_7745c5c3_Err != nil {
@@ -494,7 +494,7 @@ func NewReservation(hotels []model.Hotel, tours []model.Tour) templ.Component {
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = components.AdminLayout("Create New Reservation").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.AdminLayout(locales.Translate(ctx, "create")+" "+locales.Translate(ctx, "reservation")).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

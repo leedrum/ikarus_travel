@@ -9,7 +9,7 @@ import (
 )
 
 templ ListTours(tours []model.Tour) {
-  @components.AdminLayout("List Tours"){
+  @components.AdminLayout(locales.Translate(ctx, "list_tours")) {
     <div class="w-full">
       <div class="mx-auto w-full overflow-x-auto">
         if ctx.Value("user").(model.User).Role == model.RoleAdmin {

@@ -6,16 +6,20 @@ import (
 )
 
 templ LoginForm() {
-  @components.AdminLayout("Login") {
+  @components.AdminLayout(locales.Translate(ctx, "login")) {
     <div class="w-full">
       <div class="mx-auto max-w-xl my-2" id="error-area"></div>
       <div class="mx-auto max-w-xl my-2" id="success-area"></div>
-      <form class="mx-auto max-w-xl bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" hx-post="/login" hx-ext="response-targets" hx-target-error="#error-area" hx-swap="innerHTML scroll:top" hx-on="htmx:responseError;">
+      <form class="mx-auto max-w-xl bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        hx-post="/login" hx-ext="response-targets"
+        hx-target-error="#error-area"
+        hx-swap="innerHTML scroll:top"
+        hx-on="htmx:responseError;">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
             { locales.Translate(ctx, "username") }
           </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" name="username" type="text" placeholder="Username">
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" name="username" type="text" placeholder={ locales.Translate(ctx, "username") }>
         </div>
         <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="password">

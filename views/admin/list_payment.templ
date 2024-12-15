@@ -12,7 +12,7 @@ import (
 
 templ ListPayments(payments []model.Payment) {
   if len(payments) == 0 {
-    <div><i>Empty payments</i></div>
+    <div><i>{ locales.Translate(ctx, "empty_payment") }</i></div>
   } else {
     <div class="w-full">
       <div class="mx-auto w-full overflow-x-auto">

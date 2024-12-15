@@ -9,7 +9,7 @@ import (
 )
 
 templ ListUsers(users []model.User) {
-  @components.AdminLayout("List Users"){
+  @components.AdminLayout(locales.Translate(ctx, "list_users")) {
     <div class="w-full overflow-x-auto">
       <div class="mx-auto w-full">
         <div class="w-full my-2" id="error-area"></div>
