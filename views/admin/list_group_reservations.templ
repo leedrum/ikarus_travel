@@ -12,7 +12,7 @@ import (
 )
 
 templ ListGroupReservations(dropDownReservations []service_object.DropDownReservations) {
-  @components.AdminLayout("List Group Reservations"){
+  @components.AdminLayout(locales.Translate(ctx, "list_group_reservations")) {
     <div class="w-full">
       <div class="mx-auto w-full">
         <div class="w-full my-2" id="error-area"></div>
@@ -54,7 +54,11 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
           <div id="accordion-collapse" data-accordion="collapse">
             for index, dropDownReservation := range dropDownReservations {
               <h2 id={ "accordion-collapse-heading-" + strconv.Itoa(index) }>
-                <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target={ "#accordion-collapse-body-" + strconv.Itoa(index) } aria-expanded="true" aria-controls={ "accordion-collapse-body-" + strconv.Itoa(index) }>
+                <button type="button"
+                  class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                  data-accordion-target={ "#accordion-collapse-body-" + strconv.Itoa(index) }
+                  aria-expanded="true"
+                  aria-controls={ "accordion-collapse-body-" + strconv.Itoa(index) }>
                   <div class="flex flex-col md:flex-row">
                     <div class="flex items center mr-2">
                       @icons.Calendar()
@@ -161,7 +165,7 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                       </tbody>
                       <tfoot>
                         <tr class="font-semibold text-gray-900 dark:text-white">
-                          <th scope="row" colspan="4" class="px-2 py-3 text-base">Total</th>
+                          <th scope="row" colspan="4" class="px-2 py-3 text-base">{ locales.Translate(ctx, "total") }</th>
                           <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalAdults) }</td>
                           <td class="px-2 py-3" colspan="3">{ strconv.Itoa(dropDownReservation.TotalChildren) }</td>
                           <td class="px-2 py-3">{ internal.FormatMoney(dropDownReservation.TotalPrice) } USD</td>

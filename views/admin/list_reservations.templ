@@ -10,13 +10,14 @@ import (
 )
 
 templ ListReservations(reservations []model.Reservation) {
-  @components.AdminLayout("List Hotels"){
+  @components.AdminLayout(locales.Translate(ctx, "list_reservations")) {
     <div class="w-full">
       <div class="mx-auto w-full overflow-x-auto">
         if ctx.Value("user").(model.User).Role == model.RoleAdmin {
           <div class="flex justify-between items-center">
             <a href={ templ.SafeURL("/reservations/new") }
-              class="btn primary flex items-center text-black-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2" type="button">
+              class="btn primary flex items-center text-black-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2"
+              type="button">
               @icons.Reservation()
               +
             </a>

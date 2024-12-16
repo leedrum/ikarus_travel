@@ -9,7 +9,7 @@ import (
 )
 
 templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours []model.Tour) {
-  @components.AdminLayout("Edit Reservation") {
+  @components.AdminLayout(locales.Translate(ctx, "edit") + " " + locales.Translate(ctx, "reservation")) {
     @admin.PartialPayments(reservation)
     <div class="w-full">
       <div class="mx-auto max-w-xl my-2" id="error-area"></div>
@@ -57,7 +57,7 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
                     if strconv.Itoa(hotel.ID) == strconv.Itoa(reservation.HotelID) {
                       selected
                     }>
-                    {hotel.Name}
+                    { hotel.Name }
                   </option>
                 }
               </select>

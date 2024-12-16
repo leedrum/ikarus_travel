@@ -8,7 +8,7 @@ import (
 	"github.com/invopop/ctxi18n/i18n"
 )
 
-//go:embed en
+//go:embed trans_data
 
 var Content embed.FS
 

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
+	"github.com/leedrum/ikarus_travel/locales"
 	"github.com/leedrum/ikarus_travel/model"
 	"github.com/leedrum/ikarus_travel/views"
 	"github.com/rs/zerolog/log"
@@ -42,7 +43,9 @@ func LoginHandler(server internal.Server) gin.HandlerFunc {
 		user := model.User{}
 		server.DB.Where("username = ?", loginUser.Username).First(&user)
 		if !internal.CheckPasswordHash(loginUser.Password, user.HashPassword) {
-			internal.Render(ctx, http.StatusBadRequest, views.Error("Incorrect username or password"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(
+				locales.Translate(ctx, "errors.invalid_username_or_password")),
+			)
 			return
 		}
 
