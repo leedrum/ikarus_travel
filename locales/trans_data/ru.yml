@@ -1,0 +1,5 @@
+ru:
+  create: "Создать"
+  detail: "Детали"
+  error: "Ошибка"
+  password_cannot_be_empty: "Пароль не может быть пустым"

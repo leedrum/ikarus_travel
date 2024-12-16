@@ -6,8 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
+	"github.com/leedrum/ikarus_travel/locales"
 	"github.com/leedrum/ikarus_travel/model"
 	"github.com/leedrum/ikarus_travel/views"
+	"github.com/rs/zerolog/log"
 )
 
 func ListResPaymentHandler(server internal.Server) gin.HandlerFunc {
@@ -63,17 +65,18 @@ func DeleteResPaymentHandler(server internal.Server) gin.HandlerFunc {
 		}
 		payment := model.Payment{}
 		if err := server.DB.Preload("User").Where("id = ? AND reservation_id = ?", id, reservationID).First(&payment).Error; err != nil {
-			internal.Render(ctx, http.StatusBadRequest, views.Error("Payment not found"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.not_found")))
 			return
 		}
 		currentUser := ctx.MustGet("user").(model.User)
 		if payment.UserID != currentUser.ID || currentUser.Role != model.RoleAdmin {
-			internal.Render(ctx, http.StatusForbidden, views.Error("You are not allowed to delete this payment"))
+			internal.Render(ctx, http.StatusForbidden, views.Error(locales.Translate(ctx, "errors.no_permission")))
 			return
 		}
 
 		if err := server.DB.Where("id = ? AND reservation_id = ?", id, reservationID).Delete(&model.Payment{}).Error; err != nil {
-			internal.Render(ctx, http.StatusBadRequest, views.Error("Error deleting payment"))
+			log.Fatal().Err(err).Msg(err.Error())
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.something_went_wrong")))
 			return
 		}
 		ctx.Data(http.StatusOK, "text/html", []byte(""))

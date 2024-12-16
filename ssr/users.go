@@ -58,7 +58,7 @@ func CreateUserHandler(server internal.Server) gin.HandlerFunc {
 			http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/users",
-				"User created",
+				locales.Translate(ctx, "success"),
 			),
 		)
 	}
@@ -127,7 +127,7 @@ func UpdateUserHandler(server internal.Server) gin.HandlerFunc {
 			http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/users",
-				"User updated",
+				locales.Translate(ctx, "success"),
 			),
 		)
 	}
@@ -214,7 +214,7 @@ func ChangePasswordHandler(server internal.Server) gin.HandlerFunc {
 			http.StatusOK,
 			views.SuccessWithLink(
 				"/admin",
-				"Password changed",
+				locales.Translate(ctx, "success"),
 			),
 		)
 	}

@@ -31,7 +31,7 @@ func CreateHotelHandler(server internal.Server) gin.HandlerFunc {
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/hotels/"+strconv.Itoa(hotel.ID)+"/edit",
-				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_detail"),
+				locales.Translate(ctx, "success")+"! "+locales.Translate(ctx, "go_to_detail"),
 			),
 		)
 	}

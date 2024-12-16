@@ -37,7 +37,7 @@ func CreateTourHandler(server internal.Server) gin.HandlerFunc {
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/tours/"+strconv.Itoa(tour.ID)+"/edit",
-				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_detail"),
+				locales.Translate(ctx, "success")+"! "+locales.Translate(ctx, "go_to_detail"),
 			),
 		)
 	}
@@ -91,7 +91,7 @@ func UpdateTourHandler(server internal.Server) gin.HandlerFunc {
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/tours/",
-				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_list"),
+				locales.Translate(ctx, "success")+"! "+locales.Translate(ctx, "go_to_list"),
 			),
 		)
 	}

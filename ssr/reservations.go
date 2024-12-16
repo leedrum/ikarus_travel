@@ -38,9 +38,10 @@ func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 				internal.Render(ctx, http.StatusBadRequest, views.NewReservation(hotels, tours))
 			}
 
-			server.DB.Create(&tourItem)
+			response := server.DB.Create(&tourItem)
 			if tourItem.ID == 0 {
-				internal.Render(ctx, http.StatusBadRequest, views.Error("Error creating tour item"))
+				log.Fatal().Err(response.Error).Msg(response.Error.Error())
+				internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "something_went_wrong")))
 				return
 			}
 		}
@@ -62,10 +63,7 @@ func CreateReservationHandler(server internal.Server) gin.HandlerFunc {
 			return
 		}
 
-		infoRes := fmt.Sprintf(
-			"Reservation created with ID: %d \n code: %s, go to detail",
-			reservation.ID, reservation.Code,
-		)
+		infoRes := locales.Translate(ctx, "success") + "! " + locales.Translate(ctx, "go_to_detail")
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/reservations/"+strconv.Itoa(reservation.ID)+"/edit",
@@ -148,9 +146,10 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 			}
 
 			tourItem.TourID = previousTourItem.TourID
-			server.DB.Omit(clause.Associations).Create(&tourItem)
+			response := server.DB.Omit(clause.Associations).Create(&tourItem)
 			if tourItem.ID == 0 {
-				internal.Render(ctx, http.StatusBadRequest, views.Error("Error creating tour item"))
+				log.Fatal().Err(response.Error).Msg(response.Error.Error())
+				internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "something_went_wrong")))
 				return
 			}
 		}
@@ -166,7 +165,7 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 		internal.Render(ctx, http.StatusOK,
 			views.SuccessWithLink(
 				"/admin/reservations/"+strconv.Itoa(reservation.ID)+"/edit",
-				locales.Translate(ctx, "success")+locales.Translate(ctx, "go_to_detail"),
+				locales.Translate(ctx, "success")+"! "+locales.Translate(ctx, "go_to_detail"),
 			),
 		)
 	}
@@ -191,7 +190,7 @@ func GenerateQRCodeHandler(server internal.Server) gin.HandlerFunc {
 
 		qrCodeData, err := qrCode.Generate()
 		if err != nil {
-			msg_str := "Error generating QR code"
+			msg_str := locales.Translate(ctx, "errors.something_went_wrong")
 			message := fmt.Sprintf("%s: %v", msg_str, err)
 			log.Error().Err(err).Msg(message)
 			internal.Render(ctx, http.StatusInternalServerError, views.Error(msg_str))

@@ -20,6 +20,26 @@ templ AdminLayout(title string) {
 
 				if ctx.Value("user") != nil {
           <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <div class="hidden justify-center space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20 border-r border-gray-200 dark:border-gray-700">
+              <button type="button" data-dropdown-toggle="language-dropdown" class="w-full inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:hover:text-white dark:text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
+                @icons.Language()
+              </button>
+              <!-- Dropdown -->
+              <div class="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700" id="language-dropdown">
+                <ul class="py-1" role="none">
+                  <li>
+                    <a href="/?lang=en" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" role="menuitem">
+                      English (US)
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/?lang=ru" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
+                      Russia
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                 <ul class="space-y-2 font-medium">
                   <li>
