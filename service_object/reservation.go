@@ -11,6 +11,14 @@ import (
 )
 
 type DropDownReservations struct {
+	DepartureDate            string
+	TourItemID               int
+	ItemDropDownReservations []ItemDropDownReservations
+	TotalAdults              int
+	TotalChildren            int
+}
+
+type ItemDropDownReservations struct {
 	model.TourItem
 	Tour          model.Tour
 	Reservations  []model.Reservation
@@ -48,12 +56,17 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 	}
 
 	if len(tourItemIds) > 0 {
-		tx.Preload(
+		queryTourItems := tx.Preload(
 			"Hotel").Preload(
 			"TourItem").Preload(
 			"Payments").Preload(
 			"User").Where(
-			"tour_item_id IN (?)", tourItemIds).Find(&reservations)
+			"tour_item_id IN (?)", tourItemIds)
+
+		if ctx.Request.URL.Query().Get("status") != "" {
+			queryTourItems.Where("status = ?", ctx.Request.URL.Query().Get("status"))
+		}
+		queryTourItems.Find(&reservations)
 	}
 
 	for _, tourItem := range tourItems {
@@ -67,9 +80,20 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 
 		if !found {
 			dropDownReservations = append(dropDownReservations, DropDownReservations{
-				TourItem: tourItem,
-				Tour:     getTour(tours, tourItem),
+				DepartureDate: tourItem.DepartureDate,
+				TourItemID:    tourItem.ID,
 			})
+		}
+	}
+
+	for i, dropDownReservation := range dropDownReservations {
+		for _, tourItem := range tourItems {
+			if dropDownReservation.DepartureDate == tourItem.DepartureDate {
+				dropDownReservations[i].ItemDropDownReservations = append(dropDownReservations[i].ItemDropDownReservations, ItemDropDownReservations{
+					TourItem: tourItem,
+					Tour:     getTour(tours, tourItem),
+				})
+			}
 		}
 	}
 
@@ -81,10 +105,14 @@ func LoadDropDownReservations(ctx *gin.Context, server internal.Server) []DropDo
 }
 
 func SearchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
-	if ctx.Query("from_date") != "" {
-		tx = tx.Where("departure_date >= ?", ctx.Query("from_date"))
-	} else if ctx.Query("departure_date") != "" {
-		tx = tx.Where("departure_date = ?", ctx.Query("departure_date"))
+	from_date := ctx.Request.URL.Query().Get("from_date")
+	to_date := ctx.Request.URL.Query().Get("to_date")
+	departure_date := ctx.Request.URL.Query().Get("departure_date")
+
+	if from_date != "" && to_date != "" {
+		tx = tx.Where("departure_date >= ?", from_date).Where("departure_date <= ?", to_date)
+	} else if departure_date != "" {
+		tx = tx.Where("departure_date = ?", departure_date)
 	} else {
 		tx = tx.Where("departure_date > ?", time.Now().AddDate(0, 0, -8).Format("02/01/2006"))
 	}
@@ -97,14 +125,18 @@ func SearchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
 
 func mappingDropDownData(dropDownReservations []DropDownReservations, reservation model.Reservation) {
 	for i, dropDownReservation := range dropDownReservations {
-		if dropDownReservation.DepartureDate == reservation.DepartureDate {
-			dropDownReservations[i].Reservations = append(dropDownReservation.Reservations, reservation)
-			dropDownReservations[i].TotalAdults += reservation.Adults
-			dropDownReservations[i].TotalChildren += reservation.Children
-			dropDownReservations[i].TotalPrice += reservation.TotalPrice()
-			dropDownReservations[i].TotalPaidUSD += reservation.GetPaidUSD()
-			dropDownReservations[i].TotalPaidVND += reservation.GetPaidVND()
-			break
+		for j, itemDropDownReservation := range dropDownReservation.ItemDropDownReservations {
+			if itemDropDownReservation.TourItem.ID == reservation.TourItemID {
+				dropDownReservations[i].ItemDropDownReservations[j].Reservations = append(itemDropDownReservation.Reservations, reservation)
+				dropDownReservations[i].ItemDropDownReservations[j].TotalAdults += reservation.Adults
+				dropDownReservations[i].ItemDropDownReservations[j].TotalChildren += reservation.Children
+				dropDownReservations[i].ItemDropDownReservations[j].TotalPrice += reservation.TotalPrice()
+				dropDownReservations[i].ItemDropDownReservations[j].TotalPaidUSD += reservation.GetPaidUSD()
+				dropDownReservations[i].ItemDropDownReservations[j].TotalPaidVND += reservation.GetPaidVND()
+				dropDownReservations[i].TotalAdults += reservation.Adults
+				dropDownReservations[i].TotalChildren += reservation.Children
+				break
+			}
 		}
 	}
 }

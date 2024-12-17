@@ -135,7 +135,7 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 		server.DB.Where("id = ?", reservation.TourItemID).First(&previousTourItem)
 
 		tourItem := model.TourItem{}
-		server.DB.Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
+		server.DB.Where("tour_id = ?", ctx.PostForm("tour_id")).Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
 
 		if tourItem.ID == 0 {
 			if err := ctx.ShouldBind(&tourItem); err != nil {
@@ -146,6 +146,9 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 			}
 
 			tourItem.TourID = previousTourItem.TourID
+			if ctx.PostForm("tour_id") != "" {
+				tourItem.TourID, _ = strconv.Atoi(ctx.PostForm("tour_id"))
+			}
 			response := server.DB.Omit(clause.Associations).Create(&tourItem)
 			if tourItem.ID == 0 {
 				log.Fatal().Err(response.Error).Msg(response.Error.Error())

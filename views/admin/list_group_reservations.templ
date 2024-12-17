@@ -72,10 +72,6 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                       <span class="text-gray-900 dark:text-gray-100 ml-1">{ strconv.Itoa(dropDownReservation.TotalChildren) }</span>
                     </div>
 
-                    <div class="flex items-center mr-3">
-                      <span>{ dropDownReservation.Tour.Name }</span>
-                    </div>
-
                   </div>
                   <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
@@ -83,7 +79,7 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                 </button>
               </h2>
               <div id={"accordion-collapse-body-" + strconv.Itoa(index) } class="hidden" aria-labelledby={"accordion-collapse-heading-" + strconv.Itoa(index)}>
-                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                <div class="p-5 pt-0 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
                   <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4 hidden">
                     <div class="relative">
                       <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -94,87 +90,91 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
                         placeholder="Search for items">
                     </div>
                   </div>
-                  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-auto" style="min-width: 1600px;">
-                      <thead class="z-10 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 rounded-s-lg">
-                        <th scope="col" class="px-2 py-3"></th>
-                        <th scope="col" class="px-2 py-3">@icons.Human()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Hotel()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Room()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Adult()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Children()</th>
-                        <th scope="col" class="px-2 py-3">@icons.TelePhone()</th>
-                        <th scope="col" class="px-2 py-3">
-                          <div class="flex justify-center">@icons.Clock()</div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">@icons.Money()</th>
-                        <th scope="col" class="px-2 py-3">
-                          <div class="flex">@icons.Money()+</div>
-                        </th>
-                        // <th scope="col" class="px-2 py-3">
-                        //   <div class="flex">@icons.Money()-</div> // balance
-                        // </th>
-                        <th scope="col" class="px-2 py-3">
-                          <div class="flex">@icons.Money()&#8734;</div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">@icons.User()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Code()</th>
-                        <th scope="col" class="px-2 py-3">@icons.Calendar()</th>
-                        <th scope="col" class="px-2 py-3">
-                          <div class="flex justify-center">@icons.Action()</div>
-                        </th>
-                      </thead>
-                      <tbody>
-                      for index, reservation := range dropDownReservation.Reservations {
-                        <tr class="bg-white dark:bg-gray-800">
-                          <td class="px-2 py-4">{ strconv.Itoa(index+1) }</td>
-                          <td class="px-2 py-4">{ reservation.CustomerName }</td>
-                          <td class="px-2 py-4">{ reservation.Hotel.Name }</td>
-                          <td class="px-2 py-4">{ reservation.RoomNote }</td>
-                          <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults) }</td>
-                          <td class="px-2 py-4">{ strconv.Itoa(reservation.Children) }</td>
-                          <td class="px-2 py-4">{ reservation.Phone }</td>
-                          <td class="px-2 py-4">
-                            <div class="text-center">
-                              <div>{ reservation.PickupTime }</div>
-                              <div>
-                                <span>{ reservation.StartTime }</span> ~ <span>{ reservation.EndTime }</span>
+                  for _, itemDropDownReservations := range dropDownReservation.ItemDropDownReservations {
+                    <h3 class="text-center text-gray-900 font-extrabold p-4">{ itemDropDownReservations.Tour.Name }</h3>
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                      <table class="w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-auto" style="min-width: 1600px;">
+                        <thead class="z-10 text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 rounded-s-lg">
+                          <th scope="col" class="px-2 py-3"></th>
+                          <th scope="col" class="px-2 py-3">@icons.Human()</th>
+                          <th scope="col" class="px-2 py-3">@icons.Hotel()</th>
+                          <th scope="col" class="px-2 py-3">@icons.Room()</th>
+                          <th scope="col" class="px-2 py-3">@icons.Adult()</th>
+                          <th scope="col" class="px-2 py-3">@icons.Children()</th>
+                          <th scope="col" class="px-2 py-3">@icons.TelePhone()</th>
+                          <th scope="col" class="px-2 py-3">
+                            <div class="flex justify-center">@icons.Clock()</div>
+                          </th>
+                          <th scope="col" class="px-2 py-3">@icons.Money()</th>
+                          <th scope="col" class="px-2 py-3">
+                            <div class="flex">@icons.Money()+</div>
+                          </th>
+                          // <th scope="col" class="px-2 py-3">
+                          //   <div class="flex">@icons.Money()-</div> // balance
+                          // </th>
+                          <th scope="col" class="px-2 py-3">
+                            <div class="flex">@icons.Money()&#8734;</div>
+                          </th>
+                          <th scope="col" class="px-2 py-3">@icons.User()</th>
+                          <th scope="col" class="px-2 py-3">@icons.Code()</th>
+                          <th scope="col" class="px-2 py-3">@icons.Calendar()</th>
+                          <th scope="col" class="px-2 py-3">
+                            <div class="flex justify-center">@icons.Action()</div>
+                          </th>
+                        </thead>
+                        <tbody>
+                        for index, reservation := range itemDropDownReservations.Reservations {
+                          <tr class="bg-white dark:bg-gray-800">
+                            <td class="px-2 py-4">{ strconv.Itoa(index+1) }</td>
+                            <td class="px-2 py-4">{ reservation.CustomerName }</td>
+                            <td class="px-2 py-4">{ reservation.Hotel.Name }</td>
+                            <td class="px-2 py-4">{ reservation.RoomNote }</td>
+                            <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults) }</td>
+                            <td class="px-2 py-4">{ strconv.Itoa(reservation.Children) }</td>
+                            <td class="px-2 py-4">{ reservation.Phone }</td>
+                            <td class="px-2 py-4">
+                              <div class="text-center">
+                                <div>{ reservation.PickupTime }</div>
+                                <div>
+                                  <span>{ reservation.StartTime }</span> ~ <span>{ reservation.EndTime }</span>
+                                </div>
                               </div>
-                            </div>
-                          </td>
-                          <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults*reservation.AdultsPrice + reservation.Children*reservation.ChildrenPrice) } USD</td>
-                          <td class="px-2 py-4">{ internal.FormatMoney(reservation.GetPaidUSD()) } USD</td>
-                          // <td class="px-2 py-4">{ strconv.Itoa(reservation.GetBlance()) }</td> // balance
-                          <td class="px-2 py-4">{ internal.FormatMoney(reservation.GetPaidVND()) } VND</td>
-                          <td class="px-2 py-4">{ reservation.User.FullName }</td>
-                          <td class="px-2 py-4">{ strconv.Itoa(reservation.ID) }</td>
-                          <td class="px-2 py-4">{ reservation.CreatedAt.Local().Format("02-01-2006") }</td>
+                            </td>
+                            <td class="px-2 py-4">{ strconv.Itoa(reservation.Adults*reservation.AdultsPrice + reservation.Children*reservation.ChildrenPrice) } USD</td>
+                            <td class="px-2 py-4">{ internal.FormatMoney(reservation.GetPaidUSD()) } USD</td>
+                            // <td class="px-2 py-4">{ strconv.Itoa(reservation.GetBlance()) }</td> // balance
+                            <td class="px-2 py-4">{ internal.FormatMoney(reservation.GetPaidVND()) } VND</td>
+                            <td class="px-2 py-4">{ reservation.User.FullName }</td>
+                            <td class="px-2 py-4">{ strconv.Itoa(reservation.ID) }</td>
+                            <td class="px-2 py-4">{ reservation.CreatedAt.Local().Format("02-01-2006") }</td>
 
-                          <td class="px-2 py-4">
-                            <div class="flex justify-center">
-                              if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("user").(model.User).ID {
-                                @icons.EditWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/edit")
-                                @icons.DeleteWithForm("/admin/reservations/" + strconv.Itoa(reservation.ID))
-                                @icons.Copy(strconv.Itoa(reservation.ID), reservation.Code)
-                              }
-                              @icons.QRCodeWithLink("/reservations/qr_code/" + strconv.Itoa(reservation.ID), strconv.Itoa(reservation.ID))
-                            </div>
-                          </td>
-                        </tr>
-                      }
-                      </tbody>
-                      <tfoot>
-                        <tr class="font-semibold text-gray-900 dark:text-white">
-                          <th scope="row" colspan="4" class="px-2 py-3 text-base">{ locales.Translate(ctx, "total") }</th>
-                          <td class="px-2 py-3">{ strconv.Itoa(dropDownReservation.TotalAdults) }</td>
-                          <td class="px-2 py-3" colspan="3">{ strconv.Itoa(dropDownReservation.TotalChildren) }</td>
-                          <td class="px-2 py-3">{ internal.FormatMoney(dropDownReservation.TotalPrice) } USD</td>
-                          <td class="px-2 py-3">{ internal.FormatMoney(dropDownReservation.TotalPaidUSD) } USD</td>
-                          <td class="px-2 py-3">{ internal.FormatMoney(dropDownReservation.TotalPaidVND) } VND</td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
+                            <td class="px-2 py-4">
+                              <div class="flex justify-center">
+                                if ctx.Value("user").(model.User).Role == model.RoleAdmin || reservation.UserID == ctx.Value("user").(model.User).ID {
+                                  @icons.EditWithLink("/admin/reservations/" + strconv.Itoa(reservation.ID) + "/edit")
+                                  @icons.DeleteWithForm("/admin/reservations/" + strconv.Itoa(reservation.ID))
+                                  @icons.Copy(strconv.Itoa(reservation.ID), reservation.Code)
+                                }
+                                @icons.QRCodeWithLink("/reservations/qr_code/" + strconv.Itoa(reservation.ID), strconv.Itoa(reservation.ID))
+                              </div>
+                            </td>
+                          </tr>
+                        }
+                        </tbody>
+                        <tfoot>
+                          <tr class="font-semibold text-gray-900 dark:text-white">
+                            <th scope="row" colspan="4" class="px-2 py-3 text-base">{ locales.Translate(ctx, "total") }</th>
+                            <td class="px-2 py-3">{ strconv.Itoa(itemDropDownReservations.TotalAdults) }</td>
+                            <td class="px-2 py-3" colspan="3">{ strconv.Itoa(itemDropDownReservations.TotalChildren) }</td>
+                            <td class="px-2 py-3">{ internal.FormatMoney(itemDropDownReservations.TotalPrice) } USD</td>
+                            <td class="px-2 py-3">{ internal.FormatMoney(itemDropDownReservations.TotalPaidUSD) } USD</td>
+                            <td class="px-2 py-3">{ internal.FormatMoney(itemDropDownReservations.TotalPaidVND) } VND</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <hr class="mt-6">
+                  }
                 </div>
               </div>
             }
