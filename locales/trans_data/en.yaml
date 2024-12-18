@@ -7,6 +7,8 @@ en:
   edit: "Edit"
   save: "Save"
   cancel: "Cancel"
+  export: "Export"
+  search: "Search"
   confirm: "Confirm"
   are_you_sure: "Are you sure?"
   full_name: "Full name"
@@ -91,3 +93,6 @@ en:
     password_changed: "Password changed"
   update_tour: "Update Tour"
   empty_payment: "Empty payment"
+  fields:
+    from_date: "From date"
+    to_date: "To date"

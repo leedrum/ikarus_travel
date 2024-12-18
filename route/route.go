@@ -79,6 +79,7 @@ func InitRoutes(server *internal.Server) {
 			resRoutes.GET("/:id/edit", ssr.EditReservationHandler(*server))
 			resRoutes.PUT("/:id", ssr.UpdateReservationHandler(*server))
 			resRoutes.DELETE("/:id", ssr.DeleteReservationHandler(*server))
+			resRoutes.GET("/export", ssr.ExportReservationsHandler(*server))
 		}
 	}
 	server.Router = router

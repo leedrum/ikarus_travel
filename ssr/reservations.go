@@ -215,6 +215,21 @@ func PreviewQRCodeHandler(server internal.Server) gin.HandlerFunc {
 	}
 }
 
+func ExportReservationsHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		fileExcel, err := service_object.ExportExcelFile(ctx, server)
+		if err != nil {
+			internal.Render(ctx, http.StatusInternalServerError, views.Error("Error exporting file"))
+			return
+		} else {
+			ctx.Header("Content-Description", "File Transfer")
+			ctx.Header("Content-Disposition", "attachment; filename=report.xlsx")
+			fileExcel.Write(ctx.Writer)
+			ctx.Data(http.StatusOK, "application/octet-stream", []byte(""))
+		}
+	}
+}
+
 func getHotels(server internal.Server) []model.Hotel {
 	hotels := []model.Hotel{}
 	server.DB.Table("hotels").Select("id, name").Find(&hotels)

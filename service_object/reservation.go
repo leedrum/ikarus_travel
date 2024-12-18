@@ -2,11 +2,15 @@ package service_object
 
 import (
 	"slices"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/model"
+	"github.com/rs/zerolog/log"
+	"github.com/xuri/excelize/v2"
 	"gorm.io/gorm"
 )
 
@@ -121,6 +125,129 @@ func SearchConditions(ctx *gin.Context, tx *gorm.DB) *gorm.DB {
 		tx = tx.Where("LOWER(customer_name) LIKE LOWER(?)", "%"+ctx.Query("customer_name")+"%")
 	}
 	return tx
+}
+
+func ExportExcelFile(ctx *gin.Context, server internal.Server) (*excelize.File, error) {
+	dropDownReservations := LoadDropDownReservations(ctx, server)
+	f := excelize.NewFile()
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Err(err).Msg("Failed to close file")
+		}
+	}()
+
+	for _, dropDownReservation := range dropDownReservations {
+		nextRow := 0
+		if len(dropDownReservation.ItemDropDownReservations) == 0 {
+			continue
+		}
+		sheetName := strings.ReplaceAll(dropDownReservation.DepartureDate, "/", "-")
+		index, err := f.NewSheet(sheetName)
+		if err != nil {
+			log.Err(err).Msg("Failed to create new sheet")
+			return &excelize.File{}, err
+		}
+
+		// Header
+		f.SetCellValue(sheetName, "A1", strings.ReplaceAll(sheetName, "/", "-"))
+		f.MergeCell(sheetName, "A1", "A2")
+
+		f.SetCellValue(sheetName, "B1", "Hotel")
+		f.MergeCell(sheetName, "B1", "B2")
+
+		f.SetCellValue(sheetName, "C1", "Room note")
+		f.MergeCell(sheetName, "C1", "C2")
+
+		f.SetCellValue(sheetName, "D1", "Name")
+		f.MergeCell(sheetName, "D1", "D2")
+
+		f.SetCellValue(sheetName, "E1", "Guest")
+		f.MergeCell(sheetName, "E1", "F1")
+		f.SetCellValue(sheetName, "E2", "Adults")
+		f.SetCellValue(sheetName, "F2", "Children")
+
+		f.SetCellValue(sheetName, "G1", "Tel")
+		f.MergeCell(sheetName, "G1", "G2")
+
+		f.SetCellValue(sheetName, "H1", "Pickup")
+		f.MergeCell(sheetName, "H1", "H2")
+
+		f.SetCellValue(sheetName, "I1", "Total")
+		f.MergeCell(sheetName, "I1", "I2")
+
+		f.SetCellValue(sheetName, "J1", "Payment")
+		f.MergeCell(sheetName, "J1", "K1")
+		f.SetCellValue(sheetName, "J2", "Deposit (USD)")
+
+		f.SetCellValue(sheetName, "K2", "Balance")
+
+		f.SetCellValue(sheetName, "L1", "Change")
+		f.SetCellValue(sheetName, "L2", "Paid VND")
+
+		f.SetCellValue(sheetName, "M1", "Address")
+		f.MergeCell(sheetName, "M1", "M2")
+
+		f.SetCellValue(sheetName, "N1", "Sale")
+		f.MergeCell(sheetName, "N1", "P1")
+		f.SetCellValue(sheetName, "N2", "Name")
+		f.SetCellValue(sheetName, "O2", "No.Ticket")
+		f.SetCellValue(sheetName, "P2", "Date")
+		// end header
+		nextRow += 2
+
+		for _, itemDropDownReservation := range dropDownReservation.ItemDropDownReservations {
+			nextRow++
+			f.SetCellValue(sheetName, "A"+strconv.Itoa(nextRow), itemDropDownReservation.Tour.Name)
+			styleTourName, err := f.NewStyle(&excelize.Style{
+				Font: &excelize.Font{
+					Bold: true,
+					Size: 15,
+				},
+				Alignment: &excelize.Alignment{
+					Horizontal: "center",
+					Vertical:   "center",
+				},
+			})
+			if err != nil {
+				log.Err(err).Msg("Failed to create new style")
+				return &excelize.File{}, err
+			}
+			f.SetCellStyle(sheetName, "A"+strconv.Itoa(nextRow), "A"+strconv.Itoa(nextRow), styleTourName)
+			f.MergeCell(sheetName, "A"+strconv.Itoa(nextRow), "P"+strconv.Itoa(nextRow))
+
+			for k, reservation := range itemDropDownReservation.Reservations {
+				f.SetCellValue(sheetName, "A"+strconv.Itoa(nextRow+1), k+1)
+				f.SetCellValue(sheetName, "B"+strconv.Itoa(nextRow+1), reservation.Hotel.Name)
+				f.SetCellValue(sheetName, "C"+strconv.Itoa(nextRow+1), reservation.RoomNote)
+				f.SetCellValue(sheetName, "D"+strconv.Itoa(nextRow+1), reservation.CustomerName)
+				f.SetCellValue(sheetName, "E"+strconv.Itoa(nextRow+1), reservation.Adults)
+				f.SetCellValue(sheetName, "F"+strconv.Itoa(nextRow+1), reservation.Children)
+				f.SetCellValue(sheetName, "G"+strconv.Itoa(nextRow+1), reservation.Phone)
+				f.SetCellValue(sheetName, "H"+strconv.Itoa(nextRow+1), reservation.PickupTime)
+				f.SetCellValue(sheetName, "I"+strconv.Itoa(nextRow+1), reservation.TotalPrice())
+				f.SetCellValue(sheetName, "J"+strconv.Itoa(nextRow+1), reservation.GetPaidUSD())
+				f.SetCellValue(sheetName, "K"+strconv.Itoa(nextRow+1), "")
+				f.SetCellValue(sheetName, "L"+strconv.Itoa(nextRow+1), reservation.GetPaidVND())
+				f.SetCellValue(sheetName, "M"+strconv.Itoa(nextRow+1), reservation.Address)
+				f.SetCellValue(sheetName, "N"+strconv.Itoa(nextRow+1), reservation.User.FullName)
+				f.SetCellValue(sheetName, "O"+strconv.Itoa(nextRow+1), reservation.ID)
+				f.SetCellValue(sheetName, "P"+strconv.Itoa(nextRow+1), reservation.CreatedAt.Format("02/01/2006"))
+
+				// set total USD and VND
+				f.SetCellValue(sheetName, "I"+strconv.Itoa(nextRow+2), itemDropDownReservation.TotalPrice)
+				f.SetCellValue(sheetName, "J"+strconv.Itoa(nextRow+2), itemDropDownReservation.TotalPaidUSD)
+				f.SetCellValue(sheetName, "L"+strconv.Itoa(nextRow+2), itemDropDownReservation.TotalPaidVND)
+
+				nextRow += 2
+			}
+			nextRow++
+		}
+
+		f.SetActiveSheet(index)
+	}
+	f.DeleteSheet("Sheet1") // delete default sheet
+
+	return f, nil
 }
 
 func mappingDropDownData(dropDownReservations []DropDownReservations, reservation model.Reservation) {

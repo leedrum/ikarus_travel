@@ -9,6 +9,7 @@ import (
   "github.com/leedrum/ikarus_travel/model"
 	"github.com/leedrum/ikarus_travel/service_object"
 	"github.com/leedrum/ikarus_travel/internal"
+  "github.com/leedrum/ikarus_travel/views/admin/partials"
 )
 
 templ ListGroupReservations(dropDownReservations []service_object.DropDownReservations) {
@@ -17,6 +18,13 @@ templ ListGroupReservations(dropDownReservations []service_object.DropDownReserv
       <div class="mx-auto w-full">
         <div class="w-full my-2" id="error-area"></div>
         <div class="w-full my-2" id="success-area"></div>
+
+        if ctx.Value("user").(model.User).Role == model.RoleAdmin {
+          <div class="w-full my-2">
+            @admin.ExportReservation()
+          </div>
+        }
+
         <div class="form-wrap">
           <form class="max-w-xl mb-4"
             hx-get="/reservations/mine"
