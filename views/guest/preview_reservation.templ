@@ -76,7 +76,7 @@ templ PreviewReservation(reservation model.Reservation) {
                 { locales.Translate(ctx, "departure_date") }
               </th>
               <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                { reservation.DepartureDate }
+                { reservation.TourItem.DepartureDate }
               </td>
             </tr>
             <tr class="border-b border-gray-200">

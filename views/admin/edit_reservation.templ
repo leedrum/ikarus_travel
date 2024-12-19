@@ -26,7 +26,7 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
           <div class="sm:col-span-2">
             <label for="customer_name" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "customer_name") }</label>
             <div class="mt-2.5">
-              <input type="text" name="customer_name" id="customer_name" autocomplete="customer_name"
+              <input type="text" name="customer_name" id="customer_name" autocomplete="off"
                 value={reservation.CustomerName}
                 class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
@@ -45,6 +45,15 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
                   value={reservation.Phone}
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="+8412345678910" />
               </div>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="address" class="block text-sm font-semibold leading-6 text-gray-900">{ locales.Translate(ctx, "address") }</label>
+            <div class="mt-2.5">
+              <input type="text" name="address" id="address" autocomplete="off"
+                value={reservation.Address}
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
 
@@ -131,7 +140,7 @@ templ EditReservation(reservation model.Reservation, hotels []model.Hotel, tours
                 </div>
                 <input datepicker id="departure_date" name="departure_date" type="text" autocomplete="off"
                   datepicker-format="dd/mm/yyyy" datepicker-autohide="true" placeholder="dd/mm/yyyy"
-                  value={ reservation.DepartureDate }
+                  value={ reservation.TourItem.DepartureDate }
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               </div>
             </div>

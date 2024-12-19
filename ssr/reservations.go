@@ -135,7 +135,7 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 		server.DB.Where("id = ?", reservation.TourItemID).First(&previousTourItem)
 
 		tourItem := model.TourItem{}
-		server.DB.Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
+		server.DB.Where("tour_id = ?", ctx.PostForm("tour_id")).Where("departure_date = ?", ctx.PostForm("departure_date")).First(&tourItem)
 
 		if tourItem.ID == 0 {
 			if err := ctx.ShouldBind(&tourItem); err != nil {
@@ -146,6 +146,9 @@ func UpdateReservationHandler(server internal.Server) gin.HandlerFunc {
 			}
 
 			tourItem.TourID = previousTourItem.TourID
+			if ctx.PostForm("tour_id") != "" {
+				tourItem.TourID, _ = strconv.Atoi(ctx.PostForm("tour_id"))
+			}
 			response := server.DB.Omit(clause.Associations).Create(&tourItem)
 			if tourItem.ID == 0 {
 				log.Fatal().Err(response.Error).Msg(response.Error.Error())
@@ -209,6 +212,21 @@ func PreviewQRCodeHandler(server internal.Server) gin.HandlerFunc {
 			"code = ?", code).First(&reservation)
 		server.DB.Model(&reservation.TourItem).Association("Tour").Find(&reservation.TourItem.Tour)
 		internal.Render(ctx, http.StatusOK, views.PreviewReservation(reservation))
+	}
+}
+
+func ExportReservationsHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		fileExcel, err := service_object.ExportExcelFile(ctx, server)
+		if err != nil {
+			internal.Render(ctx, http.StatusInternalServerError, views.Error("Error exporting file"))
+			return
+		} else {
+			ctx.Header("Content-Description", "File Transfer")
+			ctx.Header("Content-Disposition", "attachment; filename=report.xlsx")
+			fileExcel.Write(ctx.Writer)
+			ctx.Data(http.StatusOK, "application/octet-stream", []byte(""))
+		}
 	}
 }
 

@@ -175,9 +175,9 @@ func PreviewReservation(reservation model.Reservation) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.DepartureDate)
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(reservation.TourItem.DepartureDate)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/guest/preview_reservation.templ`, Line: 79, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/guest/preview_reservation.templ`, Line: 79, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
