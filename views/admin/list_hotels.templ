@@ -7,6 +7,7 @@ import (
   "github.com/leedrum/ikarus_travel/views/components"
   "github.com/leedrum/ikarus_travel/locales"
   "github.com/leedrum/ikarus_travel/views/icons"
+  "github.com/leedrum/ikarus_travel/views/admin/imports"
 )
 
 templ ListHotels(hotels []model.Hotel) {
@@ -20,6 +21,7 @@ templ ListHotels(hotels []model.Hotel) {
               @icons.Hotel()
               +
             </a>
+            @admin.ImportHotel()
           </div>
         }
         <div class="w-full my-2" id="error-area"></div>

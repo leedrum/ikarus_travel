@@ -13,6 +13,7 @@ import (
 
 	"github.com/leedrum/ikarus_travel/locales"
 	"github.com/leedrum/ikarus_travel/model"
+	"github.com/leedrum/ikarus_travel/views/admin/imports"
 	"github.com/leedrum/ikarus_travel/views/components"
 	"github.com/leedrum/ikarus_travel/views/icons"
 )
@@ -72,7 +73,15 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("+</a></div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("+</a>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = admin.ImportHotel().Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -84,7 +93,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "name"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 31, Col: 48}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 33, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -97,7 +106,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "address"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 34, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 36, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -110,7 +119,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "description"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 37, Col: 55}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 39, Col: 55}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -123,7 +132,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "actions"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 40, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 42, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -141,7 +150,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(hotel.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 48, Col: 30}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 50, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -154,7 +163,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(hotel.Address)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 51, Col: 33}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 53, Col: 33}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -167,7 +176,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(hotel.Description)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 54, Col: 37}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 56, Col: 37}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -197,7 +206,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("/admin/hotels/" + strconv.Itoa(hotel.ID))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 61, Col: 79}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 63, Col: 79}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -210,7 +219,7 @@ func ListHotels(hotels []model.Hotel) templ.Component {
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(locales.Translate(ctx, "are_you_sure"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 61, Col: 133}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin/list_hotels.templ`, Line: 63, Col: 133}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
