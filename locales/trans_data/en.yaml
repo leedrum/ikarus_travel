@@ -8,6 +8,7 @@ en:
   save: "Save"
   cancel: "Cancel"
   export: "Export"
+  import: "Import"
   search: "Search"
   confirm: "Confirm"
   are_you_sure: "Are you sure?"
@@ -75,6 +76,9 @@ en:
     not_found: "Not found"
     something_went_wrong: "Something went wrong"
     invalid_username_or_password: "Incorrect username or password"
+    import:
+      common:
+        upload_file_failed: "Error uploading file"
   list_tours: "List tours"
   list_reservations: "List reservations"
   list_users: "List users"
@@ -96,3 +100,4 @@ en:
   fields:
     from_date: "From date"
     to_date: "To date"
+    upload_file: "Upload file"
