@@ -62,6 +62,7 @@ func InitRoutes(server *internal.Server) {
 			tourRoutes.GET("/:id/edit", ssr.EditTourHandler(*server))
 			tourRoutes.PUT("/:id", ssr.UpdateTourHandler(*server))
 			tourRoutes.DELETE("/:id", ssr.DeleteTourHandler(*server))
+			tourRoutes.POST("/import", ssr.ImportToursHandler(*server))
 		}
 
 		hotelRoutes := adminRoute.Group("/hotels")

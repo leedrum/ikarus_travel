@@ -6,6 +6,7 @@ import (
 	"github.com/leedrum/ikarus_travel/model"
   "strconv"
   "github.com/leedrum/ikarus_travel/views/icons"
+  "github.com/leedrum/ikarus_travel/views/admin/imports"
 )
 
 templ ListTours(tours []model.Tour) {
@@ -19,6 +20,7 @@ templ ListTours(tours []model.Tour) {
               @icons.Tour()
               +
             </a>
+            @admin.ImportTour()
           </div>
         }
         <div class="w-full my-2" id="error-area"></div>
@@ -34,6 +36,9 @@ templ ListTours(tours []model.Tour) {
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                 { locales.Translate(ctx, "status") }
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                { locales.Translate(ctx, "actions") }
               </th>
             </tr>
           </thead>

@@ -1,0 +1,62 @@
+package admin
+
+import (
+	"github.com/leedrum/ikarus_travel/locales"
+	"github.com/leedrum/ikarus_travel/views/icons"
+)
+
+templ ImportTour() {
+  <div class="w-full wrap-import-tour">
+    <button data-modal-target="import-tour" data-modal-toggle="import-tour"
+      class="btn primary flex items-center text-black-700 border border-black-700 hover:bg-border-0 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2" type="button">
+      { locales.Translate(ctx, "import") }
+    </button>
+
+    <div id="import-tour" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <form class="relative bg-white rounded-lg shadow dark:bg-gray-700"
+          id="form-import-tour"
+          hx-encoding="multipart/form-data"
+          hx-post="/admin/tours/import"
+          hx-target="#response-area"
+          hx-swap="innerHTML">
+          <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              { locales.Translate(ctx, "import") }
+            </h3>
+            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="import-tour">
+              @icons.Close()
+            </button>
+          </div>
+          <div class="p-4 md:p-5 space-y-4">
+            <div class="grid grid-cols-1 gap-4">
+              <div>
+                <div id="response-area" class="w-full my-2"></div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">{ locales.Translate(ctx, "fields.upload_file") }</label>
+                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help"
+                  name="file" id="file_input" type="file">
+                <p class="mt-1 text-sm text-blue-500 dark:text-blue-300" id="file_input_help">
+                  <a target="_blank" href="https://docs.google.com/spreadsheets/d/1zNmbkRSjbTwY4qk3BpYo3hm0sX46iVgOKqebMDfgKQA/edit?gid=330135663#gid=330135663">>> Only CSV. Check the sample here</a>
+                </p>
+              </div>
+              <progress id='progress' value='0' max='100'></progress>
+            </div>
+          </div>
+          <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              { locales.Translate(ctx, "import") }
+            </button>
+            <button data-modal-hide="import-tour" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+              { locales.Translate(ctx, "cancel") }
+            </button>
+          </div>
+        </form>
+        <script>
+          htmx.on('#form-import-tour', 'htmx:xhr:progress', function(evt) {
+            htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+}
