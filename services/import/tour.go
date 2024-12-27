@@ -10,7 +10,8 @@ import (
 
 const (
 	// TourImportLimit is the number of tours to import at once
-	TourImportLimit = 500
+	TourImportLimit         = 500
+	TourImportLimitFileSize = 10 << 20 // 10MB
 )
 
 func ImportTours(db *gorm.DB, file *multipart.FileHeader) error {

@@ -80,6 +80,9 @@ ru:
       common:
         upload_file_failed: "Ошибка загрузки файла"
         importing_file: "Что-то пошло не так при импорте файла"
+        invalid_file_format: "Неверный формат файла"
+        empty_file: "Пустой файл"
+        file_too_large: "Файл слишком большой"
   list_tours: "Список туров"
   list_reservations: "Список бронирований"
   list_users: "Список пользователей"

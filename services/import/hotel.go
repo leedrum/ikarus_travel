@@ -11,6 +11,8 @@ import (
 const (
 	// HotelImportLimit is the number of hotels to import at once
 	HotelImportLimit = 500
+	// HotelImportLimitFileSize is the maximum file size for hotel import
+	HotelImportLimitFileSize = 10 << 20 // 10MB
 )
 
 func ImportHotels(db *gorm.DB, file *multipart.FileHeader) error {
