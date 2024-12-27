@@ -79,6 +79,7 @@ en:
     import:
       common:
         upload_file_failed: "Error uploading file"
+        importing_file: "Something went wrong when importing file"
   list_tours: "List tours"
   list_reservations: "List reservations"
   list_users: "List users"

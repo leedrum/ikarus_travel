@@ -79,6 +79,7 @@ ru:
     import:
       common:
         upload_file_failed: "Ошибка загрузки файла"
+        importing_file: "Что-то пошло не так при импорте файла"
   list_tours: "Список туров"
   list_reservations: "Список бронирований"
   list_users: "Список пользователей"

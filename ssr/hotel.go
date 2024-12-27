@@ -72,14 +72,14 @@ func ImportHotelsHandler(server internal.Server) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		file, err := ctx.FormFile("file")
 		if err != nil {
-			log.Error().Err(err).Msg(locales.Translate(ctx, "errors.import.common.error_uploading_file"))
-			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.error_uploading_file")))
+			log.Error().Err(err).Msg(locales.Translate(ctx, "errors.import.common.upload_file_failed"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.upload_file_failed")))
 			return
 		}
 		err = services.ImportHotels(server.DB, file)
 		if err != nil {
-			log.Error().Err(err).Msg(locales.Translate(ctx, "errors.import.common.error_uploading_file"))
-			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.error_importing_file")))
+			log.Error().Err(err).Msg(locales.Translate(ctx, "errors.import.common.upload_file_failed"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.importing_file")))
 			return
 		}
 		internal.Render(ctx, http.StatusOK, views.Success(locales.Translate(ctx, "success")))
