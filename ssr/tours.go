@@ -8,6 +8,7 @@ import (
 	"github.com/leedrum/ikarus_travel/internal"
 	"github.com/leedrum/ikarus_travel/locales"
 	"github.com/leedrum/ikarus_travel/model"
+	services "github.com/leedrum/ikarus_travel/services/import"
 	"github.com/leedrum/ikarus_travel/views"
 	"github.com/rs/zerolog/log"
 )
@@ -94,5 +95,42 @@ func UpdateTourHandler(server internal.Server) gin.HandlerFunc {
 				locales.Translate(ctx, "success")+"! "+locales.Translate(ctx, "go_to_list"),
 			),
 		)
+	}
+}
+
+func ImportToursHandler(server internal.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		file, err := ctx.FormFile("file")
+		if err != nil {
+			log.Error().Err(err).Msg(locales.Translate(ctx, "errors.import.common.upload_file_failed"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.upload_file_failed")))
+			return
+		}
+
+		if file.Header.Get("Content-Type") != "text/csv" {
+			log.Error().Msg(locales.Translate(ctx, "errors.import.common.invalid_file_format"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.invalid_file_format")))
+			return
+		}
+
+		if file.Size == 0 {
+			log.Error().Msg(locales.Translate(ctx, "errors.import.common.empty_file"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.empty_file")))
+			return
+		}
+
+		if file.Size > services.TourImportLimit {
+			log.Error().Msg(locales.Translate(ctx, "errors.import.common.file_too_large"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.file_too_large")))
+			return
+		}
+
+		err = services.ImportTours(server.DB, file)
+		if err != nil {
+			log.Error().Err(err).Msg(locales.Translate(ctx, "errors.import.common.upload_file_failed"))
+			internal.Render(ctx, http.StatusBadRequest, views.Error(locales.Translate(ctx, "errors.import.common.importing_file")))
+			return
+		}
+		internal.Render(ctx, http.StatusOK, views.Success(locales.Translate(ctx, "success")))
 	}
 }

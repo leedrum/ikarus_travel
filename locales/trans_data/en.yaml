@@ -79,6 +79,10 @@ en:
     import:
       common:
         upload_file_failed: "Error uploading file"
+        importing_file: "Something went wrong when importing file"
+        invalid_file_format: "Invalid file format"
+        empty_file: "Empty file"
+        file_too_large: "File too large"
   list_tours: "List tours"
   list_reservations: "List reservations"
   list_users: "List users"
